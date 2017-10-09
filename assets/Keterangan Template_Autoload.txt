@@ -1,0 +1,221 @@
+## Template Ample Admin ##
+
+# =============== Autoload Index ===============
+
+	=> CSS
+		> Bootstrap
+		<!-- Bootstrap Core CSS -->
+	    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+		> Menu CSS
+		<!-- Menu CSS -->
+	    <link href="../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.css" rel="stylesheet">
+
+		> Toast CSS
+		<!-- toast CSS -->
+	    <link href="../plugins/bower_components/toast-master/css/jquery.toast.css" rel="stylesheet">
+
+		> Animation CSS
+		<!-- animation CSS -->
+	    <link href="css/animate.css" rel="stylesheet">
+
+		> custom css
+		<!-- Custom CSS -->
+	    <link href="css/style.css" rel="stylesheet">
+
+		> color css
+		<!-- color CSS (pilih salah satu) -->
+	    <link href="css/colors/default.css" id="theme" rel="stylesheet">
+	    <link href="css/colors/green.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/gray.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/blue.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/purple.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/megna.css" id="theme" rel="stylesheet">
+
+		> Sweet alert
+    	<!--sweet alerts CSS -->
+    	<link href="../plugins/bower_components/sweetalert/sweetalert.css" rel="stylesheet" type="text/css">
+
+    	> Popup image
+    	<!-- Popup CSS -->
+    	<link href="../plugins/bower_components/Magnific-Popup-master/dist/magnific-popup.css" rel="stylesheet">
+
+	=> JS
+		> Jquery
+		<script src="../plugins/bower_components/jquery/dist/jquery.min.js"></script>
+
+		> Bootstrap
+		<!-- Bootstrap Core JavaScript -->
+	    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+		> menu plugin javascript
+		<!-- Menu Plugin JavaScript -->
+	    <script src="../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+
+		> Slimscroll
+		<!--slimscroll JavaScript -->
+	    <script src="js/jquery.slimscroll.js"></script>
+
+		> wave effect
+		<!--Wave Effects -->
+	    <script src="js/waves.js"></script>
+
+		> Counter js
+		<!--Counter js -->
+	    <script src="../plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
+	    <script src="../plugins/bower_components/counterup/jquery.counterup.min.js"></script>
+
+		> Custom Theme (custom.min.js)
+		<!-- Custom Theme JavaScript -->
+	    <script src="js/custom.min.js"></script>
+
+		> Custom tab Javascript
+		<!-- Custom tab JavaScript -->
+	    <script src="js/cbpFWTabs.js"></script>
+	    <script type="text/javascript">
+	    (function() {
+	        [].slice.call(document.querySelectorAll('.sttabs')).forEach(function(el) {
+	            new CBPFWTabs(el);
+	        });
+	    })();
+	    </script>
+
+	    > Style Switcher
+	    <!--Style Switcher -->
+	    <script src="../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+
+	    > BlockUI
+	    <!--BlockUI Script -->
+    	<script src="../plugins/bower_components/blockUI/jquery.blockUI.js"></script>
+
+    	> Sweet alert
+    	<!-- Sweet-Alert  -->
+   	 	<script src="../plugins/bower_components/sweetalert/sweetalert.min.js"></script>
+
+   	 	> Popup image
+   	 	<!-- Magnific popup JavaScript -->
+    	<script src="../plugins/bower_components/Magnific-Popup-master/dist/jquery.magnific-popup.min.js"></script>
+
+# ==============================================
+
+# ================= Dashboard ==================
+	
+	=> CSS
+    	> Calendar
+    	<!-- Calendar CSS -->
+    	<link href="../plugins/bower_components/calendar/dist/fullcalendar.css" rel="stylesheet" />
+    	
+    	<!-- Table -->
+	    	> DataTable
+	    	<link href="../plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+	    	<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+
+	    	> Tablesaw
+		 	<link href="../plugins/bower_components/tablesaw-master/dist/tablesaw.css" rel="stylesheet">
+		<!-- end table -->
+
+	=> JS
+		> Chartjs
+		<!-- Chart JS -->
+    	<script src="../plugins/bower_components/Chart.js/chartjs.init.js"></script>
+
+		> Calendar
+		<!-- Calendar JavaScript -->
+	    <script src="../plugins/bower_components/moment/moment.js"></script>
+	    <script src='../plugins/bower_components/calendar/dist/fullcalendar.min.js'></script>
+
+	    <!-- Table -->
+		    > DataTable
+		    <script src="../plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+
+		    > Tablesaw
+		    <script src="../plugins/bower_components/tablesaw-master/dist/tablesaw.js"></script>
+
+		    > jQuery Peity
+	    	<!-- jQuery peity -->
+	    	<script src="../plugins/bower_components/peity/jquery.peity.min.js"></script>
+    	<!-- end table -->
+
+# ==============================================
+
+# =================== List =====================
+
+	=> CSS
+		> DataTable
+    	<link href="../plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    	<link rel="stylesheet" type="text/css" href="<?= base_url."assets/plugins/DataTables/Responsive-2.1.1/css/responsive.bootstrap.min.css"; ?>"/>
+
+    	> Datepicker
+    	<!-- Date picker plugins css -->
+    	<link href="../plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
+	=> JS
+		> DataTable
+	    <script src="../plugins/bower_components/datatables/jquery.dataTables.min.js"></script>
+	    <script type="text/javascript" src="<?= base_url."assets/plugins/DataTables/Responsive-2.1.1/js/dataTables.responsive.min.js"; ?>"></script>
+
+	    > Datepicker
+	    <!-- Date Picker Plugin JavaScript -->
+    	<script src="../plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+
+# ==============================================
+
+# =================== Form =====================
+# ==============================================
+
+# =================== View =====================
+# ==============================================
+
+# ============ Login / Lockscreen ==============
+
+	=> CSS
+		> Bootstrap
+		<!-- Bootstrap Core CSS -->
+	    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	    > Animation CSS
+		<!-- animation CSS -->
+	    <link href="css/animate.css" rel="stylesheet">
+
+		> custom css
+		<!-- Custom CSS -->
+	    <link href="css/style.css" rel="stylesheet">
+
+		> color css
+		<!-- color CSS (pilih salah satu) -->
+	    <link href="css/colors/default.css" id="theme" rel="stylesheet">
+	    <link href="css/colors/green.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/gray.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/blue.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/purple.css" id="theme" rel="stylesheet"> 
+		<link href="css/colors/megna.css" id="theme" rel="stylesheet">
+
+	=> JS
+		> Jquery
+		<script src="../plugins/bower_components/jquery/dist/jquery.min.js"></script>
+
+		> Bootstrap
+		<!-- Bootstrap Core JavaScript -->
+	    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+
+		> menu plugin javascript
+		<!-- Menu Plugin JavaScript -->
+	    <script src="../plugins/bower_components/sidebar-nav/dist/sidebar-nav.min.js"></script>
+
+		> Slimscroll
+		<!--slimscroll JavaScript -->
+	    <script src="js/jquery.slimscroll.js"></script>
+
+		> wave effect
+		<!--Wave Effects -->
+	    <script src="js/waves.js"></script>
+
+		> Custom Theme (custom.min.js)
+		<!-- Custom Theme JavaScript -->
+	    <script src="js/custom.min.js"></script>
+
+		> Style Switcher
+	    <!--Style Switcher -->
+	    <script src="../plugins/bower_components/styleswitcher/jQuery.style.switcher.js"></script>
+
+# ==============================================
