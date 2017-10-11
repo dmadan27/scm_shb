@@ -366,7 +366,7 @@
 		$cekValid['error'] = array(
 			'empty' => $label." Harus Diisi",
 			'pattern' => $label." Harus Berupa Angka",
-			'length' => "Nilai $label Min. $min dan Maks. $max",
+			'length' => "Panjang $label Min. $min dan Maks. $max",
 		);
 		$cekValid['value'] = trim($value);
 		$cekValid['label'] = trim($label);
