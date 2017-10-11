@@ -7,6 +7,7 @@
 	include_once("../models/Supplier_model.php");
 
 	$action = isset($_POST['action']) ? $_POST['action'] : false;
+	$id = isset($_POST['id']) ? $_POST['id'] : false;
 
 	if(!$action) die("Dilarang Akses Halaman Ini !!");
 	else{
@@ -17,6 +18,14 @@
 			
 			case 'tambah':
 				actionAdd($koneksi);
+				break;
+
+			case 'getedit':
+				getEdit($koneksi, $id);
+				break;
+
+			case 'edit':
+				actionEdit($koneksi);
 				break;
 
 			case 'get_supplierinti':
@@ -32,10 +41,10 @@
 	// fungsi list supplier
 	function listSupplier($koneksi){
 		$config_db = array(
-			'tabel' => 'supplier',
+			'tabel' => 'v_supplier',
 			'kolomOrder' => array(null, 'nik', 'npwp', 'nama', 'status', null),
-			'kolomCari' => array('nik', 'npwp', 'nama', 'status'),
-			'orderBy' => array('id' => 'asc'),
+			'kolomCari' => array('nik', 'npwp', 'nama', 'telp', 'alamat', 'status'),
+			'orderBy' => false,
 			'kondisi' => false,
 		);
 
@@ -44,8 +53,8 @@
 		$data = array();
 		$no_urut = $_POST['start'];
 		foreach($data_supplier as $row){
-			$status = (strtolower($row['status'])==='1') ? 'INTI' : "PENGGANTI";
 			$no_urut++;
+			$status = strtolower($row['status'])=='inti' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 			
 			// view
 			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
@@ -76,10 +85,8 @@
 	// fungsi action add
 	function actionAdd($koneksi){
 		$dataForm = isset($_POST) ? $_POST : false;
-		$foto = isset($_FILES['foto']) ? $_FILES['foto'] : false;
 
 		// validasi
-			$cekFoto = true;
 			$status = $errorDB = false;
 			$duplikat = array(
 				'nik' => false,
@@ -91,24 +98,6 @@
 			$cek = $validasi['cek'];
 			$setError = $validasi['setError'];
 			$setValue = $validasi['setValue'];
-
-			// cek upload foto
-			if($foto){
-				$configFoto = array(
-					'error' => $foto['error'],
-					'size' => $foto['size'],
-					'name' => $foto['name'],
-					'tmp_name' => $foto['tmp_name'],
-					'max' => 2*1048576,
-				);
-				$validFoto = validFoto($configFoto);
-				if(!$validFoto['cek']){
-					$cek = false;
-					$setError['fotoError'] = $validFoto['error'];
-				}
-				else $valueFoto = $validFoto['namaFile'];
-			}
-			else $valueFoto = "";
 		// ================================== //
 
 		if($cek){
@@ -121,7 +110,6 @@
 				'alamat' => validInputan($dataForm['alamat'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
 				'supplier_inti' => validInputan($dataForm['supplier_inti'], false, false),
-				'foto' => validInputan($valueFoto, false, false),
 			);
 
 			// cek duplikat
@@ -142,32 +130,84 @@
 				'nik' => cekDuplikat($koneksi, $config_duplikat['nik']) ? 
 					array('duplikat'=> true, 'error' => 'NIK Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
 				'npwp' => cekDuplikat($koneksi, $config_duplikat['npwp']) ? 
-					array('duplikat'=> true, 'error' => 'NPWP Sudah Ada, Harap Diganti !') : array('duplikat'=> true, 'error' => ''),
+					array('duplikat'=> true, 'error' => 'NPWP Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
 			);
 
-			if($duplikat['nik'] == true || $duplikat['npwp'] == true){
+			if($duplikat['nik']['duplikat'] == true || $duplikat['npwp']['duplikat'] == true){
 				$status = false;
 				$setError['nikError'] = $duplikat['nik']['error'];
 				$setError['npwpError'] = $duplikat['npwp']['error'];
 			}
 			else{
-				// jika upload foto
-				if($foto){
-					$path = "../../assets/images/$valueFoto";
-					if(!move_uploaded_file($foto['tmp_name'], $path)){
-						$setError['fotoError'] = "Upload Foto Gagal";
-						$status = $cekFoto = false;
-					}
+				// lakukan insert
+				if(insertSupplier($koneksi, $dataForm)) $status = true;
+				else{
+					$status = false;
+					$errorDB = true;
 				}
+			}
+		}
+		else $status = false;
 
-				if($cekFoto){
-					// lakukan query
-					if(insertSupplier($koneksi, $dataForm)) $status = true;
-					else{
-						$status = false;
-						$errorDB = true;
-					}
-				}
+		$output = array(
+			'status' => $status,
+			'errorDB' => $errorDB,
+			'duplikat' => $duplikat,
+			'setError' => $setError,
+			'setValue' => $setValue,
+		);
+
+		echo json_encode($output);
+	}
+
+	// funsi get data edit
+	function getEdit($koneksi, $id){
+		$data_supplier = empty(get_data_by_id($koneksi, $id)) ? false : get_data_by_id($koneksi, $id);
+
+		// if(empty($data_supplier)) $data_supplier = false;
+		// else{
+		// 	$data_supplier['supplier_inti'] = ($data_supplier['id']==$data_supplier['supplier_inti']) 
+		// 		? "" : $data_supplier['supplier_inti']; 
+		// }
+
+		echo json_encode($data_supplier);
+	}
+
+	// fungsi action edit
+	function actionEdit($koneksi){
+		$dataForm = isset($_POST) ? $_POST : false;
+
+		// validasi
+			$status = $errorDB = false;
+			$duplikat = array(
+				'nik' => false,
+				'npwp' => false,
+			);
+
+			$configData = setRule_validasi($dataForm);
+			$validasi = set_validasi($configData);
+			$cek = $validasi['cek'];
+			$setError = $validasi['setError'];
+			$setValue = $validasi['setValue'];
+		// ================================== //
+
+		if($cek){
+			$dataForm = array(
+				'id_supplier' => validInputan($dataForm['id_supplier'], false, false),
+				'nik' => validInputan($dataForm['nik'], false, false),
+				'npwp' => validInputan($dataForm['npwp'], false, false),
+				'nama' => validInputan($dataForm['nama'], false, false),
+				'telp' => validInputan($dataForm['telp'], false, false),
+				'alamat' => validInputan($dataForm['alamat'], false, false),
+				'status' => validInputan($dataForm['status'], false, false),
+				'supplier_inti' => validInputan($dataForm['supplier_inti'], false, false),
+			);
+
+			// lakukan update
+			if(updateSupplier($koneksi, $dataForm)) $status = true;
+			else{
+				$status = false;
+				$errorDB = true;
 			}
 		}
 		else $status = false;
@@ -217,7 +257,7 @@
 			// npwp
 			array(
 				'field' => $data['npwp'], 'label' => 'NPWP', 'error' => 'npwpError',
-				'value' => 'npwp', 'rule' => 'string | 20 | 20 | required',
+				'value' => 'npwp', 'rule' => 'string | 20 | 20 | not_required',
 			),
 			// nama
 			array(

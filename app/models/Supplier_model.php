@@ -10,6 +10,19 @@
 		return $result;
 	}
 
+	// get data supplier by id
+	function get_data_by_id($koneksi, $id){
+		$query = "SELECT s.id, s.nik, s.npwp, s.nama, s.telp, s.alamat, s.status, isup.id_supplier_inti supplier_inti ";
+		$query .= "FROM supplier s JOIN index_supplier isup ON isup.id_supplier = s.id WHERE s.id=:id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
 	// get data supplier inti
 	function get_data_supplierInti($koneksi){
 		$status = '1';
@@ -25,7 +38,7 @@
 
 	// function insert
 	function insertSupplier($koneksi, $data){
-		$query = "CALL tambah_supplier(:nik, :npwp, :nama, :telp, :alamat, :foto, :status, :supplier_inti)";
+		$query = "CALL tambah_supplier(:nik, :npwp, :nama, :telp, :alamat, :status, :supplier_inti)";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':nik', $data['nik']);
@@ -33,10 +46,27 @@
 		$statement->bindParam(':nama', $data['nama']);
 		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':alamat', $data['alamat']);
-		$statement->bindParam(':foto', $data['foto']);
 		$statement->bindParam(':status', $data['status']);
 		$statement->bindParam(':supplier_inti', $data['supplier_inti']);
 		$result = $statement->execute();
 
 		return $result;
-	}	
+	}
+
+	// function update
+	function updateSupplier($koneksi, $data){
+		$query = "CALL edit_supplier(:id, :nik, :npwp, :nama, :telp, :alamat, :status, :supplier_inti)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $data['id_supplier']);
+		$statement->bindParam(':nik', $data['nik']);
+		$statement->bindParam(':npwp', $data['npwp']);
+		$statement->bindParam(':nama', $data['nama']);
+		$statement->bindParam(':telp', $data['telp']);
+		$statement->bindParam(':alamat', $data['alamat']);
+		$statement->bindParam(':status', $data['status']);
+		$statement->bindParam(':supplier_inti', $data['supplier_inti']);
+		$result = $statement->execute();
+
+		return $result;
+	}
