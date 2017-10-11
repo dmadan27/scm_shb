@@ -14,7 +14,6 @@ CREATE TABLE supplier(
 	nama varchar(255),
 	telp varchar(20),
 	alamat text,
-	foto text,
 	status char(1), -- 1: inti, 0: pengganti
 	
 	CONSTRAINT pk_supplier_id PRIMARY KEY(id)
@@ -34,11 +33,12 @@ CREATE TABLE index_supplier(
 -- tabel karyawan
 CREATE TABLE karyawan(
 	id int NOT NULL AUTO_INCREMENT,
+	no_induk varchar(20) UNIQUE,
 	nik varchar(16) UNIQUE,
 	npwp varchar(20) UNIQUE,
 	nama varchar(255),
 	telp varchar(20),
-	email varchar(50),
+	email varchar(50) UNIQUE,
 	alamat text,
 	foto text,
 	jabatan varchar(255),
@@ -121,18 +121,19 @@ CREATE TABLE detail_pembelian(
 
 # PROCEDURE #
 
-# Procedure tambah p_supplier
+# Procedure tambah supplier
 CREATE PROCEDURE tambah_supplier(
 	in nik_param varchar(16),
 	in npwp_param varchar(20),
 	in nama_param varchar(255),
 	in telp_param varchar(20),
 	in alamat_param text,
-	in foto_param text,
 	in status_param char(1),
-	in id_supplier_inti_param int,
+	in id_supplier_inti_param int
 )
 BEGIN
+	DECLARE id_param int;
+
 	-- get auto increment supplier
 	SELECT `AUTO_INCREMENT` INTO id_param 
 		FROM INFORMATION_SCHEMA.TABLES 
@@ -140,9 +141,9 @@ BEGIN
 
 	-- insert supplier
 	INSERT INTO supplier 
-		(nik, npwp, nama, telp, alamat, foto, status) 
+		(nik, npwp, nama, telp, alamat, status) 
 	VALUES 
-		(nik_param, npwp_param, nama_param, telp_param, alamat_param, foto_param, status_param);
+		(nik_param, npwp_param, nama_param, telp_param, alamat_param, status_param);
 
 	-- cek status
 	IF status_param = '1' THEN -- jika inti, maka index sama
@@ -155,9 +156,44 @@ END;
 
 -- ====================================== --
 
-# Procedure 
+# Procedure edit supplier
+CREATE PROCEDURE edit_supplier(
+	in id_param int,
+	in nik_param varchar(16),
+	in npwp_param varchar(20),
+	in nama_param varchar(255),
+	in telp_param varchar(20),
+	in alamat_param text,
+	in status_param char(1),
+	in id_supplier_inti_param int
+)
+BEGIN
+	DECLARE id_supplier_inti_lama int;
+	DECLARE id_index_param int;
+
+	-- get id supplier inti lama
+	SELECT id_supplier_inti INTO id_supplier_inti_lama FROM index_supplier WHERE id_supplier = id_param;
+
+	-- get id index supplier
+	SELECT id INTO id_index_param FROM index_supplier WHERE id_supplier = id_param;
+
+	-- update data supplier
+	UPDATE supplier SET 
+		nik=nik_param, npwp=npwp_param, nama=nama_param,
+		telp=telp_param, alamat=alamat_param, status=status_param
+	WHERE id=id_param;
+
+	-- cek supplier_inti
+	IF id_supplier_inti_param != id_supplier_inti_lama THEN -- jika berbeda
+		-- update data index supplier
+		UPDATE index_supplier SET id_supplier_inti=id_supplier_inti_param 
+		WHERE id=id_index_param;
+	END IF;
+
+END;
 
 -- ====================================== --
+
 
 
 
@@ -189,5 +225,23 @@ END;
 
 # VIEW #
 
+# view supplier
+CREATE OR REPLACE VIEW v_supplier AS
+	SELECT 
+		id, nik, npwp, nama, telp, alamat, 
+		(CASE WHEN (status = '1') THEN 'INTI' ELSE 'PENGGANTI' END) status
+	FROM supplier
+	ORDER BY status DESC, id ASC
 
+-- ====================================== --
+
+# view karyawan
+CREATE OR REPLACE VIEW v_karyawan AS
+	SELECT 
+		id, no_induk, nik, npwp, nama, telp, email, alamat, foto, jabatan,
+		(CASE WHEN (status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+	FROM karyawan
+	ORDER BY id ASC
+
+-- ====================================== --
 
