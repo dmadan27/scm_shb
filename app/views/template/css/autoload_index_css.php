@@ -10,3 +10,4 @@
 <link href="<?= base_url."assets/plugins/bower_components/sweetalert/sweetalert.css"; ?>" rel="stylesheet" type="text/css">
 <!-- Popup CSS -->
 <link href="<?= base_url."assets/plugins/bower_components/Magnific-Popup-master/dist/magnific-popup.css"; ?>" rel="stylesheet">
+<link href="<?= base_url."assets/plugins/bower_components/toast-master/css/jquery.toast.css"; ?>" rel="stylesheet">
