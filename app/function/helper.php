@@ -6,18 +6,21 @@
 		$field = $config_db['field'];
 		$value = $config_db['value'];
 
-		$query = "SELECT COUNT(*) FROM $tabel WHERE $field=?";
+		if($value === "") $cek = false;
+		else{
+			$query = "SELECT COUNT(*) FROM $tabel WHERE $field=?";
 
-		// prepare
-		$statement = $koneksi->prepare($query);
-		// bind
-		$statement->bindParam(1, $value);
-		// execute
-		$statement->execute();
-		$result = $statement->fetch();
+			// prepare
+			$statement = $koneksi->prepare($query);
+			// bind
+			$statement->bindParam(1, $value);
+			// execute
+			$statement->execute();
+			$result = $statement->fetch();
 
-		if($result[0] > 0) $cek = true; // jika duplikat
-		else $cek = false; // jika tidak
+			if($result[0] > 0) $cek = true; // jika duplikat
+			else $cek = false; // jika tidak
+		}
 
 		return $cek;
 	}
@@ -108,4 +111,10 @@
 		$dataList .= "</ul>";
 
 		return $dataList;
+	}
+
+	// fungsi ubah nilai kosong menjadi -
+	function gantiKosong($data){
+		$tempData = $data=="" ? "-" : $data;
+		return $tempData;
 	}
