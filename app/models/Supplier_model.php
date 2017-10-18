@@ -1,5 +1,5 @@
 <?php
-	// get all data barang
+	// get all data supplier
 	function get_all_supplier($koneksi, $config_db){
 		$query = get_dataTable($config_db);
 		$statement = $koneksi->prepare($query);
@@ -12,7 +12,7 @@
 
 	// get data supplier by id
 	function get_data_by_id($koneksi, $id){
-		$query = "SELECT s.id, s.nik, s.npwp, s.nama, s.telp, s.alamat, s.status, isup.id_supplier_inti supplier_inti ";
+		$query = "SELECT s.id, s.nik, s.npwp, s.nama, s.telp, s.alamat, s.status, isup.id_supplier_utama supplier_utama ";
 		$query .= "FROM supplier s JOIN index_supplier isup ON isup.id_supplier = s.id WHERE s.id=:id";
 
 		$statement = $koneksi->prepare($query);
@@ -23,8 +23,8 @@
 		return $result;
 	}
 
-	// get data supplier inti
-	function get_data_supplierInti($koneksi){
+	// get data supplier utama
+	function get_data_supplierUtama($koneksi){
 		$status = '1';
 		$query = "SELECT id, nik, npwp, nama FROM supplier WHERE status = :status";
 
@@ -38,7 +38,8 @@
 
 	// function insert
 	function insertSupplier($koneksi, $data){
-		$query = "CALL tambah_supplier(:nik, :npwp, :nama, :telp, :alamat, :status, :supplier_inti)";
+		// $data = setNull($data);
+		$query = "CALL tambah_supplier(:nik, :npwp, :nama, :telp, :alamat, :status, :supplier_utama)";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':nik', $data['nik']);
@@ -47,7 +48,7 @@
 		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':alamat', $data['alamat']);
 		$statement->bindParam(':status', $data['status']);
-		$statement->bindParam(':supplier_inti', $data['supplier_inti']);
+		$statement->bindParam(':supplier_utama', $data['supplier_utama']);
 		$result = $statement->execute();
 
 		return $result;
@@ -55,7 +56,8 @@
 
 	// function update
 	function updateSupplier($koneksi, $data){
-		$query = "CALL edit_supplier(:id, :nik, :npwp, :nama, :telp, :alamat, :status, :supplier_inti)";
+		// $data = setNull($data);
+		$query = "CALL edit_supplier(:id, :nik, :npwp, :nama, :telp, :alamat, :status, :supplier_utama)";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $data['id_supplier']);
@@ -65,7 +67,7 @@
 		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':alamat', $data['alamat']);
 		$statement->bindParam(':status', $data['status']);
-		$statement->bindParam(':supplier_inti', $data['supplier_inti']);
+		$statement->bindParam(':supplier_utama', $data['supplier_utama']);
 		$result = $statement->execute();
 
 		return $result;

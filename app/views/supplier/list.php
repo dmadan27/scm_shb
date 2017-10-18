@@ -54,10 +54,15 @@
     </div>
 </div>
 
-<!-- Form Modal Supplier -->
-<?php include_once('form.php'); ?>
+<!-- Form Modal dan view Supplier -->
+<?php 
+    include_once('form.php');
+    include_once('view.php'); 
+?>
 
 <!-- js list -->
 <script type="text/javascript" src="<?= base_url."app/views/supplier/js/initList.js"; ?>"></script>
 <!-- js form modal -->
 <script type="text/javascript" src="<?= base_url."app/views/supplier/js/initForm.js"; ?>"></script>
+<!-- js view modal -->
+<script type="text/javascript" src="<?= base_url."app/views/supplier/js/initView.js"; ?>"></script>

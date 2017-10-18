@@ -1,9 +1,9 @@
 $(document).ready(function(){
-	$("#supplier_inti").select2();
-	$("#supplier_inti").prop("disabled", true);
+	$("#supplier_utama").select2();
+	$("#supplier_utama").prop("disabled", true);
 
 	setSelect_status();
-	setSelect_supplierInti();
+	setSelect_supplierUtama();
     $("#tambah_supplier").click(function(){
     	// bersihkan modal dan tampilkan modal
     	setLoading(false);
@@ -16,19 +16,6 @@ $(document).ready(function(){
 
     $("#form_supplier").submit(function(e){
     	e.preventDefault();
-   //  	swal({
-  	// 		title: 'Apakah Anda Yakin ?',
-		 //  	text: "Cek Kembali Data Sebelum di Simpan!",
-		 //  	type: 'warning',
-		 //  	showCancelButton: true,
-		 //  	confirmButtonColor: '#3085d6',
-		 //  	cancelButtonColor: '#d33',
-		 //  	confirmButtonText: 'Ya !',
-		 //  	closeOnConfirm: true,
-			// },function(){
-    			
-   //  		}
-   //  	);
     	submit();
     	return false;
     });
@@ -39,17 +26,13 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-nik').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-nik span.help-block").text('');	
-				$(".field-nik span.setError").css("display", "none");
-				$(".field-nik span.setSuccess").css("display", "block");
     		}
     	});
     	// npwp
     	$("#npwp").change(function(){
     		if(this.value !== ""){
     			$('.field-npwp').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-npwp span.help-block").text('');	
-				$(".field-npwp span.setError").css("display", "none");
-				$(".field-npwp span.setSuccess").css("display", "block");
+				$(".field-npwp span.help-block").text('');
     		}
     	});
 
@@ -57,9 +40,7 @@ $(document).ready(function(){
     	$("#nama").change(function(){
     		if(this.value !== ""){
     			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-nama span.help-block").text('');	
-				$(".field-nama span.setError").css("display", "none");
-				$(".field-nama span.setSuccess").css("display", "block");
+				$(".field-nama span.help-block").text('');
     		}
     	});
 
@@ -67,9 +48,7 @@ $(document).ready(function(){
     	$("#telp").change(function(){
     		if(this.value !== ""){
     			$('.field-telp').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-telp span.help-block").text('');	
-				$(".field-telp span.setError").css("display", "none");
-				$(".field-telp span.setSuccess").css("display", "block");
+				$(".field-telp span.help-block").text('');
     		}
     	});
 
@@ -77,9 +56,7 @@ $(document).ready(function(){
     	$("#alamat").change(function(){
     		if(this.value !== ""){
     			$('.field-alamat').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-alamat span.help-block").text('');	
-				$(".field-alamat span.setError").css("display", "none");
-				$(".field-alamat span.setSuccess").css("display", "block");
+				$(".field-alamat span.help-block").text('');
     		}
     	});
 
@@ -88,46 +65,37 @@ $(document).ready(function(){
     		// jika tidak diisi
     		if(this.value !== ""){
     			$('.field-status').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-status span.help-block").text('');	
-				$(".field-status span.setError").css("display", "none");
-				$(".field-status span.setSuccess").css("display", "block");
+				$(".field-status span.help-block").text('');
 
     			if(this.value === '0'){
-    				$("#supplier_inti").prop("disabled", false);
-    				$("#supplier_inti").focus();
+    				$("#supplier_utama").prop("disabled", false);
+    				$("#supplier_utama").focus();
     			}
     			else{
-    				$("#supplier_inti").prop("disabled", true);
-    				$("#supplier_inti").val("").trigger("change");
+    				$("#supplier_utama").prop("disabled", true);
+    				$("#supplier_utama").val("").trigger("change");
     			} 
     		}
     		else{
-    			$("#supplier_inti").prop("disabled", true);
-    			$("#supplier_inti").val("").trigger("change");	
+    			$("#supplier_utama").prop("disabled", true);
+    			$("#supplier_utama").val("").trigger("change");	
     		}
     	});
 
-    	// supplier inti
-    	$("#supplier_inti").change(function(){
+    	// supplier utama
+    	$("#supplier_utama").change(function(){
     		if(this.value !== ""){
-    			$('.field-supplier-inti').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-supplier-inti span.help-block").text('');	
-				$(".field-supplier-inti span.setError").css("display", "none");
-				$(".field-supplier-inti span.setSuccess").css("display", "block");
+    			$('.field-supplier-utama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-supplier-utama span.help-block").text('');
     		}
     	});
     // ========================================= //
 });
 
-// function get view
-function getView(id){
-
-}
-
 // function get form
 function getDataForm(){
 	var data = new FormData();
-	var supplier_inti = ($("#status").val()!=="0") ? $("#id_supplier").val() : $("#supplier_inti").val();
+	var supplier_utama = ($("#status").val()!=="0") ? $("#id_supplier").val() : $("#supplier_utama").val();
 
 	data.append('id_supplier', $("#id_supplier").val().trim()); // id
 	data.append('nik', $("#nik").val().trim()); // nik
@@ -136,7 +104,7 @@ function getDataForm(){
 	data.append('telp', $("#telp").val().trim()); // telp
 	data.append('alamat', $("#alamat").val().trim()); // alamat
 	data.append('status', $("#status").val().trim()); // status
-	data.append('supplier_inti', supplier_inti); // supplier inti
+	data.append('supplier_utama', supplier_utama); // supplier utama
 	data.append('action', $("#btnSubmit_supplier").val().trim()); // action
 
 	return data;
@@ -195,8 +163,8 @@ function submit(){
 		            stack: 6
 				});
 				$("#tabel_supplier").DataTable().ajax.reload();
-				$('#supplier_inti').find('option').remove().end();
-				setSelect_supplierInti();
+				$('#supplier_utama').find('option').remove().end();
+				setSelect_supplierUtama();
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
@@ -229,18 +197,17 @@ function getEdit(id){
 				console.log(data);
 				setLoading(false);
 				if(data.status==='1'){
-					$("#supplier_inti option").prop("disabled", false);
-					$('#supplier_inti option[value="'+data.supplier_inti+'"]').prop("disabled", true);
+					$("#supplier_utama option").prop("disabled", false);
+					$('#supplier_utama option[value="'+data.supplier_utama+'"]').prop("disabled", true);
 				}
-				else $("#supplier_inti option").prop("disabled", false);
+				else $("#supplier_utama option").prop("disabled", false);
 
 				setValue(data);
 				$("#modal_supplier").modal();
 			}
 			else{
 				swal("Pesan Error", "Data Yang Anda Minta Tidak Tersedia", "warning");
-			}
-				
+			}	
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             setLoading();
@@ -258,98 +225,70 @@ function setError(error){
 	if(!jQuery.isEmptyObject(error.nikError)){
 		$('.field-nik').addClass('has-error');
 		$(".field-nik span.help-block").text(error.nikError);
-		$(".field-nik span.setError").css("display", "block");
-		$(".field-nik span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-nik').removeClass('has-error').addClass('has-success');
-		$(".field-nik span.help-block").text('');
-		$(".field-nik span.setError").css("display", "none");
-		$(".field-nik span.setSuccess").css("display", "block");	
+		$(".field-nik span.help-block").text('');	
 	}
 
 	// npwp
 	if(!jQuery.isEmptyObject(error.npwpError)){
 		$('.field-npwp').addClass('has-error');
 		$(".field-npwp span.help-block").text(error.npwpError);
-		$(".field-npwp span.setError").css("display", "block");
-		$(".field-npwp span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-npwp').removeClass('has-error').addClass('has-success');
-		$(".field-npwp span.help-block").text('');	
-		$(".field-npwp span.setError").css("display", "none");
-		$(".field-npwp span.setSuccess").css("display", "block");
+		$(".field-npwp span.help-block").text('');
 	}
 
 	// nama
 	if(!jQuery.isEmptyObject(error.namaError)){
 		$('.field-nama').addClass('has-error');
 		$(".field-nama span.help-block").text(error.namaError);
-		$(".field-nama span.setError").css("display", "block");
-		$(".field-nama span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-nama').removeClass('has-error').addClass('has-success');
 		$(".field-nama span.help-block").text('');
-		$(".field-nama span.setError").css("display", "none");
-		$(".field-nama span.setSuccess").css("display", "block");
 	}
 
 	// telp
 	if(!jQuery.isEmptyObject(error.telpError)){
 		$('.field-telp').addClass('has-error');
 		$(".field-telp span.help-block").text(error.telpError);
-		$(".field-telp span.setError").css("display", "block");
-		$(".field-telp span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-telp').removeClass('has-error').addClass('has-success');
 		$(".field-telp span.help-block").text('');
-		$(".field-telp span.setError").css("display", "none");
-		$(".field-telp span.setSuccess").css("display", "block");
 	}
 
 	// alamat
 	if(!jQuery.isEmptyObject(error.alamatError)){
 		$('.field-alamat').addClass('has-error');
 		$(".field-alamat span.help-block").text(error.alamatError);
-		$(".field-alamat span.setError").css("display", "block");
-		$(".field-alamat span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-alamat').removeClass('has-error').addClass('has-success');
 		$(".field-alamat span.help-block").text('');
-		$(".field-alamat span.setError").css("display", "none");
-		$(".field-alamat span.setSuccess").css("display", "block");
 	}
 
 	// status
 	if(!jQuery.isEmptyObject(error.statusError)){
 		$('.field-status').addClass('has-error');
 		$(".field-status span.help-block").text(error.statusError);
-		$(".field-status span.setError").css("display", "block");
-		$(".field-status span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-status').removeClass('has-error').addClass('has-success');
 		$(".field-status span.help-block").text('');
-		$(".field-status span.setError").css("display", "none");
-		$(".field-status span.setSuccess").css("display", "block");
 	}
 
-	// supplier inti
-	if(!jQuery.isEmptyObject(error.supplierIntiError)){
-		$('.field-supplier-inti').addClass('has-error');
-		$(".field-supplier-inti span.help-block").text(error.supplierIntiError);
-		$(".field-supplier-inti span.setError").css("display", "block");
-		$(".field-supplier-inti span.setSuccess").css("display", "none");
+	// supplier utama
+	if(!jQuery.isEmptyObject(error.supplierUtamaError)){
+		$('.field-supplier-utama').addClass('has-error');
+		$(".field-supplier-utama span.help-block").text(error.supplierUtamaError);
 	}
 	else{
-		$('.field-supplier-inti').removeClass('has-error').addClass('has-success');
-		$(".field-supplier-inti span.help-block").text('');
-		$(".field-supplier-inti span.setError").css("display", "none");
-		$(".field-supplier-inti span.setSuccess").css("display", "block");
+		$('.field-supplier-utama').removeClass('has-error').addClass('has-success');
+		$(".field-supplier-utama span.help-block").text('');
 	}
 }
 
@@ -364,39 +303,38 @@ function setValue(value){
 	$('#id_supplier').val(value.id);
 
 	if(value.status==='0'){
-		$('#supplier_inti').val(value.supplier_inti).trigger('change'); // supplier inti
-		$("#supplier_inti").prop("disabled", false);
+		$('#supplier_utama').val(value.supplier_utama).trigger('change'); // supplier utama
+		$("#supplier_utama").prop("disabled", false);
 	}
 	else{
-		$("#supplier_inti").prop("disabled", true);
-		$('#supplier_inti').val("").trigger('change');
+		$("#supplier_utama").prop("disabled", true);
+		$('#supplier_utama').val("").trigger('change');
 	}
 }
 
 // function reset form
 function resetForm(){
-	document.getElementById('form_supplier').reset();
+	$('#form_supplier').trigger('reset');
 	$('#form_supplier').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
 	$('#form_supplier').find("span.pesan").text(""); // hapus semua span help-block
-	$('#form_supplier').find("span.setError, span.setSuccess").css("display", "none"); // hapus semua span icon
-	$("#supplier_inti").val("").trigger('change');
-	$("#supplier_inti option").prop("disabled", false);
-	$("#supplier_inti").prop("disabled", true);
+	$("#supplier_utama").val("").trigger('change');
+	$("#supplier_utama option").prop("disabled", false);
+	$("#supplier_utama").prop("disabled", true);
 	$('#id_supplier').val("");
 }
 
-// function set select supplier inti
-function setSelect_supplierInti(){
+// function set select supplier utama
+function setSelect_supplierUtama(){
 	$.ajax({
 		url: base_url+"app/controllers/Supplier.php",
 		type: "post",
 		dataType: "json",
-		data: {"action": "get_supplierInti"},
+		data: {"action": "get_supplierUtama"},
 		success: function(data){
 			console.log(data);
 			$.each(data, function(index, item){
 				var option = new Option(item.text, item.value);
-				$('#supplier_inti').append(option).trigger('change');
+				$('#supplier_utama').append(option).trigger('change');
 			});
 
 		},
@@ -411,7 +349,7 @@ function setSelect_supplierInti(){
 function setSelect_status(){
 	var arrStatus = [
 		{value: "", text: "-- Pilih Status Supplier --"},
-		{value: "1", text: "INTI"},
+		{value: "1", text: "UTAMA"},
 		{value: "0", text: "PENGGANTI"},
 	];
 

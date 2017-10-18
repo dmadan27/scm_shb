@@ -28,8 +28,12 @@
 				actionEdit($koneksi);
 				break;
 
-			case 'get_supplierinti':
-				get_supplierInti($koneksi);
+			case 'get_supplierutama':
+				get_supplierUtama($koneksi);
+				break;
+
+			case 'getview':
+				getView($koneksi, $id);
 				break;
 
 			default:
@@ -54,7 +58,7 @@
 		$no_urut = $_POST['start'];
 		foreach($data_supplier as $row){
 			$no_urut++;
-			$status = strtolower($row['status'])=='inti' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
+			$status = strtolower($row['status'])=='utama' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 			
 			// view
 			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
@@ -63,8 +67,8 @@
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = $row['nik'];
-			$dataRow[] = $row['npwp'];
+			$dataRow[] = gantiKosong($row['nik']);
+			$dataRow[] = gantiKosong($row['npwp']);
 			$dataRow[] = $row['nama'];
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
@@ -109,7 +113,7 @@
 				'telp' => validInputan($dataForm['telp'], false, false),
 				'alamat' => validInputan($dataForm['alamat'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
-				'supplier_inti' => validInputan($dataForm['supplier_inti'], false, false),
+				'supplier_utama' => validInputan($dataForm['supplier_utama'], false, false),
 			);
 
 			// cek duplikat
@@ -200,7 +204,7 @@
 				'telp' => validInputan($dataForm['telp'], false, false),
 				'alamat' => validInputan($dataForm['alamat'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
-				'supplier_inti' => validInputan($dataForm['supplier_inti'], false, false),
+				'supplier_utama' => validInputan($dataForm['supplier_utama'], false, false),
 			);
 
 			// lakukan update
@@ -223,16 +227,23 @@
 		echo json_encode($output);
 	}
 
-	// function get data supplier inti
-	function get_supplierInti($koneksi){
-		$data_supplierInti = get_data_supplierInti($koneksi);
+	// fungsi get view
+	function getView($koneksi, $id){
+		// $data_supplier = 
+
+		// echo json_encode($data_supplier);
+	}
+
+	// function get data supplier utama
+	function get_supplierUtama($koneksi){
+		$data_supplierUtama = get_data_supplierUtama($koneksi);
 		$data = array(
 			array(
 				'value' => "",
-				'text' => "-- Pilih Supplier Inti --",
+				'text' => "-- Pilih Supplier Utama --",
 			),
 		);
-		foreach ($data_supplierInti as $row) {
+		foreach ($data_supplierUtama as $row) {
 			$text = (empty($row['nik'])) ? $row['npwp'].' - '.$row['nama'] : $row['nik'].' - '.$row['nama'];
 			$dataRow = array();
 			$dataRow['value'] = $row['id'];
@@ -246,13 +257,13 @@
 
 	// set rule validasi
 	function setRule_validasi($data){
-		$required_supplierInti = $data['status']==='0' ? 'required' : 'not_required'; 
+		$required_supplierUtama = $data['status']==='0' ? 'required' : 'not_required'; 
 
 		$ruleData = array(
 			// nik
 			array(
 				'field' => $data['nik'], 'label' => 'NIK', 'error' => 'nikError',
-				'value' => 'nik', 'rule' => 'angka | 16 | 16 | required',
+				'value' => 'nik', 'rule' => 'angka | 16 | 16 | not_required',
 			),
 			// npwp
 			array(
@@ -279,10 +290,10 @@
 				'field' => $data['status'], 'label' => 'Status Supplier', 'error' => 'statusError',
 				'value' => 'status', 'rule' => 'angka | 1 | 1 | required',
 			),
-			// supplier inti
+			// supplier utama
 			array(
-				'field' => $data['supplier_inti'], 'label' => 'Supplier Inti', 'error' => 'supplierIntiError',
-				'value' => 'supplier_inti', 'rule' => 'angka | 1 | 1000 | '.$required_supplierInti,
+				'field' => $data['supplier_utama'], 'label' => 'Supplier Utama', 'error' => 'supplierUtamaError',
+				'value' => 'supplier_utama', 'rule' => 'angka | 1 | 1000 | '.$required_supplierUtama,
 			),
 		);
 
