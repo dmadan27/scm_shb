@@ -42,8 +42,8 @@
 	function listKaryawan($koneksi){
 		$config_db = array(
 			'tabel' => 'v_karyawan',
-			'kolomOrder' => array(null, 'no_induk', 'nama', 'jabatan', 'status', null),
-			'kolomCari' => array('no_induk', 'nik', 'npwp', 'nama', 'telp', 'email', 'alamat', 'jabatan', 'status'),
+			'kolomOrder' => array(null, 'no_induk', 'npwp', 'nama', 'jabatan', 'status', null),
+			'kolomCari' => array('no_induk', 'nik', 'npwp', 'nama', 'tempat_lahir', 'tgl_lahir', 'jk', 'alamat', 'telp', 'email', 'jabatan', 'status'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
@@ -64,6 +64,7 @@
 			$dataRow = array();
 			$dataRow[] = $no_urut;
 			$dataRow[] = $row['no_induk'];
+			$dataRow[] = gantiKosong($row['npwp']);
 			$dataRow[] = $row['nama'];
 			$dataRow[] = $row['jabatan'];
 			$dataRow[] = $status;
@@ -117,7 +118,7 @@
 					$cek = false;
 					$setError['fotoError'] = $valid_foto['error'];
 				}
-				else $valueFoto = $valid_foto['namaFile'];
+				else $valueFoto = 'karyawan/'.$valid_foto['namaFile'];
 			}
 			else $valueFoto = "";
 		// ================================== //
@@ -129,9 +130,12 @@
 				'nik' => validInputan($dataForm['nik'], false, false),
 				'npwp' => validInputan($dataForm['npwp'], false, false),
 				'nama' => validInputan($dataForm['nama'], false, false),
+				'tempat_lahir' => validInputan($dataForm['tempat_lahir'], false, false),
+				'tgl_lahir' => validInputan($dataForm['tgl_lahir'], false, false),
+				'jk' => validInputan($dataForm['jk'], false, false),
+				'alamat' => validInputan($dataForm['alamat'], false, false),
 				'telp' => validInputan($dataForm['telp'], false, false),
 				'email' => validInputan($dataForm['email'], false, true),
-				'alamat' => validInputan($dataForm['alamat'], false, false),
 				'jabatan' => validInputan($dataForm['jabatan'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
 				'foto' => validInputan($valueFoto, false, true),
@@ -181,11 +185,22 @@
 				$setError['emailError'] = $duplikat['email']['error'];
 			}
 			else{
-				// lakukan insert
-				if(insertKaryawan($koneksi, $dataForm)) $status = true;
-				else{
-					$status = false;
-					$errorDB = true;
+				// jika upload foto
+				if($foto){
+					$path = "../../assets/images/$valueFoto";
+					if(!move_uploaded_file($foto['tmp_name'], $path)){
+						$pesanError['fotoError'] = "Upload Foto Gagal";
+						$status = $cekFoto = false;
+					}
+				}
+
+				if($cekFoto){
+					// lakukan insert
+					if(insertKaryawan($koneksi, $dataForm)) $status = true;
+					else{
+						$status = false;
+						$errorDB = true;
+					}
 				}
 			}
 		}
@@ -210,7 +225,60 @@
 
 	// function action edit
 	function actionEdit($koneksi){
-		
+		$dataForm = isset($_POST) ? $_POST : false;
+
+		// validasi
+			$cekFoto = true;
+			$status = $errorDB = false;
+			$duplikat = array(
+				'no_induk' => false,
+				'nik' => false,
+				'npwp' => false,
+				'email' => false,
+			);
+
+			$configData = setRule_validasi($dataForm);
+			$validasi = set_validasi($configData);
+			$cek = $validasi['cek'];
+			$setError = $validasi['setError'];
+			$setValue = $validasi['setValue'];
+		// ================================== //
+
+		if($cek){
+			$dataForm = array(
+				'id_karyawan' => validInputan($dataForm['id_karyawan'], false, false),
+				'no_induk' => validInputan($dataForm['no_induk'], false, false),
+				'nik' => validInputan($dataForm['nik'], false, false),
+				'npwp' => validInputan($dataForm['npwp'], false, false),
+				'nama' => validInputan($dataForm['nama'], false, false),
+				'tempat_lahir' => validInputan($dataForm['tempat_lahir'], false, false),
+				'tgl_lahir' => validInputan($dataForm['tgl_lahir'], false, false),
+				'jk' => validInputan($dataForm['jk'], false, false),
+				'alamat' => validInputan($dataForm['alamat'], false, false),
+				'telp' => validInputan($dataForm['telp'], false, false),
+				'email' => validInputan($dataForm['email'], false, true),
+				'jabatan' => validInputan($dataForm['jabatan'], false, false),
+				'status' => validInputan($dataForm['status'], false, false),
+			);
+
+			// lakukan insert
+			if(updateKaryawan($koneksi, $dataForm)) $status = true;
+			else{
+				$status = false;
+				$errorDB = true;
+			}
+		}
+		else $status = false;
+
+		$output = array(
+			'status' => $status,
+			'errorDB' => $errorDB,
+			'duplikat' => $duplikat,
+			'setError' => $setError,
+			'setValue' => $setValue,
+		);
+
+		echo json_encode($output);
 	}
 
 	// function get data view
@@ -239,7 +307,7 @@
 			// nik
 			array(
 				'field' => $data['nik'], 'label' => 'NIK', 'error' => 'nikError',
-				'value' => 'nik', 'rule' => 'angka | 16 | 16 | required',
+				'value' => 'nik', 'rule' => 'angka | 16 | 16 | not_required',
 			),
 			// npwp
 			array(
@@ -251,6 +319,26 @@
 				'field' => $data['nama'], 'label' => 'Nama', 'error' => 'namaError',
 				'value' => 'nama', 'rule' => 'string | 1 | 255 | required',
 			),
+			// tempat lahir
+			array(
+				'field' => $data['tempat_lahir'], 'label' => 'Tempat Lahir', 'error' => 'tempat_lahirError',
+				'value' => 'tempat_lahir', 'rule' => 'string | 1 | 255 | not_required',
+			),
+			// tgl_lahir
+			array(
+				'field' => $data['tgl_lahir'], 'label' => 'Tanggal Lahir', 'error' => 'tgl_lahirError',
+				'value' => 'tgl_lahir', 'rule' => 'string | 1 | 255 | not_required',
+			),
+			// jk
+			array(
+				'field' => $data['jk'], 'label' => 'Jenis Kelamin', 'error' => 'jkError',
+				'value' => 'jk', 'rule' => 'huruf | 1 | 1 | not_required',
+			),
+			// alamat
+			array(
+				'field' => $data['alamat'], 'label' => 'Alamat', 'error' => 'alamatError',
+				'value' => 'alamat', 'rule' => 'string | 1 | 255 | not_required',
+			),
 			// telp
 			array(
 				'field' => $data['telp'], 'label' => 'telp', 'error' => 'telpError',
@@ -261,15 +349,10 @@
 				'field' => $data['email'], 'label' => 'email', 'error' => 'emailError',
 				'value' => 'email', 'rule' => 'email | 1 | 50 | not_required',
 			),
-			// alamat
-			array(
-				'field' => $data['alamat'], 'label' => 'Alamat', 'error' => 'alamatError',
-				'value' => 'alamat', 'rule' => 'string | 1 | 255 | not_required',
-			),
 			// jabatan
 			array(
 				'field' => $data['jabatan'], 'label' => 'Jabatan', 'error' => 'jabatanError',
-				'value' => 'jabatan', 'rule' => 'string | 1 | 255 | required',
+				'value' => 'jabatan', 'rule' => 'angka | 1 | 99999 | required',
 			),
 			// status
 			array(

@@ -4,7 +4,7 @@
 <!-- Breadcrumb -->
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h4 class="page-title">Data Karyawan</h4>
+        <h4 class="page-title">List Data Karyawan</h4>
     </div>
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
@@ -19,7 +19,6 @@
 <div class="row">
 	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-        	<div class="panel-heading">List Data Karyawan</div>
     	 	<div class="panel-wrapper collapse in">
     	 		<div class="panel-wrapper collapse in">
     	 			<div class="panel-body">
@@ -39,6 +38,7 @@
 	    	 						<tr>
 	    	 							<th style="width: 15px">No</th>
 	    	 							<th>No. Induk Karyawan</th>
+                                        <th>NPWP</th>
 	    	 							<th>Nama</th>
 	    	 							<th>Jabatan</th>
 	    	 							<th>Status</th>
@@ -54,10 +54,5 @@
     </div>
 </div>
 
-<!-- Form Modal Supplier -->
-<?php include_once('form.php'); ?>
-
 <!-- js list -->
 <script type="text/javascript" src="<?= base_url."app/views/karyawan/js/initList.js"; ?>"></script>
-<!-- js form modal -->
-<script type="text/javascript" src="<?= base_url."app/views/karyawan/js/initForm.js"; ?>"></script>

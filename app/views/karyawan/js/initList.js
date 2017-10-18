@@ -30,9 +30,17 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 5], // disable order di kolom 1 dan 3
+                "targets":[0, 6], // disable order di kolom 1 dan 3
                 "orderable":false,
             }
         ],
     });
+
+    $("#tambah_karyawan").click(function(){
+        window.location.href = base_url+"index.php?m=karyawan&p=form";
+    });
 });
+
+function getEdit(id){
+    window.location.href = base_url+"index.php?m=karyawan&p=form&id="+id;
+}

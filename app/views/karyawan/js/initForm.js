@@ -2,18 +2,6 @@ $(document).ready(function(){
 	setSelect_status();
 	setSelect_jabatan();
 
-	$("#tambah_karyawan").click(function(){
-    	// bersihkan modal dan tampilkan modal
-    	setLoading(false);
-    	resetForm();
-    	$(".field-foto").css("display", "block");
-    	$(".field-foto a.fileinput-exists").trigger('click');
-    	$("#labelModalKaryawan").text("Form Tambah Data Karyawan");
-    	$("#btnSubmit_karyawan").prop("value", "tambah");
-    	$("#btnSubmit_karyawan").text("Tambah");
-    	$("#modal_karyawan").modal();
-    });
-
     $("#form_karyawan").submit(function(e){
     	e.preventDefault();
     	submit();
@@ -26,8 +14,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-nik').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-nik span.help-block").text('');	
-				$(".field-nik span.setError").css("display", "none");
-				$(".field-nik span.setSuccess").css("display", "block");
     		}
     	});
     	// npwp
@@ -35,8 +21,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-npwp').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-npwp span.help-block").text('');	
-				$(".field-npwp span.setError").css("display", "none");
-				$(".field-npwp span.setSuccess").css("display", "block");
     		}
     	});
 
@@ -45,8 +29,35 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-nama span.help-block").text('');	
-				$(".field-nama span.setError").css("display", "none");
-				$(".field-nama span.setSuccess").css("display", "block");
+    		}
+    	});
+
+    	// tempat lahir
+    	$("#tempat_lahir").change(function(){
+    		if(this.value !== ""){
+    			$('.field-tempat-lahir').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-tempat-lahir span.help-block").text('');
+    		}
+    	});
+
+    	// tgl lahir
+    	$("#tgl_lahir").change(function(){
+    		if(this.value !== ""){
+    			$('.field-tgl-lahir').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-tgl-lahir span.help-block").text('');
+    		}
+    	});
+
+    	// jenis kelamin
+    	$('input[name=jk][type=radio]').change(function(){
+			$(".field-jk span.help-block").text('');
+		})
+
+    	// alamat
+    	$("#alamat").change(function(){
+    		if(this.value !== ""){
+    			$('.field-alamat').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-alamat span.help-block").text('');
     		}
     	});
 
@@ -55,8 +66,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-telp').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-telp span.help-block").text('');	
-				$(".field-telp span.setError").css("display", "none");
-				$(".field-telp span.setSuccess").css("display", "block");
     		}
     	});
 
@@ -65,18 +74,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-email').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-email span.help-block").text('');	
-				$(".field-email span.setError").css("display", "none");
-				$(".field-email span.setSuccess").css("display", "block");
-    		}
-    	});
-
-    	// alamat
-    	$("#alamat").change(function(){
-    		if(this.value !== ""){
-    			$('.field-alamat').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-alamat span.help-block").text('');	
-				$(".field-alamat span.setError").css("display", "none");
-				$(".field-alamat span.setSuccess").css("display", "block");
     		}
     	});
 
@@ -85,8 +82,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-foto').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-foto span.help-block").text('');	
-				$(".field-foto span.setError").css("display", "none");
-				$(".field-foto span.setSuccess").css("display", "block");
     		}
     	});
 
@@ -95,8 +90,6 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-no-induk').removeClass('has-error').removeClass('has-error').addClass('has-success');
 				$(".field-no-induk span.help-block").text('');	
-				$(".field-no-induk span.setError").css("display", "none");
-				$(".field-no-induk span.setSuccess").css("display", "block");
     		}
     	});
 
@@ -104,40 +97,37 @@ $(document).ready(function(){
     	$("#jabatan").change(function(){
     		if(this.value !== ""){
     			$('.field-jabatan').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-jabatan span.help-block").text('');	
-				$(".field-jabatan span.setError").css("display", "none");
-				$(".field-jabatan span.setSuccess").css("display", "block");
+				$(".field-jabatan span.help-block").text('');
     		}
     	});
 
     	// status
     	$("#status").change(function(){
-    		// jika tidak diisi
     		if(this.value !== ""){
     			$('.field-status').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-status span.help-block").text('');	
-				$(".field-status span.setError").css("display", "none");
-				$(".field-status span.setSuccess").css("display", "block");
+				$(".field-status span.help-block").text('');
     		}
     	});
     // ========================================= //
 });
 
-function getView(id){
-
-}
 
 // function get form
 function getDataForm(){
 	var data = new FormData();
+	var jk = ($('input[name=jk][type=radio]:checked').size() == 0) ? "" : $('input[name=jk][type=radio]:checked').val().trim();
+
 
 	data.append('id_karyawan', $("#id_karyawan").val().trim()); // id
 	data.append('nik', $("#nik").val().trim()); // nik
 	data.append('npwp', $("#npwp").val().trim()); // npwp
 	data.append('nama', $("#nama").val().trim()); // nama
+	data.append('tempat_lahir', $("#tempat_lahir").val().trim()); // alamat
+	data.append('tgl_lahir', $("#tgl_lahir").val().trim()); // alamat
+	data.append('jk', jk); // alamat
+	data.append('alamat', $("#alamat").val().trim()); // alamat
 	data.append('telp', $("#telp").val().trim()); // telp
 	data.append('email', $("#email").val().trim()); // telp
-	data.append('alamat', $("#alamat").val().trim()); // alamat
 	data.append('foto', $("#foto")[0].files[0]); // foto
 	data.append('no_induk', $("#no_induk").val().trim()); // no_induk
 	data.append('jabatan', $("#jabatan").val().trim()); // jabatan
@@ -217,6 +207,7 @@ function submit(){
 function getEdit(id){
 	resetForm();
 	$(".field-foto").css("display", "none");
+	$("#no_induk").prop("readonly", true);
 	$("#labelModalKaryawan").text("Form Edit Data Karyawan");
 	$("#btnSubmit_karyawan").prop("value", "edit");
 	$("#btnSubmit_karyawan").text("Edit");
@@ -396,16 +387,21 @@ function setError(error){
 
 // function set value
 function setValue(value){
+	var jk = (value.jk=="") ? "" : $("input[name=jk][type=radio][value="+value.jk+"]").prop('checked', true); 
+	jk;
+	
 	$('#no_induk').val(value.no_induk); // no_induk
 	$('#nik').val(value.nik); // nik
 	$('#npwp').val(value.npwp); // npwp
 	$('#nama').val(value.nama); // nama
+	$('#tempat_lahir').val(value.tempat_lahir); // alamat
+	$('#tgl_lahir').val(value.tgl_lahir); // alamat
+	$('#alamat').val(value.alamat); // alamat
 	$('#telp').val(value.telp); // telp
 	$('#email').val(value.email); // email
-	$('#alamat').val(value.alamat); // alamat
 	$('#jabatan').val(value.jabatan); // alamat
 	$('#status').val(value.status); // status
-	$('#id_karyawan').val(value.id_karyawan);
+	$('#id_karyawan').val(value.id);
 }
 
 // function reset form
@@ -433,6 +429,8 @@ function setSelect_jabatan(){
 		{value: "STAFF ADM & KEUANGAN", text: "STAFF ADM & KEUANGAN"},
 		{value: "STAFF TEKNISI & OPERASIONAL", text: "STAFF TEKNISI & OPERASIONAL"},
 		{value: "STAFF GUDANG", text: "STAFF GUDANG"},
+		{value: "STAFF KIR", text: "STAFF KIR"},
+		{value: "STAFF TIMBANGAN", text: "STAFF TIMBANGAN"},
 		{value: "STAFF IT", text: "STAFF IT"},
 		{value: "SUPIR", text: "SUPIR"},
 		{value: "SATPAM", text: "SATPAM"},
@@ -463,7 +461,7 @@ function setSelect_status(){
 // function loading modal
 function setLoading(block=true){
 	if(block === true){
-		$('.modal-content').block({
+		$('.form-karyawan').block({
     		message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
             css: {
                 border: '1px solid #fff'
