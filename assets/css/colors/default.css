@@ -39,11 +39,11 @@ body {
 }
 /*Right panel*/
 .right-sidebar .rpanel-title {
-  background: #ff7676;
+  background: #f44336;
 }
 /*Bread Crumb*/
 .bg-title .breadcrumb .active {
-  color: #ff7676;
+  color: #f44336;
 }
 /*Sidebar*/
 .sidebar {
@@ -65,15 +65,15 @@ body {
   background: rgba(0, 0, 0, 0.07);
 }
 #side-menu > li > a.active {
-  background: #ff7676;
+  background: #f44336;
   color: #ffffff;
   font-weight: 500;
 }
 #side-menu ul > li > a:hover {
-  color: #ff7676;
+  color: #f44336;
 }
 #side-menu ul > li > a.active {
-  color: #ff7676;
+  color: #f44336;
   font-weight: 500;
 }
 .user-profile .user-pro-body .u-dropdown {
@@ -84,53 +84,53 @@ body {
   background-color: #707cd2 !important;
 }
 .bg-theme-dark {
-  background-color: #ff7676 !important;
+  background-color: #f44336 !important;
 }
 /*Button*/
 .btn-custom {
-  background: #ff7676;
-  border: 1px solid #ff7676;
+  background: #f44336;
+  border: 1px solid #f44336;
   color: #ffffff;
 }
 .btn-custom:hover {
-  background: #ff7676;
+  background: #f44336;
   opacity: 0.8;
   color: #ffffff;
-  border: 1px solid #ff7676;
+  border: 1px solid #f44336;
 }
 /*Custom tab*/
 .customtab li.active a,
 .customtab li.active a:hover,
 .customtab li.active a:focus {
-  border-bottom: 2px solid #ff7676;
-  color: #ff7676;
+  border-bottom: 2px solid #f44336;
+  color: #f44336;
 }
 .tabs-vertical li.active a,
 .tabs-vertical li.active a:hover,
 .tabs-vertical li.active a:focus {
-  background: #ff7676;
-  border-right: 2px solid #ff7676;
+  background: #f44336;
+  border-right: 2px solid #f44336;
 }
 /*Nav-pills*/
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:focus,
 .nav-pills > li.active > a:hover {
-  background: #ff7676;
+  background: #f44336;
   color: #ffffff;
 }
 /*Extra css*/
 .bg-theme {
-  background-color: #2cabe3 !important;
+  background-color: #1e88e5 !important;
 }
 .panel-themecolor,
 .panel-theme {
-  border-color: #ff7676;
+  border-color: #f44336;
 }
 .panel-themecolor .panel-heading,
 .panel-theme .panel-heading {
-  border-color: #ff7676;
+  border-color: #f44336;
   color: white;
-  background-color: #ff7676;
+  background-color: #f44336;
 }
 .panel-themecolor .panel-heading a,
 .panel-theme .panel-heading a {
@@ -142,9 +142,9 @@ body {
 }
 .panel-themecolor a,
 .panel-theme a {
-  color: #ff7676;
+  color: #f44336;
 }
 .panel-themecolor a:hover,
 .panel-theme a:hover {
-  color: #ff2a2a;
+  color: #d2190b;
 }

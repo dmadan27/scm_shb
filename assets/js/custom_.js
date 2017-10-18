@@ -45,114 +45,44 @@ $(document).ready(function () {
         Sets the min-height of #page-wrapper to window size.
     =========================================================== */
 
-    // $(function () {
-    //     var set = function () {
-    //             var topOffset = 60,
-    //                 width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width,
-    //                 height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
-    //             if (width < 768) {
-    //                 $('div.navbar-collapse').addClass('collapse');
-    //                 topOffset = 100; /* 2-row-menu */
-    //             } else {
-    //                 $('div.navbar-collapse').removeClass('collapse');
-    //             }
-
-    //             /* ===== This is for resizing window ===== */
-
-    //             if (width < 1170) {
-    //                 body.addClass('content-wrapper');
-    //                 $(".sidebar-nav, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
-    //             } else {
-    //                 body.removeClass('content-wrapper');
-    //             }
-
-    //             height = height - topOffset;
-    //             if (height < 1) {
-    //                 height = 1;
-    //             }
-    //             if (height > topOffset) {
-    //                 $("#page-wrapper").css("min-height", (height) + "px");
-    //             }
-    //         },
-    //         url = window.location,
-    //         element = $('ul.nav a').filter(function () {
-    //             return this.href === url || url.href.indexOf(this.href) === 0;
-    //         }).addClass('active').parent().parent().addClass('in').parent();
-    //     if (element.is('li')) {
-    //         element.addClass('active');
-    //     }
-    //     $(window).ready(set);
-    //     $(window).bind("resize", set);
-    // });
-
     $(function () {
-        $(window).bind("load resize", function () {
-            var topOffset = 60,
-            width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-            if (width < 768) {
-                $('div.navbar-collapse').addClass('collapse');
-                topOffset = 100; // 2-row-menu
-            }
-            else {
-                $('div.navbar-collapse').removeClass('collapse');
-            }
-            var height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-            height = height - topOffset;
-            if (height < 1) height = 1;
-            if (height > topOffset) {
-                $("#page-wrapper").css("min-height", (height) + "px");
-            }
-        });
-        // var url = window.location;
-        // var element = $('ul.nav a').filter(function () {
-        //     console.log(this.href == url || url.href.indexOf(this.href) == 0);
-        //     return this.href == url || url.href.indexOf(this.href) == 0;
-        // }).addClass('active').parent().parent().addClass('in').parent();
-        // if (element.is('li')) {
-        //     element.addClass('active');
-        // }
+        var set = function () {
+                var topOffset = 60,
+                    width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width,
+                    height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
+                if (width < 768) {
+                    $('div.navbar-collapse').addClass('collapse');
+                    topOffset = 100; /* 2-row-menu */
+                } else {
+                    $('div.navbar-collapse').removeClass('collapse');
+                }
 
-        if(jQuery.isEmptyObject(urlParams)){
-            $('.menu-beranda').addClass('active');
-            $('.menu-beranda').find('a').first().addClass('active');
+                /* ===== This is for resizing window ===== */
+
+                if (width < 1170) {
+                    body.addClass('content-wrapper');
+                    $(".sidebar-nav, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+                } else {
+                    body.removeClass('content-wrapper');
+                }
+
+                height = height - topOffset;
+                if (height < 1) {
+                    height = 1;
+                }
+                if (height > topOffset) {
+                    $("#page-wrapper").css("min-height", (height) + "px");
+                }
+            },
+            url = window.location,
+            element = $('ul.nav a').filter(function () {
+                return this.href === url || url.href.indexOf(this.href) === 0;
+            }).addClass('active').parent().parent().addClass('in').parent();
+        if (element.is('li')) {
+            element.addClass('active');
         }
-        else{
-            switch(urlParams.m.toLowerCase()){
-                // menu data karyawan
-                case "pekerjaan":
-                    $('.menu-data-master').addClass('active');
-                    $('.menu-data-master').find('a').first().addClass('active');
-                    $('.menu-data-master').find('ul').first().addClass('in');
-                    $('.menu-data-pekerjaan').addClass('active');
-                    $('.menu-data-pekerjaan').find('a').first().addClass('active');
-                    break;
-
-                // menu data karyawan
-                case "karyawan":
-                    $('.menu-data-master').addClass('active');
-                    $('.menu-data-master').find('a').first().addClass('active');
-                    $('.menu-data-master').find('ul').first().addClass('in');
-                    $('.menu-data-karyawan').addClass('active');
-                    $('.menu-data-karyawan').find('a').first().addClass('active');
-                    break;
-
-                // menu data supplier
-                case "supplier":
-                    $('.menu-data-master').addClass('active');
-                    $('.menu-data-master').find('a').first().addClass('active');
-                    $('.menu-data-master').find('ul').first().addClass('in');
-                    $('.menu-data-supplier').addClass('active');
-                    $('.menu-data-supplier').find('a').first().addClass('active');
-                    break;
-
-                // default menu beranda
-                default:
-                    $('.menu-beranda').addClass('active');
-                    $('.menu-beranda').find('a').first().addClass('active');
-                    break;
-            }
-        }
-
+        $(window).ready(set);
+        $(window).bind("resize", set);
     });
 
     /* ===== Collapsible Panels JS ===== */

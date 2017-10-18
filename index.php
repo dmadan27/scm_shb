@@ -19,7 +19,7 @@
     	<title>Sistem Informasi SCM SHB</title>
 
     	<!-- autoload index css -->
-    	<?php include_once("app/views/template/css/autoload_index_css.php"); ?>
+    	<?php include_once("app/views/template/css/autoload_css.php"); ?>
     	<!-- jQuery -->
     	<script src="<?= base_url."assets/plugins/bower_components/jquery/dist/jquery.min.js"; ?>"></script>
     	<script type="text/javascript">
@@ -51,7 +51,11 @@
 	    </div>
 	    <!-- endwrapper -->
 
+     	<!-- Custom CSS -->
+        <link href="<?= base_url."assets/css/style.css"; ?>" rel="stylesheet">
+        <link href="<?= base_url."assets/css/colors/blue.css"; ?>" id="theme" rel="stylesheet">
+	    
 	    <!-- autoload index js -->
-	    <?php include_once("app/views/template/js/autoload_index_js.php"); ?>
+	    <?php include_once("app/views/template/js/autoload_js.php"); ?>
 	</body>
 </html>

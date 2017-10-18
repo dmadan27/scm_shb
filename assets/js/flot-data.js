@@ -1,97 +1,97 @@
 // Real Time chart
+        
 
+        var data = [],
+            totalPoints = 300;
 
-var data = [],
-    totalPoints = 300;
+        function getRandomData() {
 
-function getRandomData() {
+            if (data.length > 0)
+                data = data.slice(1);
 
-    if (data.length > 0)
-        data = data.slice(1);
+            // Do a random walk
 
-    // Do a random walk
+            while (data.length < totalPoints) {
 
-    while (data.length < totalPoints) {
+                var prev = data.length > 0 ? data[data.length - 1] : 50,
+                    y = prev + Math.random() * 10 - 5;
 
-        var prev = data.length > 0 ? data[data.length - 1] : 50,
-            y = prev + Math.random() * 10 - 5;
+                if (y < 0) {
+                    y = 0;
+                } else if (y > 100) {
+                    y = 100;
+                }
 
-        if (y < 0) {
-            y = 0;
-        } else if (y > 100) {
-            y = 100;
+                data.push(y);
+            }
+
+            // Zip the generated y values with the x values
+
+            var res = [];
+            for (var i = 0; i < data.length; ++i) {
+                res.push([i, data[i]])
+            }
+
+            return res;
         }
 
-        data.push(y);
-    }
+        // Set up the control widget
 
-    // Zip the generated y values with the x values
+        var updateInterval = 30;
+        $("#updateInterval").val(updateInterval).change(function () {
+            var v = $(this).val();
+            if (v && !isNaN(+v)) {
+                updateInterval = +v;
+                if (updateInterval < 1) {
+                    updateInterval = 1;
+                } else if (updateInterval > 3000) {
+                    updateInterval = 3000;
+                }
+                $(this).val("" + updateInterval);
+            }
+        });
 
-    var res = [];
-    for (var i = 0; i < data.length; ++i) {
-        res.push([i, data[i]])
-    }
+        var plot = $.plot("#placeholder", [ getRandomData() ], {
+            series: {
+                shadowSize: 0   // Drawing is faster without shadows
+            },
+            yaxis: {
+                min: 0,
+                max: 100
+            },
+            xaxis: {
+                show: false
+            },
+            colors: ["#fb9678"],
+            grid: {
+                color: "#AFAFAF",
+                hoverable: true,
+                borderWidth: 0,
+                backgroundColor: '#FFF'
+            },
+            tooltip: true,
+            tooltipOpts: {
+                content: "Y: %y",
+                defaultTheme: false
+            }
+        
 
-    return res;
-}
+        });
 
-// Set up the control widget
+        function update() {
 
-var updateInterval = 30;
-$("#updateInterval").val(updateInterval).change(function () {
-    var v = $(this).val();
-    if (v && !isNaN(+v)) {
-        updateInterval = +v;
-        if (updateInterval < 1) {
-            updateInterval = 1;
-        } else if (updateInterval > 3000) {
-            updateInterval = 3000;
+            plot.setData([getRandomData()]);
+
+            // Since the axes don't change, we don't need to call plot.setupGrid()
+
+            plot.draw();
+            setTimeout(update, updateInterval);
         }
-        $(this).val("" + updateInterval);
-    }
-});
 
-var plot = $.plot("#placeholder", [getRandomData()], {
-    series: {
-        shadowSize: 0 // Drawing is faster without shadows
-    },
-    yaxis: {
-        min: 0,
-        max: 100
-    },
-    xaxis: {
-        show: false
-    },
-    colors: ["#fb9678"],
-    grid: {
-        color: "#AFAFAF",
-        hoverable: true,
-        borderWidth: 0,
-        backgroundColor: '#FFF'
-    },
-    tooltip: true,
-    tooltipOpts: {
-        content: "Y: %y",
-        defaultTheme: false
-    }
+        update();
 
-
-});
-
-function update() {
-
-    plot.setData([getRandomData()]);
-
-    // Since the axes don't change, we don't need to call plot.setupGrid()
-
-    plot.draw();
-    setTimeout(update, updateInterval);
-}
-
-update();
-
-//Flot Line Chart
-$(document).ready(function () {
+  //Flot Line Chart
+$(document).ready(function() {
     console.log("document ready");
     var offset = 0;
     plot();
@@ -121,7 +121,7 @@ $(document).ready(function () {
                 min: -1.2,
                 max: 1.2
             },
-            colors: ["#fb9678", "#01c0c8"],
+              colors: ["#fb9678", "#01c0c8"],   
             grid: {
                 color: "#AFAFAF",
                 hoverable: true,
@@ -141,22 +141,22 @@ $(document).ready(function () {
         var plotObj = $.plot($("#flot-line-chart"), [{
                 data: sin,
                 label: "sin(x)",
-
+               
             }, {
                 data: cos,
                 label: "cos(x)"
             }],
             options);
     }
-});
+});      
 //Flot Pie Chart
-$(function () {
+$(function() {
 
     var data = [{
         label: "Series 0",
         data: 10,
         color: "#4f5467",
-
+        
     }, {
         label: "Series 1",
         data: 1,
@@ -164,11 +164,11 @@ $(function () {
     }, {
         label: "Series 2",
         data: 3,
-        color: "#01c0c8",
+        color:"#01c0c8",
     }, {
         label: "Series 3",
         data: 1,
-        color: "#fb9678",
+        color:"#fb9678",
     }];
 
     var plotObj = $.plot($("#flot-pie-chart"), data, {
@@ -196,7 +196,7 @@ $(function () {
 });
 //Flot Moving Line Chart
 
-$(function () {
+$(function() {
 
     var container = $("#flot-line-chart-moving");
 
@@ -258,7 +258,7 @@ $(function () {
                 left: 20
             },
 
-            markings: function (axes) {
+            markings: function(axes) {
                 var markings = [];
                 var xaxis = axes.xaxis;
                 for (var x = Math.floor(xaxis.min); x < xaxis.max; x += xaxis.tickSize * 1) {
@@ -274,7 +274,7 @@ $(function () {
             }
         },
         xaxis: {
-            tickFormatter: function () {
+            tickFormatter: function() {
                 return "";
             }
         },
@@ -299,7 +299,7 @@ $(function () {
 
 //Flot Bar Chart
 
-$(function () {
+$(function() {
 
     var barOptions = {
         series: {
@@ -320,11 +320,11 @@ $(function () {
             show: false
         },
         grid: {
-            color: "#AFAFAF",
-            hoverable: true,
-            borderWidth: 0,
-            backgroundColor: '#FFF'
-        },
+                color: "#AFAFAF",
+                hoverable: true,
+                borderWidth: 0,
+                backgroundColor: '#FFF'
+            },
         tooltip: true,
         tooltipOpts: {
             content: "x: %x, y: %y"
@@ -347,105 +347,107 @@ $(function () {
 });
 // sales bar chart
 
-$(function () {
-    //some data
-    var d1 = [];
-    for (var i = 0; i <= 10; i += 1)
-        d1.push([i, parseInt(Math.random() * 60)]);
+    $(function() {
+        //some data
+        var d1 = [];
+        for (var i = 0; i <= 10; i += 1)
+            d1.push([i, parseInt(Math.random() * 60)]);
 
-    var d2 = [];
-    for (var i = 0; i <= 10; i += 1)
-        d2.push([i, parseInt(Math.random() * 40)]);
+        var d2 = [];
+        for (var i = 0; i <= 10; i += 1)
+            d2.push([i, parseInt(Math.random() * 40)]);
 
-    var d3 = [];
-    for (var i = 0; i <= 10; i += 1)
-        d3.push([i, parseInt(Math.random() * 25)]);
+        var d3 = [];
+        for (var i = 0; i <= 10; i += 1)
+            d3.push([i, parseInt(Math.random() * 25)]);
 
-    var ds = new Array();
+        var ds = new Array();
 
-    ds.push({
-        label: "Data One",
-        data: d1,
-        bars: {
-            order: 1
-        }
-    });
-    ds.push({
-        label: "Data Two",
-        data: d2,
-        bars: {
-            order: 2
-        }
-    });
-    ds.push({
-        label: "Data Three",
-        data: d3,
-        bars: {
-            order: 3
-        }
-    });
+        ds.push({
+            label : "Data One",
+            data : d1,
+            bars : {
+                order : 1
+            }
+        });
+        ds.push({
+            label : "Data Two",
+            data : d2,
+            bars : {
+                order : 2
+            }
+        });
+        ds.push({
+            label : "Data Three",
+            data : d3,
+            bars : {
+                order : 3
+            }
+        });
 
-    var stack = 0,
-        bars = true,
-        lines = true,
-        steps = true;
+        var stack = 0,
+            bars = true,
+            lines = true,
+            steps = true;
 
-    var options = {
-        bars: {
-            show: true,
-            barWidth: 0.2,
-            fill: 1
-        },
-        grid: {
-            show: true,
-            aboveData: false,
-            labelMargin: 5,
-            axisMargin: 0,
-            borderWidth: 1,
-            minBorderMargin: 5,
-            clickable: true,
-            hoverable: true,
-            autoHighlight: false,
-            mouseActiveRadius: 20,
-            borderColor: '#f5f5f5'
-        },
-        series: {
-            stack: stack
-        },
-        legend: {
-            position: "ne",
-            margin: [0, 0],
-            noColumns: 0,
-            labelBoxBorderColor: null,
-            labelFormatter: function (label, series) {
-                // just add some space to labes
-                return '' + label + '&nbsp;&nbsp;';
+        var options = {
+            bars : {
+                show : true,
+                barWidth : 0.2,
+                fill : 1
             },
-            width: 30,
-            height: 5
-        },
-        yaxis: {
-            tickColor: '#f5f5f5',
-            font: {
-                color: '#bdbdbd'
+            grid : {
+                show : true,
+                aboveData : false,
+                labelMargin : 5,
+                axisMargin : 0,
+                borderWidth : 1,
+                minBorderMargin : 5,
+                clickable : true,
+                hoverable : true,
+                autoHighlight : false,
+                mouseActiveRadius : 20,
+                borderColor : '#f5f5f5'
+            },
+            series : {
+                stack : stack
+            },
+            legend : {
+                position : "ne",
+                margin : [0, 0],
+                noColumns : 0,
+                labelBoxBorderColor : null,
+                labelFormatter : function(label, series) {
+                    // just add some space to labes
+                    return '' + label + '&nbsp;&nbsp;';
+                },
+                width : 30,
+                height : 5
+            },
+            yaxis : {
+                tickColor : '#f5f5f5',
+                font : {
+                    color : '#bdbdbd'
+                }
+            },
+            xaxis : {
+                tickColor : '#f5f5f5',
+                font : {
+                    color : '#bdbdbd'
+                }
+            },
+            colors : ["#4F5467", "#01c0c8", "#fb9678"],
+            tooltip : true, //activate tooltip
+            tooltipOpts : {
+                content : "%s : %y.0",
+                shifts : {
+                    x : -30,
+                    y : -50
+                }
             }
-        },
-        xaxis: {
-            tickColor: '#f5f5f5',
-            font: {
-                color: '#bdbdbd'
-            }
-        },
-        colors: ["#4F5467", "#01c0c8", "#fb9678"],
-        tooltip: true, //activate tooltip
-        tooltipOpts: {
-            content: "%s : %y.0",
-            shifts: {
-                x: -30,
-                y: -50
-            }
-        }
-    };
+        };
 
-    $.plot($(".sales-bars-chart"), ds, options);
-});
+        $.plot($(".sales-bars-chart"), ds, options);
+    });
+
+
