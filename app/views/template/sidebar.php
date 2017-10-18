@@ -39,14 +39,18 @@
                     </span>
                 </a>
                 <ul class="nav nav-second-level">
+                    <!-- data pekerjaan -->
+                    <li class="menu-data-pekerjaan"><a href="<?= base_url."index.php?m=pekerjaan&p=list"; ?>"><i class="mdi mdi-account-card-details fa-fw"></i><span class="hide-menu">Data Pekerjaan</span></a></li>
                     <!-- data karyawan -->
-                    <li class="menu-data-karyawan"><a href="<?= base_url."index.php?m=karyawan&p=list"; ?>"><i class=" fa-fw">K</i><span class="hide-menu">Data Karyawan</span></a></li>
+                    <li class="menu-data-karyawan"><a href="<?= base_url."index.php?m=karyawan&p=list"; ?>"><i class="mdi mdi-account-card-details fa-fw"></i><span class="hide-menu">Data Karyawan</span></a></li>
+                    <!-- data transportasi -->
+                    <li class="menu-data-transportasi"><a href="<?= base_url."index.php?m=transportasi&p=list"; ?>"><i class="mdi mdi-car fa-fw"></i><span class="hide-menu">Data Transportasi</span></a></li>
                     <!-- data supplier -->
-                    <li class="menu-data-supplier"><a href="<?= base_url."index.php?m=supplier&p=list"; ?>"><i class=" fa-fw">S</i><span class="hide-menu">Data Supplier</span></a></li>
+                    <li class="menu-data-supplier"><a href="<?= base_url."index.php?m=supplier&p=list"; ?>"><i class="mdi mdi-account-multiple fa-fw"></i><span class="hide-menu">Data Supplier</span></a></li>
                     <!-- data buyer -->
-                    <li class="menu-data-buyer"><a href="<?= base_url."index.php?m=buyer&p=list"; ?>"><i class=" fa-fw">B</i><span class="hide-menu">Data Buyer</span></a></li>
+                    <li class="menu-data-buyer"><a href="<?= base_url."index.php?m=buyer&p=list"; ?>"><i class="mdi mdi-account-multiple-outline fa-fw"></i><span class="hide-menu">Data Buyer</span></a></li>
                     <!-- data barang -->
-                    <li class="menu-data-barang"><a href="<?= base_url."index.php?m=barang&p=list"; ?>"><i class=" fa-fw">BR</i><span class="hide-menu">Data Barang</span></a></li>
+                    <li class="menu-data-barang"><a href="<?= base_url."index.php?m=barang&p=list"; ?>"><i class="mdi mdi-cube-outline fa-fw"></i><span class="hide-menu">Data Barang</span></a></li>
                 </ul>
             </li>
 

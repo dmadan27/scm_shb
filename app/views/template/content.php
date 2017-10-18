@@ -18,13 +18,10 @@
             }
         	else include_once("app/views/beranda/dashboard.php");
     	?>
-        <!-- Custom CSS -->
-        <link href="<?= base_url."assets/css/style.css"; ?>" rel="stylesheet">
-        <link href="<?= base_url."assets/css/colors/blue.css"; ?>" id="theme" rel="stylesheet">
 
     </div>
     <!-- /.container-fluid -->
     <footer class="footer text-center"> 
-    	<strong>Sistem Informasi SCM SHB</strong> | Copyright &copy; <?php echo date("Y"); ?> <a href="javascript:;">PT. SARHIF BROTHERS</a>. All rights reserved | Powered By <a href="https://wrappixel.com/ampleadmin/" target="_blank">Ample Admin</a>
+    	<strong>Sistem Informasi SCM SHB</strong> | Copyright &copy; <?php echo date("Y"); ?> <a href="http://sarhifbrothers.co.id" target="_blank">PT. SARHIF BROTHERS</a>. All rights reserved | Powered By <a href="https://wrappixel.com/ampleadmin/" target="_blank">Ample Admin</a>
     </footer>
 </div>
