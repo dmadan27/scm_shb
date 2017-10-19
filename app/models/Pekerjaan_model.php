@@ -11,13 +11,24 @@
 	}
 
 	// get data pekerjaan by id
-	function get_data_by_id($koneksi, $id){
+	function getPekerjaan_by_id($koneksi, $id){
 		$query = "SELECT * FROM pekerjaan WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $id);
 		$statement->execute();
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	// get data pekerjaan untuk select
+	function getPekerjaan_select($koneksi){
+		$query = "SELECT id, jabatan FROM pekerjaan";
+
+		$statement = $koneksi->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
 
 		return $result;
 	}

@@ -121,7 +121,7 @@
 	}
 
 	function getEdit($koneksi, $id){
-		$data_pekerjaan = empty(get_data_by_id($koneksi, $id)) ? false : get_data_by_id($koneksi, $id);
+		$data_pekerjaan = empty(getPekerjaan_by_id($koneksi, $id)) ? false : getPekerjaan_by_id($koneksi, $id);
 		echo json_encode($data_pekerjaan);
 	}
 
