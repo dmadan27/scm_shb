@@ -72,6 +72,7 @@
 		-- produk
 		CREATE TABLE produk(
 			id int NOT NULL AUTO_INCREMENT,
+			id_bahan_baku int,
 			kd_barang varchar(25),
 			nama varchar(25),
 			ket text,

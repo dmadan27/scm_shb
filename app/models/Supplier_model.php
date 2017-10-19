@@ -11,7 +11,7 @@
 	}
 
 	// get data supplier by id
-	function get_data_by_id($koneksi, $id){
+	function getSupplier_by_id($koneksi, $id){
 		$query = "SELECT s.id, s.nik, s.npwp, s.nama, s.telp, s.alamat, s.status, isup.id_supplier_utama supplier_utama ";
 		$query .= "FROM supplier s JOIN index_supplier isup ON isup.id_supplier = s.id WHERE s.id=:id";
 

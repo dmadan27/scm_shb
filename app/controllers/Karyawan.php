@@ -224,7 +224,7 @@
 
 	// function get data edit
 	function getEdit($koneksi, $id){
-		$data_karyawan = empty(get_data_by_id($koneksi, $id)) ? false : get_data_by_id($koneksi, $id);
+		$data_karyawan = empty(getKaryawan_by_id($koneksi, $id)) ? false : getKaryawan_by_id($koneksi, $id);
 		echo json_encode($data_karyawan);
 	}
 
@@ -303,7 +303,7 @@
 
 	// function get data select
 	function getSelect_pekerjaan($koneksi){
-		$data_pekerjaan = get_data_select($koneksi);
+		$data_pekerjaan = getPekerjaan_select($koneksi);
 		$data = array(
 			array(
 				'value' => "",

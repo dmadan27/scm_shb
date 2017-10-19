@@ -166,7 +166,7 @@
 
 	// funsi get data edit
 	function getEdit($koneksi, $id){
-		$data_supplier = empty(get_data_by_id($koneksi, $id)) ? false : get_data_by_id($koneksi, $id);
+		$data_supplier = empty(getSupplier_by_id($koneksi, $id)) ? false : getSupplier_by_id($koneksi, $id);
 
 		// if(empty($data_supplier)) $data_supplier = false;
 		// else{
