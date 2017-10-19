@@ -244,7 +244,12 @@
 			),
 		);
 		foreach ($data_supplierUtama as $row) {
-			$text = (empty($row['nik'])) ? $row['npwp'].' - '.$row['nama'] : $row['nik'].' - '.$row['nama'];
+			$text = $row['npwp'].' - '.$row['nama'];
+
+			if(empty($row['npwp'])){ // jika nik kosong
+				// jika npwp ada
+				$text = (!empty($row['nik'])) ? $row['nik'].' (NIK) - '.$row['nama']; : $row['nama'];
+			}
 			$dataRow = array();
 			$dataRow['value'] = $row['id'];
 			$dataRow['text'] = $text;
