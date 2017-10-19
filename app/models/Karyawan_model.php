@@ -11,7 +11,7 @@
 	}
 
 	// get data karyawan by id
-	function get_data_by_id($koneksi, $id){
+	function getKaryawan_by_id($koneksi, $id){
 		$query = "SELECT * FROM karyawan WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);

@@ -5,6 +5,7 @@
 	include_once("../library/datatable.php");
 
 	include_once("../models/Karyawan_model.php");
+	include_once("../models/Pekerjaan_model.php");
 
 	$action = isset($_POST['action']) ? $_POST['action'] : false;
 	$id = isset($_POST['id']) ? $_POST['id'] : false;
@@ -30,6 +31,10 @@
 
 			case 'getview':
 				getView($koneksi, $id);
+				break;
+
+			case 'getselect_pekerjaan':
+				getSelect_pekerjaan($koneksi);
 				break;
 
 			default:
@@ -294,6 +299,26 @@
 	// function hapus foto
 	function hapusFoto($koneksi, $id){
 
+	}
+
+	// function get data select
+	function getSelect_pekerjaan($koneksi){
+		$data_pekerjaan = get_data_select($koneksi);
+		$data = array(
+			array(
+				'value' => "",
+				'text' => "-- Pilih Jabatan/Pekerjaan --",
+			),
+		);
+		foreach ($data_pekerjaan as $row) {
+			$dataRow = array();
+			$dataRow['value'] = $row['id'];
+			$dataRow['text'] = $row['jabatan'];
+
+			$data[] = $dataRow;
+		}
+
+		echo json_encode($data);
 	}
 
 	// set rule validasi

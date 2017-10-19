@@ -411,35 +411,27 @@ function resetForm(){
 	$('#form_karyawan').find("span.pesan").text(""); // hapus semua span help-block
 	$('#form_karyawan').find("span.setError, span.setSuccess").css("display", "none"); // hapus semua span icon
 	$('#id_karyawan').val("");
-	$(".sttabs ul a")[0].click();
 }
 
 // function set select jabatan
 function setSelect_jabatan(){
-	var arrJabatan = [
-		{value: "", text: "-- Pilih Jabatan Karyawan --"},
-		{value: "DIREKTUR", text: "DIREKTUR"},
-		{value: "WAKIL DIREKTUR", text: "WAKIL DIREKTUR"},
-		{value: "MANAGER ADM & KEUANGAN", text: "MANAGER ADM & KEUANGAN"},
-		{value: "MANAGER TEKNISI & OPERASIONAL", text: "MANAGER TEKNISI & OPERASIONAL"},
-		{value: "MANAGER PENELITIAN & PENGEMBANGAN", text: "MANAGER PENELITIAN & PENGEMBANGAN"},
-		{value: "MANAGER PEMASARAN", text: "MANAGER PEMASARAN"},
-		{value: "MANAGER SDM", text: "MANAGER SDM"},
-		{value: "KEPALA GUDANG", text: "KEPALA GUDANG"},
-		{value: "STAFF ADM & KEUANGAN", text: "STAFF ADM & KEUANGAN"},
-		{value: "STAFF TEKNISI & OPERASIONAL", text: "STAFF TEKNISI & OPERASIONAL"},
-		{value: "STAFF GUDANG", text: "STAFF GUDANG"},
-		{value: "STAFF KIR", text: "STAFF KIR"},
-		{value: "STAFF TIMBANGAN", text: "STAFF TIMBANGAN"},
-		{value: "STAFF IT", text: "STAFF IT"},
-		{value: "SUPIR", text: "SUPIR"},
-		{value: "SATPAM", text: "SATPAM"},
-	];
-
-	$.each(arrJabatan, function(index, item){
-		var option = new Option(item.text, item.value);
-		$("#jabatan").append(option);
-	});
+	$.ajax({
+		url: base_url+"app/controllers/Karyawan.php",
+		type: "post",
+		dataType: "json",
+		data: {"action": "getSelect_pekerjaan"},
+		success: function(data){
+			console.log(data);
+			$.each(data, function(index, item){
+				var option = new Option(item.text, item.value);
+				$('#jabatan').append(option);
+			});
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
 }
 
 // function set select status
