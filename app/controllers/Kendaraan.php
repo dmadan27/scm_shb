@@ -4,7 +4,7 @@
 	include_once("../function/validasi_form.php");
 	include_once("../library/datatable.php");
 
-	include_once("../models/Transportasi_model.php");
+	include_once("../models/Kendaraan_model.php");
 
 	$action = isset($_POST['action']) ? $_POST['action'] : false;
 	$id = isset($_POST['id']) ? $_POST['id'] : false;
@@ -13,7 +13,7 @@
 	else{
 		switch (strtolower($action)) {
 			case 'list':
-				listTransportasi($koneksi);
+				listKendaraan($koneksi);
 				break;
 			
 			case 'tambah':
@@ -35,7 +35,7 @@
 	}
 
 	// fungsi list kendaraan
-	function listTransportasi($koneksi){
+	function listKendaraan($koneksi){
 		$config_db = array(
 			'tabel' => 'v_transportasi',
 			'kolomOrder' => array(null, 'no_polis', 'tahun', 'supir', 'pendamping', 'jenis', 'muatan', 'status', null),

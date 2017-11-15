@@ -201,7 +201,11 @@
 
 				if($cekFoto){
 					// lakukan insert
-					if(insertKaryawan($koneksi, $dataForm)) $status = true;
+					if(insertKaryawan($koneksi, $dataForm)) {
+						$status = true;
+						session_start();
+						$_SESSION['notif'] = "Tambah Data Berhasil";
+					}
 					else{
 						$status = false;
 						$errorDB = true;
@@ -267,7 +271,11 @@
 			);
 
 			// lakukan insert
-			if(updateKaryawan($koneksi, $dataForm)) $status = true;
+			if(updateKaryawan($koneksi, $dataForm)) {
+				$status = true;
+				session_start();
+				$_SESSION['notif'] = "Ubah Data Berhasil";
+			}
 			else{
 				$status = false;
 				$errorDB = true;

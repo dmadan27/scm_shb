@@ -1,5 +1,9 @@
 <?php
+	$id = isset($_GET['id']) ? $_GET['id'] : false;
 
+	$btn = $id ? "edit" : "tambah";
+	// if($id) $btn = "edit";
+	// else $btn = "tambah";
 ?>
 <!-- Breadcrumb -->
 <div class="row bg-title">
@@ -175,7 +179,7 @@
 									<div class="form-group field-tgl-masuk has-feedback m-b-5">
 										<label class="col-md-12" for="tgl_masuk">Tanggal Masuk</label>
 				                        <div class="col-md-12">
-				                            <input id="tgl_lahir" type="text" class="form-control datepicker field" placeholder="Masukkan Tanggal Lahir">
+				                            <input id="tgl_masuk" type="text" class="form-control datepicker field" placeholder="Masukkan Tanggal Masuk">
 				                            <span class="help-block small pesan"></span>
 				                        </div>
 									</div>
@@ -220,8 +224,8 @@
 		        <div class="panel panel-default">
 		        	<div class="panel-heading">
 		        		<div class="text-right">
-		        			<button id="btnSubmit_karyawan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="tambah">Tambah</button>
-		                    <button type="button" class="btn btn-lg btn-default btn-outline waves-effect waves-light" data-dismiss="modal">Batal</button>
+		        			<button id="btnSubmit_karyawan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
+		        			<a href="<?=base_url."index.php?m=karyawan&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
 		        		</div>
 		        	</div>
 		        </div>

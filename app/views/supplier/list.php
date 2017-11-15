@@ -33,20 +33,18 @@
     	 						</div>
     	 					</div>
     	 				</div>
-    	 				<div class="table-responsive">
-    	 					<table id="tabel_supplier" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-	    	 					<thead>
-	    	 						<tr>
-	    	 							<th style="width: 15px">No</th>
-	    	 							<th>No. KTP</th>
-	    	 							<th>NPWP</th>
-	    	 							<th>Nama</th>
-	    	 							<th>Status</th>
-	    	 							<th>Aksi</th>
-	    	 						</tr>
-	    	 					</thead>
-	    	 				</table>
-    	 				</div>	
+	 					<table id="tabel_supplier" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+    	 					<thead>
+    	 						<tr>
+    	 							<th style="width: 15px">No</th>
+    	 							<th>No. KTP</th>
+    	 							<th>NPWP</th>
+    	 							<th>Nama</th>
+    	 							<th>Status</th>
+    	 							<th>Aksi</th>
+    	 						</tr>
+    	 					</thead>
+    	 				</table>
     	 			</div>
     	 		</div>
     	 	</div>

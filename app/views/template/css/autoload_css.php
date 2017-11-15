@@ -11,3 +11,4 @@
 <!-- Popup CSS -->
 <link href="<?= base_url."assets/plugins/bower_components/Magnific-Popup-master/dist/magnific-popup.css"; ?>" rel="stylesheet">
 <link href="<?= base_url."assets/plugins/bower_components/toast-master/css/jquery.toast.css"; ?>" rel="stylesheet">
+<link href="<?= base_url."assets/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css"; ?>" rel="stylesheet">

@@ -1,20 +1,16 @@
 <?php
 
 ?>
-<!-- Date picker plugins css -->
-<link href="<?= base_url."assets/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css"; ?>" rel="stylesheet" type="text/css" />
-<!-- Date Picker Plugin JavaScript -->
-<script src="<?= base_url."assets/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"; ?>"></script>
 
-<div class="modal fade" id="modal_transportasi" tabindex="-1" role="dialog" aria-labelledby="labelModalKendaraan" aria-hidden="true">
+<div class="modal fade" id="modal_kendaraan" tabindex="-1" role="dialog" aria-labelledby="labelModalKendaraan" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="labelModalTransportasi">Form Data Transportasi</h4>
+                <h4 class="modal-title" id="labelModalKendaraan">Form Data Transportasi</h4>
 			</div>
-			<form id="form_kendaraan" role="form" enctype="multipart/form-data">
-				<input type="hidden" name="id_transportasi" id="id_transportasi">
+			<form id="form_kendaraan" class="form-material" role="form" enctype="multipart/form-data">
+				<input type="hidden" name="id_kendaraan" id="id_kendaraan">
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-6">
@@ -24,9 +20,7 @@
 		                        <div class="col-md-12">
 		                            <input id="nopol" type="text" class="form-control" placeholder="Masukkan Nopol Kendaraan">
 		                            <span class="help-block small pesan"></span>
-		                        </div>
-		                        <span class="glyphicon glyphicon-remove form-control-feedback t-0 setError" style="display: none;"></span>
-	                            <span class="glyphicon glyphicon-ok form-control-feedback t-0 setSuccess" style="display: none;"></span>
+		                        </div>                   
 							</div>
 
 							<!-- tahun -->
@@ -36,8 +30,6 @@
 		                            <input id="tahun" type="text" class="form-control" placeholder="Masukkan Tahun">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-		                        <span class="glyphicon glyphicon-remove form-control-feedback t-0 setError" style="display: none;"></span>
-	                            <span class="glyphicon glyphicon-ok form-control-feedback t-0 setSuccess" style="display: none;"></span>
 							</div>
 
 							<!-- jenis -->
@@ -47,8 +39,6 @@
 		                            <select id="jenis" class="form-control"></select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-		                        <span class="glyphicon glyphicon-remove form-control-feedback t-0 setError" style="display: none;"></span>
-	                            <span class="glyphicon glyphicon-ok form-control-feedback t-0 setSuccess" style="display: none;"></span>
 							</div>							
 						</div>
 						<div class="col-md-6">
@@ -59,8 +49,6 @@
 		                            <input id="muatan" type="number" class="form-control" placeholder="Masukkan Muatan (Satuan Kg)">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-		                        <span class="glyphicon glyphicon-remove form-control-feedback t-0 setError" style="display: none;"></span>
-	                            <span class="glyphicon glyphicon-ok form-control-feedback t-0 setSuccess" style="display: none;"></span>
 							</div>
 
 							<!-- foto -->
@@ -73,8 +61,6 @@
                                     </div>
                                     <span class="help-block small pesan"></span>
                                 </div>
-                                <span class="glyphicon glyphicon-remove form-control-feedback t-0 setError" style="display: none;"></span>
-	                            <span class="glyphicon glyphicon-ok form-control-feedback t-0 setSuccess" style="display: none;"></span>
                             </div>
 						</div>
 					</div>

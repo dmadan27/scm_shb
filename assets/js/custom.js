@@ -145,6 +145,15 @@ $(document).ready(function () {
                     $('.menu-data-supplier').find('a').first().addClass('active');
                     break;
 
+                // menu data transportasi
+                case "kendaraan":
+                    $('.menu-data-master').addClass('active');
+                    $('.menu-data-master').find('a').first().addClass('active');
+                    $('.menu-data-master').find('ul').first().addClass('in');
+                    $('.menu-data-kendaraan').addClass('active');
+                    $('.menu-data-kendaraan').find('a').first().addClass('active');
+                    break;
+
                 // default menu beranda
                 default:
                     $('.menu-beranda').addClass('active');

@@ -5,12 +5,15 @@ $(document).ready(function(){
         format: "yyyy",
         viewMode: "years", 
     	minViewMode: "years",
+        todayHighlight: true,
     });
+
+    setSelect_supir();
 
     $("#tambah_kendaraan").click(function(){
     	// bersihkan modal dan tampilkan modal
-    	// setLoading(false);
-    	// resetForm();
+    	setLoading(false);
+    	resetForm();
     	$(".field-foto").css("display", "block");
     	$(".field-foto a.fileinput-exists").trigger('click');
     	$("#labelModalKendaraan").text("Form Tambah Data Kendaraan");
@@ -150,26 +153,17 @@ function setError(error){
 
 // function set value
 function setValue(value){
-	$('#no_induk').val(value.no_induk); // no_induk
-	$('#nik').val(value.nik); // nik
-	$('#npwp').val(value.npwp); // npwp
-	$('#nama').val(value.nama); // nama
-	$('#telp').val(value.telp); // telp
-	$('#email').val(value.email); // email
-	$('#alamat').val(value.alamat); // alamat
-	$('#jabatan').val(value.jabatan); // alamat
-	$('#status').val(value.status); // status
-	$('#id_karyawan').val(value.id);
+	
 }
 
 // function reset form
 function resetForm(){
-	$('#form_karyawan').find("div.form-group .field").val('');
-	$('#form_karyawan').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
-	$('#form_karyawan').find("span.pesan").text(""); // hapus semua span help-block
-	$('#form_karyawan').find("span.setError, span.setSuccess").css("display", "none"); // hapus semua span icon
-	$('#id_karyawan').val("");
-	$(".sttabs ul a")[0].click();
+	
+}
+
+// function set select supir
+function setSelect_supir(){
+
 }
 
 // function loading modal

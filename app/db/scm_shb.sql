@@ -80,8 +80,8 @@
 			foto text,
 		);
 
-	-- tabel transportasi
-	CREATE TABLE transportasi(
+	-- tabel kendaraan
+	CREATE TABLE kendraaan(
 		id int NOT NULL AUTO_INCREMENT,
 		no_polis varchar(10),
 		id_supir int, -- fk dari karyawan yg jabatannya supir

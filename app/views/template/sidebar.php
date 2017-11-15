@@ -43,8 +43,8 @@
                     <li class="menu-data-pekerjaan"><a href="<?= base_url."index.php?m=pekerjaan&p=list"; ?>"><i class="mdi mdi-account-card-details fa-fw"></i><span class="hide-menu">Data Pekerjaan</span></a></li>
                     <!-- data karyawan -->
                     <li class="menu-data-karyawan"><a href="<?= base_url."index.php?m=karyawan&p=list"; ?>"><i class="mdi mdi-account-card-details fa-fw"></i><span class="hide-menu">Data Karyawan</span></a></li>
-                    <!-- data transportasi -->
-                    <li class="menu-data-transportasi"><a href="<?= base_url."index.php?m=transportasi&p=list"; ?>"><i class="mdi mdi-car fa-fw"></i><span class="hide-menu">Data Transportasi</span></a></li>
+                    <!-- data kendraan -->
+                    <li class="menu-data-kendaraan"><a href="<?= base_url."index.php?m=kendaraan&p=list"; ?>"><i class="mdi mdi-car fa-fw"></i><span class="hide-menu">Data Kendaraan</span></a></li>
                     <!-- data supplier -->
                     <li class="menu-data-supplier"><a href="<?= base_url."index.php?m=supplier&p=list"; ?>"><i class="mdi mdi-account-multiple fa-fw"></i><span class="hide-menu">Data Supplier</span></a></li>
                     <!-- data buyer -->

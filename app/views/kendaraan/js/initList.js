@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	// setting datatable
-    var tabel_transportasi = $("#tabel_transportasi").DataTable({
+    var tabel_kendaraan = $("#tabel_kendaraan").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",
@@ -22,7 +22,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url: base_url+"app/controllers/Transportasi.php",
+            url: base_url+"app/controllers/Kendaraan.php",
             type: 'POST',
             data: {
                 "action" : "list",

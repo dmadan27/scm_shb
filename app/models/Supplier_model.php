@@ -1,11 +1,22 @@
 <?php
-	// get all data supplier
-	function get_all_supplier($koneksi, $config_db){
+	// get datatable data supplier
+	function get_datatable_supplier($koneksi, $config_db){
 		$query = get_dataTable($config_db);
 		$statement = $koneksi->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
 		// tutup_koneksi($koneksi);
+
+		return $result;
+	}
+
+	// get all data supplier
+	function get_all_supplier($koneksi){
+		$query = "SELECT * FROM v_supplier";
+
+		$statement = $koneksi->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
 
 		return $result;
 	}
@@ -21,6 +32,11 @@
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
 
 		return $result;
+	}
+
+	// get data supplier by id + transaksi
+	function getSupplier_full_by_id($koneksi, $id){
+		
 	}
 
 	// get data supplier utama

@@ -1,6 +1,34 @@
 $(document).ready(function(){
+	var cekEdit = false;
+
+	// cek status form, tambah/edit
+	if(!jQuery.isEmptyObject(urlParams.id)){ // jika ada parameter get
+		// edit_barang(urlParams.id);
+		cekEdit = true;
+	}
+
 	setSelect_status();
 	setSelect_jabatan();
+
+	$('#tgl_lahir').datepicker({
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        todayHighlight: true,
+        orientation: "bottom auto",
+        todayBtn: true,
+        todayHighlight: true,
+    });
+
+    $('#tgl_masuk').datepicker({
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        todayHighlight: true,
+        orientation: "bottom auto",
+        todayBtn: true,
+        todayHighlight: true,
+    });
+
+    if(cekEdit) getEdit(urlParams.id);
 
     $("#form_karyawan").submit(function(e){
     	e.preventDefault();
@@ -160,7 +188,6 @@ function submit(){
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
-					$("#modal_karyawan").modal('hide');
 				}
 				else{
 					$.toast({
@@ -190,14 +217,13 @@ function submit(){
 		            hideAfter: 3000,
 		            stack: 6
 				});
-				$("#tabel_karyawan").DataTable().ajax.reload();
+				window.location.href = base_url+"index.php?m=karyawan&p=list";
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            $("#modal_karyawan").modal('hide');
             console.log(jqXHR, textStatus, errorThrown);
         }
 	})
@@ -208,9 +234,6 @@ function getEdit(id){
 	resetForm();
 	$(".field-foto").css("display", "none");
 	$("#no_induk").prop("readonly", true);
-	$("#labelModalKaryawan").text("Form Edit Data Karyawan");
-	$("#btnSubmit_karyawan").prop("value", "edit");
-	$("#btnSubmit_karyawan").text("Edit");
 
 	$.ajax({
 		url: base_url+'app/controllers/Karyawan.php',
@@ -225,7 +248,6 @@ function getEdit(id){
 				console.log(data);
 				setLoading(false);
 				setValue(data);
-				$("#modal_karyawan").modal();
 			}
 			else{
 				swal("Pesan Error", "Data Yang Anda Minta Tidak Tersedia", "warning");
@@ -236,7 +258,6 @@ function getEdit(id){
             setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            $("#modal_karyawan").modal('hide');
             console.log(jqXHR, textStatus, errorThrown);
         }
 	})
@@ -399,7 +420,7 @@ function setValue(value){
 	$('#alamat').val(value.alamat); // alamat
 	$('#telp').val(value.telp); // telp
 	$('#email').val(value.email); // email
-	$('#jabatan').val(value.jabatan); // alamat
+	$('#jabatan').val(value.id_jabatan); // alamat
 	$('#status').val(value.status); // status
 	$('#id_karyawan').val(value.id);
 }
@@ -460,5 +481,5 @@ function setLoading(block=true){
             }
     	});
 	}
-	else $('.modal-content').unblock();
+	else $('.form-karyawan').unblock();
 }

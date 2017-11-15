@@ -395,7 +395,7 @@
 		$cekValid['max'] = $max;
 		$cekValid['pattern'] = "/^[0-9.]*$/";
 		$cekValid['required'] = $required;
-		$cekValid['jenis'] = "angka";
+		$cekValid['jenis'] = "nilai";
 
 		$output = validTemplate($cekValid);
 

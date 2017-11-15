@@ -25,8 +25,8 @@
 	// function insert
 	function insertKaryawan($koneksi, $data){
 		$query = "INSERT INTO karyawan ";
-		$query .= "(no_induk, nik, npwp, nama, tempat_lahir, tgl_lahir, jk, alamat, telp, email, foto, jabatan, status)";
-		$query .= "VALUES (:no_induk, :nik, :npwp, :nama, :tempat_lahir, :tgl_lahir, :jk, :alamat, :telp, :email, :foto, :jabatan, :status)";
+		$query .= "(no_induk, nik, npwp, nama, tempat_lahir, tgl_lahir, jk, alamat, telp, email, foto, id_jabatan, status)";
+		$query .= "VALUES (:no_induk, :nik, :npwp, :nama, :tempat_lahir, :tgl_lahir, :jk, :alamat, :telp, :email, :foto, :id_jabatan, :status)";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':no_induk', $data['no_induk']);
@@ -40,7 +40,7 @@
 		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':email', $data['email']);
 		$statement->bindParam(':foto', $data['foto']);
-		$statement->bindParam(':jabatan', $data['jabatan']);
+		$statement->bindParam(':id_jabatan', $data['jabatan']);
 		$statement->bindParam(':status', $data['status']);
 		$result = $statement->execute();
 
@@ -52,7 +52,7 @@
 		// $data = setNull($data);
 		$query = "UPDATE karyawan SET ";
 		$query .= "nik=:nik, npwp=:npwp, nama=:nama, tempat_lahir=:tempat_lahir, tgl_lahir=:tgl_lahir, jk=:jk, ";
-		$query .= "alamat=:alamat, telp=:telp, email=:email, jabatan=:jabatan WHERE id=:id";
+		$query .= "alamat=:alamat, telp=:telp, email=:email, id_jabatan=:id_jabatan WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':nik', $data['nik']);
@@ -64,7 +64,7 @@
 		$statement->bindParam(':alamat', $data['alamat']);
 		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':email', $data['email']);
-		$statement->bindParam(':jabatan', $data['jabatan']);
+		$statement->bindParam(':id_jabatan', $data['jabatan']);
 		$statement->bindParam(':id', $data['id_karyawan']);
 		$result = $statement->execute();
 

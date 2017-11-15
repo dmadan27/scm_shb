@@ -1,5 +1,6 @@
 <?php
-
+    $notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : false;
+    unset($_SESSION['notif']);
 ?>
 <!-- Breadcrumb -->
 <div class="row bg-title">
@@ -53,6 +54,17 @@
         </div>
     </div>
 </div>
-
+<?php 
+    if($notif){
+        ?>
+        <script>var notif = "<?php echo $notif; ?>";</script>
+        <?php
+    }
+    else{
+        ?>
+        <script>var notif = false;</script>
+        <?php
+    } 
+?>
 <!-- js list -->
 <script type="text/javascript" src="<?= base_url."app/views/karyawan/js/initList.js"; ?>"></script>
