@@ -1,93 +1,50 @@
-# Rancangan Database #
-# SHB Pembelian #
+# Database SCM SHB #
 # Version 1.0 #
 
 # ======================================================================== #
 
-# TABEL #
-
-# -- Data Master -- #
-
-	-- tabel bagian
-
-	-- tabel pekerjaan
-	CREATE TABLE pekerjaan(
-		id int NOT NULL AUTO_INCREMENT,
-		nama varchar(255),
-		ket text,
-
-		CONSTRAINT pk_pekerjaan_id PRIMARY KEY(id)
-	);
-
-	-- tabel karyawan
-	CREATE TABLE karyawan(
-		id int NOT NULL AUTO_INCREMENT,
-		no_induk varchar(20),
-		nik varchar(16),
-		npwp varchar(16),
-		nama varchar(255),
-		tempat_lahir varchar(255),
-		tgl_lahir date,
-		jk char(1), -- jenis kelamin. l: laki-laki, p: perempuan
-		alamat text,
-		telp varchar(20),
-		email varchar(50),
-		foto text,
-		-- tgl_masuk date,
-		-- bagian varchar(255), 
-		id_jabatan int,
-		-- gaji_pokok double(10,2)
-		status char(1), -- 1: aktif/masih bekerja, 0: non-aktif/tidak bekerja lagi
-
-		CONSTRAINT pk_karyawan_id PRIMARY KEY(id),
-		CONSTRAINT fk_karyawan_id_jabatan FOREIGN KEY(id_jabatan) REFERENCES pekerjaan(id)
-	);
-
-	-- tabel riwayat pekerjaan
-
-	-- tabel barang v.1
-	CREATE TABLE barang(
-		id int NOT NULL AUTO_INCREMENT,
-		kd_barang varchar(25),
-		nama varchar(50),
-		ket text,
-		jenis enum('BAHAN BAKU', 'BAHAN SEKUNDER', 'PRODUK'),
-		satuan enum('KG', 'PCS'),
-		foto text,
-
-		CONSTRAINT pk_barang_id PRIMARY KEY(id)
-	);
-
-	-- tabel barang v.2
-		-- bahan baku
-		CREATE TABLE bahan_baku(
+# ================= TABEL =================== #
+	-- Data Karyawan
+		-- Tabel Pekerjaan
+		CREATE TABLE pekerjaan(
 			id int NOT NULL AUTO_INCREMENT,
-			kd_barang varchar(25),
-			nama varchar(25),
+			nama varchar(255),
 			ket text,
-			satuan enum('KG', 'PCS'),
-			foto text,
+
+			CONSTRAINT pk_pekerjaan_id PRIMARY KEY(id)
 		);
 
-		-- produk
-		CREATE TABLE produk(
+		-- Tabel Karyawan
+		CREATE TABLE karyawan(
 			id int NOT NULL AUTO_INCREMENT,
-			id_bahan_baku int,
-			kd_barang varchar(25),
-			nama varchar(25),
-			ket text,
-			satuan enum('KG', 'PCS'),
+			no_induk varchar(20),
+			nik varchar(16),
+			npwp varchar(16),
+			nama varchar(255),
+			tempat_lahir varchar(255),
+			tgl_lahir date,
+			jk char(1), -- jenis kelamin. l: laki-laki, p: perempuan
+			alamat text,
+			telp varchar(20),
+			email varchar(50),
 			foto text,
+			tgl_masuk date,
+			id_jabatan int, -- fk
+			gaji_pokok double(10,2)
+			status char(1), -- 1: aktif/masih bekerja, 0: non-aktif/tidak bekerja lagi
+
+			CONSTRAINT pk_karyawan_id PRIMARY KEY(id),
+			CONSTRAINT fk_karyawan_id_jabatan FOREIGN KEY(id_jabatan) REFERENCES pekerjaan(id)
 		);
 
-	-- tabel kendaraan
-	CREATE TABLE kendraaan(
+	-- Tabel Kendaraan
+	CREATE TABLE kendaraan(
 		id int NOT NULL AUTO_INCREMENT,
 		no_polis varchar(10),
 		id_supir int, -- fk dari karyawan yg jabatannya supir
 		pendamping varchar(255),
 		tahun year,
-		jenis varchar(255), -- truck, fuso
+		jenis char(1), -- c: colt diesel, f: fuso
 		muatan double(8,2), -- kg
 		foto text,
 		status char(1), -- 1: tersedia, 0: tidak tersedia
@@ -96,46 +53,51 @@
 		CONSTRAINT fk_kendaraan_id_supir FOREIGN KEY(id_supir) REFERENCES karyawan(id)
 	);
 
-	-- tabel admin/user untuk karyawan
-	CREATE TABLE user(
-		username varchar(10) NOT NULL,
-		password text NOT NULL,
-		id_karyawan int,
-		hak_akses text,
-		status char(1), -- 1: aktif, 0: non-aktif
-
-		CONSTRAINT pk_user_username PRIMARY KEY(username),
-		CONSTRAINT fk_user_id_karyawan FOREIGN KEY(id_karyawan) REFERENCES karyawan(id)
-	);
-
-	-- tabel supplier
-	CREATE TABLE supplier(
+	-- Tabel Barang
+	CREATE TABLE barang(
 		id int NOT NULL AUTO_INCREMENT,
-		nik varchar(16),
-		npwp varchar(16),
-		nama varchar(255),
-		alamat text,
-		telp varchar(20),
-		email varchar(50),
-		status char(1), -- 1: utama, 0: pengganti
-		
-		CONSTRAINT pk_supplier_id PRIMARY KEY(id)
+		kd_barang varchar(25),
+		nama varchar(50),
+		ket text,
+		jenis enum('BAHAN BAKU', 'BAHAN SEKUNDER', 'PRODUK'),
+		satuan enum('KG', 'PCS'),
+		foto text,
+		stok double(12,2),
+
+		CONSTRAINT pk_barang_id PRIMARY KEY(id)
 	);
 
-	-- tabel index supplier
-	CREATE TABLE index_supplier(
-		id int NOT NULL AUTO_INCREMENT,
-		id_supplier int,
-		id_supplier_utama int,
+	-- Data Supplier
+		-- Tabel Supplier
+		CREATE TABLE supplier(
+			id int NOT NULL AUTO_INCREMENT,
+			kd_supplier varchar(25),
+			nik varchar(16),
+			npwp varchar(16),
+			nama varchar(255),
+			alamat text,
+			telp varchar(20),
+			email varchar(50),
+			status char(1), -- 1: utama, 0: pengganti
+			
+			CONSTRAINT pk_supplier_id PRIMARY KEY(id)
+		);
 
-		CONSTRAINT pk_index_supplier_id PRIMARY KEY(id),
-		CONSTRAINT fk_index_supplier_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-		CONSTRAINT fk_index_supplier_id_supplier_utama FOREIGN KEY(id_supplier_utama) REFERENCES supplier(id)	
-	);
+		-- Tabel detail supplier
+		CREATE TABLE detail_supplier(
+			id int NOT NULL AUTO_INCREMENT,
+			id_supplier int, -- fk
+			id_supplier_utama int, -- fk
 
-	-- tabel buyer
+			CONSTRAINT pk_detail_supplier_id PRIMARY KEY(id),
+			CONSTRAINT fk_detail_supplier_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
+			CONSTRAINT fk_detail_supplier_id_supplier_utama FOREIGN KEY(id_supplier_utama) REFERENCES supplier(id)
+		);
+
+	-- Tabel Buyer
 	CREATE TABLE buyer(
 		id int NOT NULL AUTO_INCREMENT,
+		kd_buyer varchar(25),
 		npwp varchar(20),
 		nama varchar(255),
 		alamat text,
@@ -145,188 +107,319 @@
 		CONSTRAINT pk_buyer_id PRIMARY KEY(id)
 	);
 
-# ---------------------------- #
-
-# -- Data Transaksional -- #
-	
-	-- tabel purchase order dan transaksi pembelian (purchasing)
-
-		-- purchase order / po / pemesanan pembelian
-		CREATE TABLE purchase_order(
+	-- Data User
+		-- Tabel Hak Akses
+		CREATE TABLE hak_akses(
 			id int NOT NULL AUTO_INCREMENT,
-			id_supplier int, -- fk dari index supplier
-			tgl date, -- tgl pemesanan
+			hak_akses varchar(255),
+			url varchar(255),
 
+			CONSTRAINT pk_hak_akses_id PRIMARY KEY(id)
 		);
 
-		-- detail PO
-		CREATE TABLE detail_po(
-			id int NOT NULL AUTO_INCREMENT,
-			id_po int, -- fk dari purchase order
-			-- id_barang int, -- fk dari barang
-			-- id_bahan_baku int, -- fk dari bahan baku
-			netto double(10,2), -- jumlah pemesanan
-			delivery date, -- waktu pengiriman
+		-- Tabel user
+		CREATE TABLE user(
+			username varchar(10) NOT NULL,
+			password text NOT NULL,
+			status char(1), -- 1: aktif, 0: non-aktif
+
+			CONSTRAINT pk_user_username PRIMARY KEY(id)
 		);
 
-		-- pembelian / purchasing
+		-- Tabel Detail hak akses user
+		CREATE TABLE detail_user(
+			id int NOT NULL AUTO_INCREMENT,
+			username varchar(10), -- fk
+			id_hak_akses int, -- fk
+
+			CONSTRAINT pk_detail_user_id PRIMARY KEY(id),
+			CONSTRAINT fk_detail_user_username FOREIGN KEY(username) REFERENCES user(username),
+			CONSTRAINT fk_detail_user_hak_akses FOREIGN KEY(hak_akses) REFERENCES hak_akses(id)
+		);
+		
+		-- Tabel user karyawan
+		CREATE TABLE user_karyawan(
+			id int NOT NULL AUTO_INCREMENT,
+			username varchar(10), -- fk
+			id_karyawan int, -- fk
+
+			CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
+			CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username)
+		);
+		
+		-- Tabel user buyer
+		CREATE TABLE user_buyer(
+			id int NOT NULL AUTO_INCREMENT,
+			username varchar(10), -- fk
+			id_buyer int, -- fk
+
+			CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
+			CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username)
+		);
+
+		-- Tabel user supplier
+		CREATE TABLE user_supplier(
+			id int NOT NULL AUTO_INCREMENT, 
+			username varchar(10), -- fk
+			id_supplier int, -- fk
+
+			CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
+			CONSTRAINT fk_user_supplier_username FOREIGN KEY(username) REFERENCES user(username)
+		);
+
+	-- Data KIR
+		-- Tabel KIR
+		CREATE TABLE kir(
+			id int NOT NULL AUTO_INCREMENT,
+			tgl datetime, -- tgl dan jam
+			id_supplier int, -- fk
+			id_barang int, -- jenis bahan baku (kopi/lada)
+			status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
+
+			CONSTRAINT pk_kir_id PRIMARY KEY(id),
+			CONSTRAINT fk_kir_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+		);
+
+		-- Tabel KIR Kopi
+		CREATE TABLE kir_kopi(
+			id int NOT NULL AUTO_INCREMENT, 
+			id_kir int, -- fk
+			trase double(5,2),
+			gelondong double(5,2),
+			air double(5,2),
+			ayakan double(5,2),
+			kulit double(5,2),
+			rendemen double(5,2),
+
+			CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
+			CONSTRAINT fk_kir_kopi_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+		);
+
+		-- Tabel KIR Lada
+		CREATE TABLE kir_lada(
+			id int NOT NULL AUTO_INCREMENT,
+			id_kir int, -- fk
+			air double(5,2),
+			berat int,
+			abu double(5,2),
+
+			CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
+			CONSTRAINT fk_kir_lada_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+		);
+
+	-- Tabel Basis (optional)
+	CREATE TABLE harga_basis(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		jenis char(1), -- k: basis kopi, l: basis lada hitam
+		basis double(12,2),
+
+		CONSTRAINT pk_harga_basis_id PRIMARY KEY(id)
+	);
+
+	-- Tabel Analisa Harga
+	CREATE TABLE analisa_harga(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		id_kir int, -- fk
+		-- id_basis int,
+		basis double(12,2),
+		harga_beli double(12,2),
+
+		CONSTRAINT pk_analisa_harga_id PRIMARY KEY(id),
+		CONSTRAINT fk_analisa_harga_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+	);
+
+	-- Data Pembelian Bahan Baku
+		-- Tabel Pembelian
 		CREATE TABLE pembelian(
 			id int NOT NULL AUTO_INCREMENT,
-			id_po int, -- fk dari purchase order
-			id_supplier int, -- fk dari index supplier
-			invoice varchar(16), -- kombinasi PB-tgl-no_urut
 			tgl date,
-			payment_term char(1), -- cash/tunai: c, transfer: t
-			status char(1), -- s: sukses, t: titipan
+			invoice varchar(25), -- kombinasi kode PB-tgl-increment
+			id_supplier int, -- fk
+			jenis_pembayaran char(1), -- c: cash, t: transfer
+			jenis_pph double(5,2),
 			pph double(12,2),
-			-- total double(14,2),
 			ket text,
+			status char(1), -- l: lunas, t: titipan
+			user varchar(10),
 
 			CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
-			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES index_supplier(id),
+			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
+			CONSTRAINT fk_pembelian_user FOREIGN KEY(user) REFERENCES user(username)
 		);
 
-		-- tabel detail pembelian
+		-- Tabel Detail Pembelian
 		CREATE TABLE detail_pembelian(
 			id int NOT NULL AUTO_INCREMENT,
-			id_pembelian int,
-			-- id_barang int,
-			-- id_bahan_baku int,
-			colly smallint,
-			netto double(10,2),
-			harga double(10,2),
-			subtotal double(14,2),
+			id_pembelian int, -- fk
+			id_barang int, -- fk
+			id_kir int, -- fk
+			id_analisa_harga int, -- fk
+			colly int, -- jumlah karung
+			netto double(12,2), -- jumlah berat barang (kg)
+			harga double(12,2),
+			subtotal double(12,2),
 
 			CONSTRAINT pk_detail_pembelian_id PRIMARY KEY(id),
 			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
-			-- CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id)
+			CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
+			CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
+			CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
 		);
 
-	-- tabel sales order dan transaksi penjualan
-
-		-- sales order / po dari buyer / pemesanan penjualan
-		CREATE TABLE sales_order(
-			id int NOT NULL	AUTO_INCREMENT,
-			id_buyer int, -- fk dari buyer
-			no_kontrak varchar(50),
+	-- Data Penjualan
+		-- Tabel pemesanan (belum beres)
+		CREATE TABLE pemesanan(
+			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
+			id_buyer int, -- fk
+			no_kontrak varchar(50),
 			jumlah_karung int,
 			ket_karung enum('JUMLAH PASTI', 'PERKIRAAN'),
-			kemasan enum('KARUNG GONI', 'KARUNg PLASTIK'),
-			netto double(10,2),
-			kualitas int, -- fk dari barang (produk) / produk
-			-- kualitas varchar,
-			differential int, -- harga
-			terminal date, -- month/date
-			delivery date, -- tgl pengiriman
+			kemasan enum('KARUNG GONI', 'KARUNG PLASTIK'),
+			netto double(12,2), -- jumlah barang (kg)
+			id_barang int, -- fk dari barang (produk)
+			-- differential int, -- harga
+			-- terminal date, -- month/date
+			waktu_pengiriman date, -- tgl pengiriman
 			catatan text, -- keterangan kontrak
+			lampiran text, -- lampiran file kontrak
+			status char(1), -- status kontrak/pemesanan, s: sukses, p: pending, r: reject
+			-- user varchar(10),
 
-			CONSTRAINT pk_sales_order_id PRIMARY KEY(id),
-			CONSTRAINT fk_sales_order_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id),
-			CONSTRAINT fk_sales_order_kualitas FOREIGN KEY(kualitas) REFERENCES
+			CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
+			CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id),
+			CONSTRAINT fk_pemesanan_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
 		);
 
-		-- penjualan
-		CREATE TABLE penjualan(
+		-- Tabel pengiriman (belum beres)
+		CREATE TABLE pengiriman(
 			id int NOT NULL AUTO_INCREMENT,
-			id_so int, -- fk dari sales order
-
+			id_pemesanan int,
 		);
 
-		-- detail penjualan
-		CREATE TABLE detail_penjualan(
+		-- Tabel detail pengiriman (belum beres)
+		CREATE TABLE detail_pengiriman(
 			id int NOT NULL AUTO_INCREMENT,
-			id_penjualan int,
-			id_transportasi int,
 			tgl date,
+			id_pengiriman int, -- fk
+			id_kendaraan int, -- fk
 			colly int,
-			netto double(10,2),
-
+			netto double(12,2),
+			status char(1), -- status pengiriman. perjalanan/on delivery, terkirim 
 		);
 
+	-- Data Persediaan
+		-- Tabel Mutasi Barang (belum yakin)
+		CREATE TABLE mutasi_barang(
+			id int NOT NULL AUTO_INCREMENT,
+			tgl date,
+			id_barang int, -- fk
+			-- stok_awal double(12,2),
+			masuk double(12,2),
+			keluar double(12,2),
+			-- stok_akhir double(12,2),
 
-# ---------------------------- #
+			CONSTRAINT pk_mutasi_barang_id PRIMARY KEY(id),
+			CONSTRAINT fk_mutasi_barang_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
+		);
 
+		-- Tabel peramalan (belum beres)
+		CREATE TABLE peramalan(
+			id int NOT NULL AUTO_INCREMENT,
+			tgl date,
+			id_barang int, -- fk
 
-# ======================================================================== #
+		); 
 
-# PROCEDURE #
+# =========================================== #
 
-	# Procedure tambah supplier
-	CREATE PROCEDURE tambah_supplier(
-		in nik_param varchar(16),
-		in npwp_param varchar(20),
-		in nama_param varchar(255),
-		in telp_param varchar(20),
-		in alamat_param text,
-		in status_param char(1),
-		in id_supplier_utama_param int
-	)
-	BEGIN
-		DECLARE id_param int;
+# =============== PROCEDURE ================= #
+	-- Data Supplier
+		-- Tambah Supplier => Insert supplier dan insert detail supplier
+		CREATE PROCEDURE tambah_supplier(
+			in nik_param varchar(16),
+			in npwp_param varchar(20),
+			in nama_param varchar(255),
+			in telp_param varchar(20),
+			in alamat_param text,
+			in status_param char(1),
+			in id_supplier_utama_param int
+		)
+		BEGIN
+			DECLARE id_param int;
 
-		-- get auto increment supplier
-		SELECT `AUTO_INCREMENT` INTO id_param 
-			FROM INFORMATION_SCHEMA.TABLES 
-			WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'supplier';
+			-- get auto increment supplier
+			SELECT `AUTO_INCREMENT` INTO id_param 
+				FROM INFORMATION_SCHEMA.TABLES 
+				WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'supplier';
 
-		-- insert supplier
-		INSERT INTO supplier 
-			(nik, npwp, nama, telp, alamat, status) 
-		VALUES 
-			(nik_param, npwp_param, nama_param, telp_param, alamat_param, status_param);
+			-- insert supplier
+			INSERT INTO supplier 
+				(nik, npwp, nama, telp, alamat, status) 
+			VALUES 
+				(nik_param, npwp_param, nama_param, telp_param, alamat_param, status_param);
 
-		-- cek status
-		IF status_param = '1' THEN -- jika utama, maka index sama
-			INSERT INTO index_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_param);
-		ELSE -- jika pengganti
-			INSERT INTO index_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_supplier_utama_param);
-		END IF;
+			-- cek status
+			IF status_param = '1' THEN -- jika utama, maka detail sama
+				INSERT INTO detail_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_param);
+			ELSE -- jika pengganti
+				INSERT INTO detail_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_supplier_utama_param);
+			END IF;	
+		END;
 
-	END;
+		-- Edit Supplier => Update supplier, update detail supplier
+		CREATE PROCEDURE edit_supplier(
+			in id_param int,
+			in nik_param varchar(16),
+			in npwp_param varchar(20),
+			in nama_param varchar(255),
+			in telp_param varchar(20),
+			in alamat_param text,
+			in status_param char(1),
+			in id_supplier_utama_param int
+		)
+		BEGIN
+			DECLARE id_supplier_utama_lama int;
+			DECLARE id_index_param int;
 
--- ====================================== --
+			-- get id supplier utama lama
+			SELECT id_supplier_utama INTO id_supplier_utama_lama FROM detail_supplier WHERE id_supplier = id_param;
 
-	# Procedure edit supplier
-	CREATE PROCEDURE edit_supplier(
-		in id_param int,
-		in nik_param varchar(16),
-		in npwp_param varchar(20),
-		in nama_param varchar(255),
-		in telp_param varchar(20),
-		in alamat_param text,
-		in status_param char(1),
-		in id_supplier_utama_param int
-	)
-	BEGIN
-		DECLARE id_supplier_utama_lama int;
-		DECLARE id_index_param int;
+			-- get id index supplier
+			SELECT id INTO id_index_param FROM detail_supplier WHERE id_supplier = id_param;
 
-		-- get id supplier utama lama
-		SELECT id_supplier_utama INTO id_supplier_utama_lama FROM index_supplier WHERE id_supplier = id_param;
+			-- update data supplier
+			UPDATE supplier SET 
+				nik=nik_param, npwp=npwp_param, nama=nama_param,
+				telp=telp_param, alamat=alamat_param, status=status_param
+			WHERE id=id_param;
 
-		-- get id index supplier
-		SELECT id INTO id_index_param FROM index_supplier WHERE id_supplier = id_param;
+			-- cek supplier_utama
+			IF id_supplier_utama_param != id_supplier_utama_lama THEN -- jika berbeda
+				-- update data index supplier
+				UPDATE detail_supplier SET id_supplier_utama=id_supplier_utama_param 
+				WHERE id=id_index_param;
+			END IF;
+		END;
 
-		-- update data supplier
-		UPDATE supplier SET 
-			nik=nik_param, npwp=npwp_param, nama=nama_param,
-			telp=telp_param, alamat=alamat_param, status=status_param
-		WHERE id=id_param;
+		-- Hapus Supplier => ?
 
-		-- cek supplier_utama
-		IF id_supplier_utama_param != id_supplier_utama_lama THEN -- jika berbeda
-			-- update data index supplier
-			UPDATE index_supplier SET id_supplier_utama=id_supplier_utama_param 
-			WHERE id=id_index_param;
-		END IF;
+	-- Data Buyer
+		-- Tambah Buyer => Insert Buyer seperti biasa
+		-- Edit Buyer => Update Buyer seperti biasa
+		-- Hapus Buyer => ?
 
-	END;
+	-- Data Karyawan
+		-- Tambah Karyawan => Insert karyawan seperti biasa
+		-- Edit Karyawan => Update Karyawan seperti biasa
+		-- Hapus Karyawan => ?
+# =========================================== #
 
--- ====================================== --
+# ================== VIEW =================== #
+# =========================================== #
 
-
--- ====================================== --
 
 # ======================================================================== #
 
