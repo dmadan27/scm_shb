@@ -17,11 +17,11 @@ $(document).ready(function(){
     });
 
     // onchange field
-    	// jabatan/pekerjaan
-    	$("#jabatan").change(function(){
+    	// nama jabatan/pekerjaan
+    	$("#nama").change(function(){
     		if(this.value !== ""){
-    			$('.field-jabatan').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-jabatan span.help-block").text('');	
+    			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-nama span.help-block").text('');	
     		}
     	});
 
@@ -41,7 +41,7 @@ function getDataForm(){
 	var data = new FormData();
 	
 	data.append('id_pekerjaan', $("#id_pekerjaan").val().trim()); // id
-	data.append('jabatan', $("#jabatan").val().trim()); // jabatan
+	data.append('nama', $("#nama").val().trim()); // jabatan
 	data.append('ket', $("#ket").val().trim()); // keterangan
 	data.append('action', $("#btnSubmit_pekerjaan").val().trim()); // action
 
@@ -104,7 +104,6 @@ function submit(){
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             $("#modal_pekerjaan").modal('hide');
@@ -147,7 +146,6 @@ function getEdit(id){
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             $("#modal_pekerjaan").modal('hide');
@@ -157,13 +155,13 @@ function getEdit(id){
 }
 
 function setError(error){
-	if(!jQuery.isEmptyObject(error.jabatanError)){
-		$('.field-jabatan').addClass('has-error');
-		$(".field-jabatan span.help-block").text(error.jabatanError);
+	if(!jQuery.isEmptyObject(error.namaError)){
+		$('.field-nama').addClass('has-error');
+		$(".field-nama span.help-block").text(error.namaError);
 	}
 	else{
-		$('.field-jabatan').removeClass('has-error').addClass('has-success');
-		$(".field-jabatan span.help-block").text('');	
+		$('.field-nama').removeClass('has-error').addClass('has-success');
+		$(".field-nama span.help-block").text('');	
 	}
 
 	if(!jQuery.isEmptyObject(error.ketError)){
@@ -177,7 +175,7 @@ function setError(error){
 }
 
 function setValue(value){
-	$("#jabatan").val(value.jabatan);
+	$("#nama").val(value.nama);
 	$("#ket").val(value.ket);
 	$("#id_pekerjaan").val(value.id);
 }

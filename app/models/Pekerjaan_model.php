@@ -1,11 +1,21 @@
 <?php
 	// get all data karyawan
-	function get_all_pekerjaan($koneksi, $config_db){
+	function get_datatable_pekerjaan($koneksi, $config_db){
 		$query = get_dataTable($config_db);
 		$statement = $koneksi->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
-		// tutup_koneksi($koneksi);
+
+		return $result;
+	}
+
+	// get all data pekerjaan
+	function get_all_pekerjaan($koneksi){
+		$query = "SELECT * FROM pekerjaan";
+
+		$statement = $koneksi->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
 
 		return $result;
 	}
@@ -24,7 +34,7 @@
 
 	// get data pekerjaan untuk select
 	function getPekerjaan_select($koneksi){
-		$query = "SELECT id, jabatan FROM pekerjaan";
+		$query = "SELECT id, nama FROM pekerjaan";
 
 		$statement = $koneksi->prepare($query);
 		$statement->execute();
@@ -35,10 +45,10 @@
 
 	// function insert
 	function insertPekerjaan($koneksi, $data){
-		$query = "INSERT INTO pekerjaan (jabatan, ket) VALUES (:jabatan, :ket)";
+		$query = "INSERT INTO pekerjaan (nama, ket) VALUES (:nama, :ket)";
 
 		$statement = $koneksi->prepare($query);
-		$statement->bindParam(':jabatan', $data['jabatan']);
+		$statement->bindParam(':nama', $data['nama']);
 		$statement->bindParam(':ket', $data['ket']);
 		$result = $statement->execute();
 
@@ -46,12 +56,11 @@
 	}
 
 	function updatePekerjaan($koneksi, $data){
-		// $data = setNull($data);
-		$query = "UPDATE pekerjaan SET jabatan=:jabatan, ket=:ket WHERE id=:id";
+		$query = "UPDATE pekerjaan SET nama=:nama, ket=:ket WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $data['id_pekerjaan']);
-		$statement->bindParam(':jabatan', $data['jabatan']);
+		$statement->bindParam(':nama', $data['nama']);
 		$statement->bindParam(':ket', $data['ket']);
 		$result = $statement->execute();
 

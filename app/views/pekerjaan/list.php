@@ -1,6 +1,6 @@
 <?php
-
-?>
+    Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
+?> 
 <!-- Breadcrumb -->
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">

@@ -17,7 +17,7 @@
 				break;
 			
 			case 'tambah':
-				actionAdd($koneksi);
+				action($koneksi, $action);
 				break;
 
 			case 'getedit':
@@ -25,7 +25,7 @@
 				break;
 
 			case 'edit':
-				actionEdit($koneksi);
+				action($koneksi, $action);
 				break;
 
 			case 'getview':
@@ -33,7 +33,7 @@
 				break;
 
 			default:
-				# code...
+				die();
 				break;
 		}
 	}
@@ -48,7 +48,7 @@
 			'kondisi' => false,
 		);
 
-		$data_pekerjaan = get_all_pekerjaan($koneksi, $config_db);
+		$data_pekerjaan = get_datatable_pekerjaan($koneksi, $config_db);
 
 		$data = array();
 		$no_urut = $_POST['start'];
@@ -62,7 +62,7 @@
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = $row['jabatan']; // jabatan
+			$dataRow[] = $row['nama'];
 			$dataRow[] = gantiKosong($row['ket']);
 			$dataRow[] = $aksi;
 
@@ -80,7 +80,7 @@
 	}
 
 	// fungsi action add
-	function actionAdd($koneksi){
+	function action($koneksi, $action){
 		$dataForm = isset($_POST) ? $_POST : false;
 
 		// validasi
@@ -96,15 +96,26 @@
 		if($cek){
 			$dataForm = array(
 				'id_pekerjaan' => validInputan($dataForm['id_pekerjaan'], false, false),
-				'jabatan' => validInputan($dataForm['jabatan'], false, false),
-				'ket' => validInputan($dataForm['ket'], false, false),
-			);
-	
-			// lakukan insert
-			if(insertPekerjaan($koneksi, $dataForm)) $status = true;
+				'nama' => validInputan($dataForm['nama'], false, false),
+				'ket' => (empty($dataForm['ket'])) ? NULL : validInputan($dataForm['ket'], false, false),
+			);	
+
+			if($action === "tambah"){ // insert
+				if(insertPekerjaan($koneksi, $dataForm)) $status = true;
+				else{
+					$status = false;
+					$errorDB = true;
+				}
+			}
+			else if($action === "edit"){ // update
+				if(updatePekerjaan($koneksi, $dataForm)) $status = true;
+				else{
+					$status = false;
+					$errorDB = true;
+				}
+			}
 			else{
-				$status = false;
-				$errorDB = true;
+				die();
 			}
 			
 		}
@@ -125,52 +136,13 @@
 		echo json_encode($data_pekerjaan);
 	}
 
-	function actionEdit($koneksi){
-		$dataForm = isset($_POST) ? $_POST : false;
-
-		// validasi
-			$status = $errorDB = false;
-
-			$configData = setRule_validasi($dataForm);
-			$validasi = set_validasi($configData);
-			$cek = $validasi['cek'];
-			$setError = $validasi['setError'];
-			$setValue = $validasi['setValue'];
-		// ================================== //
-
-		if($cek){
-			$dataForm = array(
-				'id_pekerjaan' => validInputan($dataForm['id_pekerjaan'], false, false),
-				'jabatan' => validInputan($dataForm['jabatan'], false, false),
-				'ket' => validInputan($dataForm['ket'], false, false),
-			);
-
-			// lakukan update
-			if(updatePekerjaan($koneksi, $dataForm)) $status = true;
-			else{
-				$status = false;
-				$errorDB = true;
-			}
-		}
-		else $status = false;
-
-		$output = array(
-			'status' => $status,
-			'errorDB' => $errorDB,
-			'setError' => $setError,
-			'setValue' => $setValue,
-		);
-
-		echo json_encode($output);
-	}
-
 	// set rule validasi
 	function setRule_validasi($data){
 		$ruleData = array(
 			// nama - jabatan / pekerjaan
 			array(
-				'field' => $data['jabatan'], 'label' => 'Jabatan / Pekerjaan', 'error' => 'jabatanError',
-				'value' => 'jabatan', 'rule' => 'string | 1 | 255 | required',
+				'field' => $data['nama'], 'label' => 'Jabatan / Pekerjaan', 'error' => 'namaError',
+				'value' => 'nama', 'rule' => 'string | 1 | 255 | required',
 			),
 			// keterangan
 			array(

@@ -1,5 +1,5 @@
 <?php
-	
+	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 ?>
 <!-- Form Modal untuk Tambah dan Edit Data -->
 <div class="modal fade" id="modal_pekerjaan" tabindex="-1" role="dialog" aria-labelledby="labelModalPekerjaan" aria-hidden="true">
@@ -15,10 +15,10 @@
 					<div class="row">
 						<div class="col-md-12">
 							<!-- nama / jabatan / pekerjaan -->
-							<div class="form-group field-jabatan has-feedback m-b-5">
-								<label class="col-md-12" for="jabatan">Jabatan / Pekerjaan*</label>
+							<div class="form-group field-nama has-feedback m-b-5">
+								<label class="col-md-12" for="nama">Jabatan / Pekerjaan*</label>
 		                        <div class="col-md-12">
-		                            <input id="jabatan" type="text" class="form-control" placeholder="Jabatan / Pekerjaan">
+		                            <input id="nama" type="text" class="form-control" placeholder="Jabatan / Pekerjaan">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
