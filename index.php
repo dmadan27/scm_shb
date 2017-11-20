@@ -1,4 +1,5 @@
 <?php
+	Define("BASE_PATH", true);
 	session_start();
 	include_once("app/function/koneksi.php");
 	include_once("app/function/helper.php");
@@ -54,7 +55,7 @@
 
      	<!-- Custom CSS -->
         <link href="<?= base_url."assets/css/style.css"; ?>" rel="stylesheet">
-        <link href="<?= base_url."assets/css/colors/blue.css"; ?>" id="theme" rel="stylesheet">
+        <link href="<?= base_url."assets/css/colors/megna-dark.css"; ?>" id="theme" rel="stylesheet">
 	    
 	    <!-- autoload index js -->
 	    <?php include_once("app/views/template/js/autoload_js.php"); ?>
