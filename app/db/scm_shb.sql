@@ -29,12 +29,12 @@
 			email varchar(50),
 			foto text,
 			tgl_masuk date,
-			id_jabatan int, -- fk
-			gaji_pokok double(10,2)
+			id_pekerjaan int, -- fk
+			-- gaji_pokok double(10,2),
 			status char(1), -- 1: aktif/masih bekerja, 0: non-aktif/tidak bekerja lagi
 
 			CONSTRAINT pk_karyawan_id PRIMARY KEY(id),
-			CONSTRAINT fk_karyawan_id_jabatan FOREIGN KEY(id_jabatan) REFERENCES pekerjaan(id)
+			CONSTRAINT fk_karyawan_id_pekerjaan FOREIGN KEY(id_pekerjaan) REFERENCES pekerjaan(id)
 		);
 
 	-- Tabel Kendaraan
@@ -71,7 +71,6 @@
 		-- Tabel Supplier
 		CREATE TABLE supplier(
 			id int NOT NULL AUTO_INCREMENT,
-			kd_supplier varchar(25),
 			nik varchar(16),
 			npwp varchar(16),
 			nama varchar(255),
@@ -79,25 +78,25 @@
 			telp varchar(20),
 			email varchar(50),
 			status char(1), -- 1: utama, 0: pengganti
+			supplier_utama int, -- fk diri sendiri
 			
 			CONSTRAINT pk_supplier_id PRIMARY KEY(id)
 		);
 
-		-- Tabel detail supplier
-		CREATE TABLE detail_supplier(
-			id int NOT NULL AUTO_INCREMENT,
-			id_supplier int, -- fk
-			id_supplier_utama int, -- fk
+		-- -- Tabel detail supplier
+		-- CREATE TABLE detail_supplier(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	id_supplier int, -- fk
+		-- 	id_supplier_utama int, -- fk
 
-			CONSTRAINT pk_detail_supplier_id PRIMARY KEY(id),
-			CONSTRAINT fk_detail_supplier_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-			CONSTRAINT fk_detail_supplier_id_supplier_utama FOREIGN KEY(id_supplier_utama) REFERENCES supplier(id)
-		);
+		-- 	CONSTRAINT pk_detail_supplier_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_detail_supplier_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
+		-- 	CONSTRAINT fk_detail_supplier_id_supplier_utama FOREIGN KEY(id_supplier_utama) REFERENCES supplier(id)
+		-- );
 
 	-- Tabel Buyer
 	CREATE TABLE buyer(
 		id int NOT NULL AUTO_INCREMENT,
-		kd_buyer varchar(25),
 		npwp varchar(20),
 		nama varchar(255),
 		alamat text,
@@ -121,6 +120,7 @@
 		CREATE TABLE user(
 			username varchar(10) NOT NULL,
 			password text NOT NULL,
+			jenis char(1), -- k: karyawan, b: buyer
 			status char(1), -- 1: aktif, 0: non-aktif
 
 			CONSTRAINT pk_user_username PRIMARY KEY(id)
@@ -128,7 +128,7 @@
 
 		-- Tabel Detail hak akses user
 		CREATE TABLE detail_user(
-			id int NOT NULL AUTO_INCREMENT,
+			-- id int NOT NULL AUTO_INCREMENT,
 			username varchar(10), -- fk
 			id_hak_akses int, -- fk
 
@@ -139,50 +139,51 @@
 		
 		-- Tabel user karyawan
 		CREATE TABLE user_karyawan(
-			id int NOT NULL AUTO_INCREMENT,
+			-- id int NOT NULL AUTO_INCREMENT,
 			username varchar(10), -- fk
 			id_karyawan int, -- fk
 
-			CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
 			CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username)
 		);
 		
 		-- Tabel user buyer
 		CREATE TABLE user_buyer(
-			id int NOT NULL AUTO_INCREMENT,
+			-- id int NOT NULL AUTO_INCREMENT,
 			username varchar(10), -- fk
 			id_buyer int, -- fk
 
-			CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
 			CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username)
 		);
 
 		-- Tabel user supplier
 		CREATE TABLE user_supplier(
-			id int NOT NULL AUTO_INCREMENT, 
+			-- id int NOT NULL AUTO_INCREMENT, 
 			username varchar(10), -- fk
 			id_supplier int, -- fk
 
-			CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
 			CONSTRAINT fk_user_supplier_username FOREIGN KEY(username) REFERENCES user(username)
 		);
 
 	-- Data KIR
 		-- Tabel KIR
 		CREATE TABLE kir(
-			id int NOT NULL AUTO_INCREMENT,
+			-- id int NOT NULL AUTO_INCREMENT,
+			kd_kir varchar(25), -- KIR-kopi/lada-tgl-increment
 			tgl datetime, -- tgl dan jam
 			id_supplier int, -- fk
 			id_barang int, -- jenis bahan baku (kopi/lada)
 			status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
 
-			CONSTRAINT pk_kir_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_kir_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
 		);
 
 		-- Tabel KIR Kopi
 		CREATE TABLE kir_kopi(
-			id int NOT NULL AUTO_INCREMENT, 
+			-- id int NOT NULL AUTO_INCREMENT, 
 			id_kir int, -- fk
 			trase double(5,2),
 			gelondong double(5,2),
@@ -191,19 +192,19 @@
 			kulit double(5,2),
 			rendemen double(5,2),
 
-			CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_kopi_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
 		);
 
 		-- Tabel KIR Lada
 		CREATE TABLE kir_lada(
-			id int NOT NULL AUTO_INCREMENT,
+			-- id int NOT NULL AUTO_INCREMENT,
 			id_kir int, -- fk
 			air double(5,2),
 			berat int,
 			abu double(5,2),
 
-			CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
+			-- CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_lada_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
 		);
 
@@ -254,7 +255,7 @@
 			id int NOT NULL AUTO_INCREMENT,
 			id_pembelian int, -- fk
 			id_barang int, -- fk
-			id_kir int, -- fk
+			-- id_kir int, -- fk
 			id_analisa_harga int, -- fk
 			colly int, -- jumlah karung
 			netto double(12,2), -- jumlah berat barang (kg)
@@ -264,7 +265,7 @@
 			CONSTRAINT pk_detail_pembelian_id PRIMARY KEY(id),
 			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
 			CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
-			CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
+			-- CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
 			CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
 		);
 
@@ -331,19 +332,30 @@
 			tgl date,
 			id_barang int, -- fk
 
-		); 
+		);
+
+		-- Tabel produksi
+		CREATE TABLE produksi(
+			id int NOT NULL AUTO_INCREMENT,
+			tgl date,
+			id_barang int, -- fk
+			jumlah double(12,2),
+			hasil double(12,2),
+
+		);
 
 # =========================================== #
 
 # =============== PROCEDURE ================= #
 	-- Data Supplier
-		-- Tambah Supplier => Insert supplier dan insert detail supplier
+		-- Tambah Supplier => Insert supplier seperti biasa
 		CREATE PROCEDURE tambah_supplier(
 			in nik_param varchar(16),
 			in npwp_param varchar(20),
 			in nama_param varchar(255),
-			in telp_param varchar(20),
 			in alamat_param text,
+			in telp_param varchar(20),
+			in email_param varchar(50),
 			in status_param char(1),
 			in id_supplier_utama_param int
 		)
@@ -355,54 +367,25 @@
 				FROM INFORMATION_SCHEMA.TABLES 
 				WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'supplier';
 
-			-- insert supplier
-			INSERT INTO supplier 
-				(nik, npwp, nama, telp, alamat, status) 
-			VALUES 
-				(nik_param, npwp_param, nama_param, telp_param, alamat_param, status_param);
-
 			-- cek status
-			IF status_param = '1' THEN -- jika utama, maka detail sama
-				INSERT INTO detail_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_param);
+			IF status_param = '1' THEN -- jika utama, maka supplier utama sama
+				-- insert supplier
+				INSERT INTO supplier 
+					(nik, npwp, nama, alamat, telp, email, status, supplier_utama) 
+				VALUES 
+					(nik_param, npwp_param, nama_param, alamat_param, 
+					telp_param, email_param, status_param, id_param);
 			ELSE -- jika pengganti
-				INSERT INTO detail_supplier (id_supplier, id_supplier_utama) VALUES (id_param, id_supplier_utama_param);
+				-- insert supplier
+				INSERT INTO supplier 
+					(nik, npwp, nama, alamat, telp, email, status, supplier_utama) 
+				VALUES 
+					(nik_param, npwp_param, nama_param, alamat_param, 
+					telp_param, email_param, status_param, id_supplier_utama_param);
 			END IF;	
 		END;
 
-		-- Edit Supplier => Update supplier, update detail supplier
-		CREATE PROCEDURE edit_supplier(
-			in id_param int,
-			in nik_param varchar(16),
-			in npwp_param varchar(20),
-			in nama_param varchar(255),
-			in telp_param varchar(20),
-			in alamat_param text,
-			in status_param char(1),
-			in id_supplier_utama_param int
-		)
-		BEGIN
-			DECLARE id_supplier_utama_lama int;
-			DECLARE id_index_param int;
-
-			-- get id supplier utama lama
-			SELECT id_supplier_utama INTO id_supplier_utama_lama FROM detail_supplier WHERE id_supplier = id_param;
-
-			-- get id index supplier
-			SELECT id INTO id_index_param FROM detail_supplier WHERE id_supplier = id_param;
-
-			-- update data supplier
-			UPDATE supplier SET 
-				nik=nik_param, npwp=npwp_param, nama=nama_param,
-				telp=telp_param, alamat=alamat_param, status=status_param
-			WHERE id=id_param;
-
-			-- cek supplier_utama
-			IF id_supplier_utama_param != id_supplier_utama_lama THEN -- jika berbeda
-				-- update data index supplier
-				UPDATE detail_supplier SET id_supplier_utama=id_supplier_utama_param 
-				WHERE id=id_index_param;
-			END IF;
-		END;
+		-- Edit Supplier => update supplier seperti biasa
 
 		-- Hapus Supplier => ?
 
@@ -410,6 +393,11 @@
 		-- Tambah Buyer => Insert Buyer seperti biasa
 		-- Edit Buyer => Update Buyer seperti biasa
 		-- Hapus Buyer => ?
+
+	-- Data Pekerjaan
+		-- Tambah pekerjaan => Insert Karyawan seperti biasa
+		-- Edit pekerjaan => update karyawan seperti biasa
+		-- hapus pekerjaan => ?
 
 	-- Data Karyawan
 		-- Tambah Karyawan => Insert karyawan seperti biasa
@@ -427,14 +415,13 @@
 
 	# view supplier
 	CREATE OR REPLACE VIEW v_supplier AS
-		SELECT 
-			sup.id, sup.nik, sup.npwp, sup.nama, sup.alamat, sup.telp, sup.email, 
-			(CASE WHEN (sup.status = '1') THEN 'UTAMA' ELSE 'PENGGANTI' END) status,
-			insup.id id_index, insup.id_supplier_utama, sup2.nama nama_supplier_utama
-		FROM supplier sup
-		JOIN index_supplier insup ON insup.id_supplier = sup.id
-		JOIN supplier sup2 ON sup2.id = insup.id_supplier_utama
-		ORDER BY status DESC, insup.id_supplier_utama ASC;
+		SELECT
+			s.id, s.nik, s.npwp, s.nama, s.alamat, s.telp, s.email,
+			(CASE WHEN (s.status = '1') THEN 'UTAMA' ELSE 'PENGGANTI' END) status,
+			s2.id id_utama, s2.nama nama_utama
+		FROM supplier s
+		JOIN supplier s2 ON s2.id=s.supplier_utama
+		ORDER BY status DESC, s.id ASC;
 
 	-- ====================================== --
 
@@ -443,22 +430,24 @@
 		SELECT 
 			k.id, k.no_induk, k.nik, k.npwp, k.nama, k.tempat_lahir, k.tgl_lahir,
 			(CASE WHEN (k.jk = 'L') THEN 'LAKI-LAKI' ELSE 'PEREMPUAN' END) jk, 
-			k.alamat, k.telp, k.email, k.foto, k.id_jabatan, p.jabatan,
+			k.alamat, k.telp, k.email, k.foto, k.tgl_masuk, k.id_pekerjaan, p.nama jabatan,
 			(CASE WHEN (k.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
 		FROM karyawan k
-		JOIN pekerjaan p ON p.id = k.id_jabatan
-		ORDER BY k.no_induk ASC, k.id_jabatan ASC;
+		JOIN pekerjaan p ON p.id = k.id_pekerjaan
+		ORDER BY k.no_induk ASC, k.id_pekerjaan ASC, status ASC;
 
 	-- ====================================== --
 
-	# view transportasi
-	CREATE OR REPLACE VIEW v_transportasi AS
+	# view kendaraan
+	CREATE OR REPLACE VIEW v_kendaraan AS
 		SELECT 
-			t.id, t.no_polis, t.id_supir, k.nama supir, t.pendamping, t.tahun, t.jenis, t.muatan, t.foto,
-			(CASE WHEN (t.status = '1') THEN 'TERSEDIA' ELSE 'TIDAK TERSEDIA' END) status
-		FROM transportasi t
-		JOIN karyawan k ON k.id = t.id_supir
-		ORDER BY id ASC;
+			k.id, k.no_polis, k.id_supir, kry.nama supir, k.pendamping, k.tahun, 
+			(CASE WHEN (k.jenis = 'C') THEN 'COLT DIESEL' ELSE 'FUSSO' END) jenis, 
+			k.muatan, k.foto,
+			(CASE WHEN (k.status = '1') THEN 'TERSEDIA' ELSE 'TIDAK TERSEDIA' END) status
+		FROM kendaraan k
+		JOIN karyawan kry ON kry.id = k.id_supir
+		ORDER BY id ASC, status ASC;
 
 -- ====================================== --
 
