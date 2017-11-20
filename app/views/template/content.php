@@ -1,4 +1,5 @@
 <?php
+    Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	$filename = "app/views/$m/$p.php";
 ?>
 <div id="page-wrapper">

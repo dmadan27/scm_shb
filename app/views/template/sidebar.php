@@ -1,5 +1,5 @@
 <?php
-
+    Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 ?>
 <div class="navbar-default sidebar" role="navigation">
     <div class="sidebar-nav slimscrollsidebar">

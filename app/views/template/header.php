@@ -1,5 +1,5 @@
 <?php
-
+    Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 ?>
 <nav class="navbar navbar-default navbar-static-top m-b-0">
     <div class="navbar-header">

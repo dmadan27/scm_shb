@@ -33,3 +33,7 @@
 <script src="<?= base_url."assets/plugins/bower_components/jspdf/jspdf.min.js"; ?>"></script>
 <script src="<?= base_url."assets/plugins/bower_components/jspdf/jspdf.plugin.autotable.min.js"; ?>"></script>
 <script src="<?= base_url."assets/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.js"; ?>"></script>
+<!-- select2 -->
+<script src="<?= base_url."assets/plugins/bower_components/custom-select/custom-select.min.js"; ?>" type="text/javascript"></script>
+<!-- bootstrap select -->
+<script src="<?= base_url."assets/plugins/bower_components/bootstrap-select/bootstrap-select.min.js" ?>" type="text/javascript"></script>

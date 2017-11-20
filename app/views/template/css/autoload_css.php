@@ -12,3 +12,7 @@
 <link href="<?= base_url."assets/plugins/bower_components/Magnific-Popup-master/dist/magnific-popup.css"; ?>" rel="stylesheet">
 <link href="<?= base_url."assets/plugins/bower_components/toast-master/css/jquery.toast.css"; ?>" rel="stylesheet">
 <link href="<?= base_url."assets/plugins/bower_components/bootstrap-datepicker/bootstrap-datepicker.min.css"; ?>" rel="stylesheet">
+<!-- select2 -->
+<link href="<?= base_url."assets/plugins/bower_components/custom-select/custom-select.css"; ?>" rel="stylesheet" type="text/css" />
+<!-- bootstrap select -->
+<link href="<?= base_url."assets/plugins/bower_components/bootstrap-select/bootstrap-select.min.css"; ?>" rel="stylesheet" />
