@@ -1,6 +1,4 @@
-<?php
-
-?>
+<?php Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung"); ?>
 
 <div class="modal fade" id="modal_kendaraan" tabindex="-1" role="dialog" aria-labelledby="labelModalKendaraan" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
@@ -15,19 +13,47 @@
 					<div class="row">
 						<div class="col-md-6">
 							<!-- nopolis -->
-							<div class="form-group field-nopol has-feedback m-b-5">
-								<label class="col-md-12" for="nopol">Nopol Kendaraan*</label>
+							<div class="form-group field-no-polis has-feedback m-b-5">
+								<label class="col-md-12" for="no_polis">Nopol Kendaraan*</label>
 		                        <div class="col-md-12">
-		                            <input id="nopol" type="text" class="form-control" placeholder="Masukkan Nopol Kendaraan">
+		                            <input id="no_polis" type="text" class="form-control field" placeholder="Masukkan Nopol Kendaraan">
 		                            <span class="help-block small pesan"></span>
 		                        </div>                   
 							</div>
 
+							<!-- supir -->
+							<div class="form-group field-supir has-feedback m-b-5">
+								<label class="col-md-12" for="supir">Supir*</label>
+		                        <div class="col-md-12">
+		                            <select id="supir" class="form-control field select2"></select>
+		                            <span class="help-block small pesan"></span>
+		                        </div>                   
+							</div>
+
+							<!-- pendamping -->
+							<div class="form-group field-pendamping has-feedback m-b-5">
+								<label class="col-md-12" for="pendamping">Pendamping</label>
+		                        <div class="col-md-12">
+		                            <input id="pendamping" type="text" class="form-control field" placeholder="Masukkan Pendamping">
+		                            <span class="help-block small pesan"></span>
+		                        </div>                   
+							</div>
+
+							<!-- status -->
+							<div class="form-group field-status has-feedback m-b-5">
+								<label class="col-md-12" for="status">Status*</label>
+		                        <div class="col-md-12">
+		                            <select id="status" class="form-control field"></select>
+		                            <span class="help-block small pesan"></span>
+		                        </div>
+							</div>							
+						</div>
+						<div class="col-md-6">
 							<!-- tahun -->
 							<div class="form-group field-tahun has-feedback m-b-5">
 								<label class="col-md-12" for="tahun">Tahun</label>
 		                        <div class="col-md-12">
-		                            <input id="tahun" type="text" class="form-control" placeholder="Masukkan Tahun">
+		                            <input id="tahun" type="text" class="form-control field" placeholder="Masukkan Tahun">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
@@ -36,31 +62,27 @@
 							<div class="form-group field-jenis has-feedback m-b-5">
 								<label class="col-md-12" for="jenis">Jenis*</label>
 		                        <div class="col-md-12">
-		                            <select id="jenis" class="form-control"></select>
+		                            <select id="jenis" class="form-control field"></select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-							</div>							
-						</div>
-						<div class="col-md-6">
+							</div>
+
 							<!-- muatan -->
 							<div class="form-group field-muatan has-feedback m-b-5">
-								<label class="col-md-12" for="muatan">Muatan</label>
+								<label class="col-md-12" for="muatan">Muatan*</label>
 		                        <div class="col-md-12">
-		                            <input id="muatan" type="number" class="form-control" placeholder="Masukkan Muatan (Satuan Kg)">
+		                            <input id="muatan" type="number" min="0" class="form-control field" placeholder="Masukkan Muatan (Satuan Kg)">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
 
 							<!-- foto -->
 							<div class="form-group field-foto has-feedback m-b-5">
-                                <label class="col-sm-12">Upload Foto</label>
-                                <div class="col-sm-12">
-                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                        <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div> <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Pilih Foto</span> <span class="fileinput-exists">Ganti</span>
-                                        <input type="file" name="foto" id="foto"> </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Hapus</a>
-                                    </div>
-                                    <span class="help-block small pesan"></span>
-                                </div>
+                                <label class="col-md-12">Foto</label>
+                                <div class="col-md-12">
+		                            <input id="foto" type="file" class="form-control">
+		                            <span class="help-block small pesan"></span>
+		                        </div>
                             </div>
 						</div>
 					</div>
