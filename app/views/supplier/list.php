@@ -1,5 +1,5 @@
 <?php
-	
+	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 ?>
 <!-- Breadcrumb -->
 <div class="row bg-title">
@@ -40,6 +40,8 @@
     	 							<th>No. KTP</th>
     	 							<th>NPWP</th>
     	 							<th>Nama</th>
+                                    <th>Alamat</th>
+                                    <th>No. Telepon</th>
     	 							<th>Status</th>
     	 							<th>Aksi</th>
     	 						</tr>

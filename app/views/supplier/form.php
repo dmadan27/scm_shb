@@ -1,3 +1,4 @@
+<?php Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung"); ?>
 <!-- Form Modal untuk Tambah dan Edit Data -->
 <div class="modal fade" id="modal_supplier" tabindex="-1" role="dialog" aria-labelledby="labelModalSupplier" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
@@ -36,18 +37,17 @@
 		                            <input id="nama" type="text" class="form-control" placeholder="Masukkan Nama">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-							</div>							
-						</div>
-						<div class="col-md-6">
+							</div>
 							<!-- alamat -->
 							<div class="form-group field-alamat has-feedback m-b-5">
 								<label class="col-md-12" for="alamat">Alamat</label>
 		                        <div class="col-md-12">
-		                            <textarea id="alamat" class="form-control" rows="6" placeholder="Masukkan Alamat"></textarea>
+		                            <textarea id="alamat" class="form-control" rows="3" placeholder="Masukkan Alamat"></textarea>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-							</div>
-
+							</div>							
+						</div>
+						<div class="col-md-6">
 							<!-- no telp -->
 							<div class="form-group field-telp has-feedback m-b-5">
 								<label class="col-md-12" for="telp">No. Telepon</label>
@@ -56,6 +56,15 @@
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
+
+							<!-- email -->
+							<div class="form-group field-email has-feedback m-b-5">
+								<label class="col-md-12" for="email">Email</label>
+		                        <div class="col-md-12">
+		                            <input id="email" type="email" class="form-control" placeholder="Masukkan Email">
+		                            <span class="help-block small pesan"></span>
+		                        </div>
+							</div>							
 						</div>
 					</div>
 					<div class="row">

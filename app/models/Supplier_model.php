@@ -5,7 +5,6 @@
 		$statement = $koneksi->prepare($query);
 		$statement->execute();
 		$result = $statement->fetchAll();
-		// tutup_koneksi($koneksi);
 
 		return $result;
 	}
@@ -23,8 +22,8 @@
 
 	// get data supplier by id
 	function getSupplier_by_id($koneksi, $id){
-		$query = "SELECT s.id, s.nik, s.npwp, s.nama, s.telp, s.alamat, s.status, isup.id_supplier_utama supplier_utama ";
-		$query .= "FROM supplier s JOIN index_supplier isup ON isup.id_supplier = s.id WHERE s.id=:id";
+		$query = "SELECT id, nik, npwp, nama, alamat, telp, email, status, supplier_utama ";
+		$query .= "FROM supplier WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $id);
@@ -39,7 +38,7 @@
 		
 	}
 
-	// get data supplier utama
+	// get data select supplier utama
 	function get_data_supplierUtama($koneksi){
 		$status = '1';
 		$query = "SELECT id, nik, npwp, nama FROM supplier WHERE status = :status";
@@ -54,15 +53,15 @@
 
 	// function insert
 	function insertSupplier($koneksi, $data){
-		// $data = setNull($data);
-		$query = "CALL tambah_supplier(:nik, :npwp, :nama, :telp, :alamat, :status, :supplier_utama)";
+		$query = "CALL tambah_supplier (:nik, :npwp, :nama, :alamat, :telp, :email, :status, :supplier_utama) ";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':nik', $data['nik']);
 		$statement->bindParam(':npwp', $data['npwp']);
 		$statement->bindParam(':nama', $data['nama']);
-		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':alamat', $data['alamat']);
+		$statement->bindParam(':telp', $data['telp']);
+		$statement->bindParam(':email', $data['email']);
 		$statement->bindParam(':status', $data['status']);
 		$statement->bindParam(':supplier_utama', $data['supplier_utama']);
 		$result = $statement->execute();
@@ -72,16 +71,17 @@
 
 	// function update
 	function updateSupplier($koneksi, $data){
-		// $data = setNull($data);
-		$query = "CALL edit_supplier(:id, :nik, :npwp, :nama, :telp, :alamat, :status, :supplier_utama)";
+		$query = "UPDATE supplier SET nik=:nik, npwp=:npwp, nama=:nama, alamat=:alamat, telp=:telp, "; 
+		$query .= " email=:email, status=:status, supplier_utama=:supplier_utama WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $data['id_supplier']);
 		$statement->bindParam(':nik', $data['nik']);
 		$statement->bindParam(':npwp', $data['npwp']);
 		$statement->bindParam(':nama', $data['nama']);
-		$statement->bindParam(':telp', $data['telp']);
 		$statement->bindParam(':alamat', $data['alamat']);
+		$statement->bindParam(':telp', $data['telp']);
+		$statement->bindParam(':email', $data['email']);
 		$statement->bindParam(':status', $data['status']);
 		$statement->bindParam(':supplier_utama', $data['supplier_utama']);
 		$result = $statement->execute();

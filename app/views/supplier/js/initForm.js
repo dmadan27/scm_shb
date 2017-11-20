@@ -24,14 +24,14 @@ $(document).ready(function(){
     	// nik
     	$("#nik").change(function(){
     		if(this.value !== ""){
-    			$('.field-nik').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-nik').removeClass('has-error').addClass('has-success');
 				$(".field-nik span.help-block").text('');	
     		}
     	});
     	// npwp
     	$("#npwp").change(function(){
     		if(this.value !== ""){
-    			$('.field-npwp').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-npwp').removeClass('has-error').addClass('has-success');
 				$(".field-npwp span.help-block").text('');
     		}
     	});
@@ -39,24 +39,24 @@ $(document).ready(function(){
     	// nama
     	$("#nama").change(function(){
     		if(this.value !== ""){
-    			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-nama').removeClass('has-error').addClass('has-success');
 				$(".field-nama span.help-block").text('');
-    		}
-    	});
-
-    	// telp
-    	$("#telp").change(function(){
-    		if(this.value !== ""){
-    			$('.field-telp').removeClass('has-error').removeClass('has-error').addClass('has-success');
-				$(".field-telp span.help-block").text('');
     		}
     	});
 
     	// alamat
     	$("#alamat").change(function(){
     		if(this.value !== ""){
-    			$('.field-alamat').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-alamat').removeClass('has-error').addClass('has-success');
 				$(".field-alamat span.help-block").text('');
+    		}
+    	});
+
+    	// email
+    	$("#email").change(function(){
+    		if(this.value !== ""){
+    			$('.field-email').addClass('has-success');
+				$(".field-email span.help-block").text('');
     		}
     	});
 
@@ -64,7 +64,7 @@ $(document).ready(function(){
     	$("#status").change(function(){
     		// jika tidak diisi
     		if(this.value !== ""){
-    			$('.field-status').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-status').removeClass('has-error').addClass('has-success');
 				$(".field-status span.help-block").text('');
 
     			if(this.value === '0'){
@@ -85,7 +85,7 @@ $(document).ready(function(){
     	// supplier utama
     	$("#supplier_utama").change(function(){
     		if(this.value !== ""){
-    			$('.field-supplier-utama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-supplier-utama').removeClass('has-error').addClass('has-success');
 				$(".field-supplier-utama span.help-block").text('');
     		}
     	});
@@ -101,8 +101,9 @@ function getDataForm(){
 	data.append('nik', $("#nik").val().trim()); // nik
 	data.append('npwp', $("#npwp").val().trim()); // npwp
 	data.append('nama', $("#nama").val().trim()); // nama
-	data.append('telp', $("#telp").val().trim()); // telp
 	data.append('alamat', $("#alamat").val().trim()); // alamat
+	data.append('telp', $("#telp").val().trim()); // telp
+	data.append('email', $("#email").val().trim()); // alamat
 	data.append('status', $("#status").val().trim()); // status
 	data.append('supplier_utama', supplier_utama); // supplier utama
 	data.append('action', $("#btnSubmit_supplier").val().trim()); // action
@@ -168,7 +169,6 @@ function submit(){
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             $("#modal_supplier").modal('hide');
@@ -210,7 +210,6 @@ function getEdit(id){
 			}	
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             $("#modal_supplier").modal('hide');
@@ -294,12 +293,12 @@ function setError(error){
 
 // function set value
 function setValue(value){
-	$('#nik').val(value.nik); // nik
-	$('#npwp').val(value.npwp); // npwp
-	$('#nama').val(value.nama); // nama
-	$('#telp').val(value.telp); // telp
-	$('#alamat').val(value.alamat); // alamat
-	$('#status').val(value.status); // status
+	$('#nik').val(value.nik).trigger('change'); // nik
+	$('#npwp').val(value.npwp).trigger('change'); // npwp
+	$('#nama').val(value.nama).trigger('change'); // nama
+	$('#telp').val(value.telp).trigger('change'); // telp
+	$('#alamat').val(value.alamat).trigger('change'); // alamat
+	$('#status').val(value.status).trigger('change'); // status
 	$('#id_supplier').val(value.id);
 
 	if(value.status==='0'){
@@ -329,14 +328,13 @@ function setSelect_supplierUtama(){
 		url: base_url+"app/controllers/Supplier.php",
 		type: "post",
 		dataType: "json",
-		data: {"action": "get_supplierUtama"},
+		data: {"action": "get_select_supplierUtama"},
 		success: function(data){
 			console.log(data);
 			$.each(data, function(index, item){
 				var option = new Option(item.text, item.value);
 				$('#supplier_utama').append(option).trigger('change');
 			});
-
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");

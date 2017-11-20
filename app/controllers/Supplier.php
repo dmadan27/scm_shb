@@ -17,7 +17,7 @@
 				break;
 			
 			case 'tambah':
-				actionAdd($koneksi);
+				action($koneksi, $action);
 				break;
 
 			case 'getedit':
@@ -25,11 +25,11 @@
 				break;
 
 			case 'edit':
-				actionEdit($koneksi);
+				action($koneksi, $action);
 				break;
 
-			case 'get_supplierutama':
-				get_supplierUtama($koneksi);
+			case 'get_select_supplierutama':
+				get_select_supplierUtama($koneksi);
 				break;
 
 			case 'getview':
@@ -55,8 +55,8 @@
 	function listSupplier($koneksi){
 		$config_db = array(
 			'tabel' => 'v_supplier',
-			'kolomOrder' => array(null, 'nik', 'npwp', 'nama', 'status', null),
-			'kolomCari' => array('nik', 'npwp', 'nama', 'telp', 'alamat', 'status'),
+			'kolomOrder' => array(null, 'nik', 'npwp', 'nama', 'alamat', 'telp', 'status', null),
+			'kolomCari' => array('nik', 'npwp', 'nama', 'alamat', 'telp', 'status'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
@@ -79,6 +79,8 @@
 			$dataRow[] = gantiKosong($row['nik']);
 			$dataRow[] = gantiKosong($row['npwp']);
 			$dataRow[] = $row['nama'];
+			$dataRow[] = gantiKosong($row['alamat']);
+			$dataRow[] = gantiKosong($row['telp']);
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
@@ -96,15 +98,11 @@
 	}
 
 	// fungsi action add
-	function actionAdd($koneksi){
+	function action($koneksi, $action){
 		$dataForm = isset($_POST) ? $_POST : false;
 
 		// validasi
 			$status = $errorDB = false;
-			$duplikat = array(
-				'nik' => false,
-				'npwp' => false,
-			);
 
 			$configData = setRule_validasi($dataForm);
 			$validasi = set_validasi($configData);
@@ -116,48 +114,33 @@
 		if($cek){
 			$dataForm = array(
 				'id_supplier' => validInputan($dataForm['id_supplier'], false, false),
-				'nik' => validInputan($dataForm['nik'], false, false),
-				'npwp' => validInputan($dataForm['npwp'], false, false),
+				'nik' => (empty($dataForm['nik'])) ? NULL : validInputan($dataForm['nik'], false, false),
+				'npwp' => (empty($dataForm['npwp'])) ? NULL : validInputan($dataForm['npwp'], false, false),
 				'nama' => validInputan($dataForm['nama'], false, false),
-				'telp' => validInputan($dataForm['telp'], false, false),
-				'alamat' => validInputan($dataForm['alamat'], false, false),
+				'alamat' => (empty($dataForm['alamat'])) ? NULL : validInputan($dataForm['alamat'], false, false),
+				'telp' => (empty($dataForm['telp'])) ? NULL : validInputan($dataForm['telp'], false, false),
+				'email' => (empty($dataForm['email'])) ? NULL : validInputan($dataForm['email'], false, true),
 				'status' => validInputan($dataForm['status'], false, false),
 				'supplier_utama' => validInputan($dataForm['supplier_utama'], false, false),
 			);
 
-			// cek duplikat
-			$config_duplikat = array(
-				'nik' => array(
-					'tabel' => 'supplier',
-					'field' => 'nik',
-					'value' => $dataForm['nik'],
-				),
-				'npwp' => array(
-					'tabel' => 'supplier',
-					'field' => 'npwp',
-					'value' => $dataForm['npwp'],
-				),
-			);
-
-			$duplikat = array(
-				'nik' => cekDuplikat($koneksi, $config_duplikat['nik']) ? 
-					array('duplikat'=> true, 'error' => 'NIK Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-				'npwp' => cekDuplikat($koneksi, $config_duplikat['npwp']) ? 
-					array('duplikat'=> true, 'error' => 'NPWP Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-			);
-
-			if($duplikat['nik']['duplikat'] == true || $duplikat['npwp']['duplikat'] == true){
-				$status = false;
-				$setError['nikError'] = $duplikat['nik']['error'];
-				$setError['npwpError'] = $duplikat['npwp']['error'];
-			}
-			else{
-				// lakukan insert
+			// cek aksi
+			if($action === "tambah"){ // insert
 				if(insertSupplier($koneksi, $dataForm)) $status = true;
 				else{
 					$status = false;
 					$errorDB = true;
 				}
+			}
+			else if($action === "edit"){ // update
+				if(updateSupplier($koneksi, $dataForm)) $status = true;
+				else{
+					$status = false;
+					$errorDB = true;
+				}
+			}
+			else{
+				die();
 			}
 		}
 		else $status = false;
@@ -165,7 +148,6 @@
 		$output = array(
 			'status' => $status,
 			'errorDB' => $errorDB,
-			'duplikat' => $duplikat,
 			'setError' => $setError,
 			'setValue' => $setValue,
 		);
@@ -180,56 +162,6 @@
 		echo json_encode($data_supplier);
 	}
 
-	// fungsi action edit
-	function actionEdit($koneksi){
-		$dataForm = isset($_POST) ? $_POST : false;
-
-		// validasi
-			$status = $errorDB = false;
-			$duplikat = array(
-				'nik' => false,
-				'npwp' => false,
-			);
-
-			$configData = setRule_validasi($dataForm);
-			$validasi = set_validasi($configData);
-			$cek = $validasi['cek'];
-			$setError = $validasi['setError'];
-			$setValue = $validasi['setValue'];
-		// ================================== //
-
-		if($cek){
-			$dataForm = array(
-				'id_supplier' => validInputan($dataForm['id_supplier'], false, false),
-				'nik' => validInputan($dataForm['nik'], false, false),
-				'npwp' => validInputan($dataForm['npwp'], false, false),
-				'nama' => validInputan($dataForm['nama'], false, false),
-				'telp' => validInputan($dataForm['telp'], false, false),
-				'alamat' => validInputan($dataForm['alamat'], false, false),
-				'status' => validInputan($dataForm['status'], false, false),
-				'supplier_utama' => validInputan($dataForm['supplier_utama'], false, false),
-			);
-
-			// lakukan update
-			if(updateSupplier($koneksi, $dataForm)) $status = true;
-			else{
-				$status = false;
-				$errorDB = true;
-			}
-		}
-		else $status = false;
-
-		$output = array(
-			'status' => $status,
-			'errorDB' => $errorDB,
-			'duplikat' => $duplikat,
-			'setError' => $setError,
-			'setValue' => $setValue,
-		);
-
-		echo json_encode($output);
-	}
-
 	// fungsi get view
 	function getView($koneksi, $id){
 		// $data_supplier = 
@@ -237,8 +169,8 @@
 		// echo json_encode($data_supplier);
 	}
 
-	// function get data supplier utama
-	function get_supplierUtama($koneksi){
+	// function get data supplier utama untuk select
+	function get_select_supplierUtama($koneksi){
 		$data_supplierUtama = get_data_supplierUtama($koneksi);
 		$data = array(
 			array(
@@ -287,8 +219,9 @@
 				$dataRow[] = gantiKosong($row['nik']);
 				$dataRow[] = gantiKosong($row['npwp']);
 				$dataRow[] = $row['nama'];
-				$dataRow[] = $row['alamat'];
-				$dataRow[] = $row['telp'];
+				$dataRow[] = gantiKosong($row['alamat']);
+				$dataRow[] = gantiKosong($row['telp']);
+				$dataRow[] = gantiKosong($row['email']);
 				$dataRow[] = $row['status'];
 				$dataRow[] = ($row['nama'] == $row['nama_supplier_utama']) ? "-" : $row['nama_supplier_utama'];
 
@@ -302,7 +235,6 @@
 		}
 		else{ // by id supplier + transaksi
 			$data_supplier = getSupplier_full_by_id($koneksi, $id);
-
 		}
 
 		echo json_encode($output);
