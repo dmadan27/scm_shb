@@ -53,7 +53,7 @@
 			'kondisi' => false,
 		);
 
-		$data_karyawan = get_all_karyawan($koneksi, $config_db);
+		$data_karyawan = get_datatable_karyawan($koneksi, $config_db);
 
 		$data = array();
 		$no_urut = $_POST['start'];
@@ -96,13 +96,7 @@
 		// validasi
 			$cekFoto = true;
 			$status = $errorDB = false;
-			$duplikat = array(
-				'no_induk' => false,
-				'nik' => false,
-				'npwp' => false,
-				'email' => false,
-			);
-
+		
 			$configData = setRule_validasi($dataForm);
 			$validasi = set_validasi($configData);
 			$cek = $validasi['cek'];
@@ -125,91 +119,47 @@
 				}
 				else $valueFoto = 'karyawan/'.$valid_foto['namaFile'];
 			}
-			else $valueFoto = "";
+			else $valueFoto = NULL;
 		// ================================== //
 
 		if($cek){
 			$dataForm = array(
 				'id_karyawan' => validInputan($dataForm['id_karyawan'], false, false),
 				'no_induk' => validInputan($dataForm['no_induk'], false, false),
-				'nik' => validInputan($dataForm['nik'], false, false),
-				'npwp' => validInputan($dataForm['npwp'], false, false),
-				'nama' => validInputan($dataForm['nama'], false, false),
-				'tempat_lahir' => validInputan($dataForm['tempat_lahir'], false, false),
-				'tgl_lahir' => validInputan($dataForm['tgl_lahir'], false, false),
-				'jk' => validInputan($dataForm['jk'], false, false),
-				'alamat' => validInputan($dataForm['alamat'], false, false),
-				'telp' => validInputan($dataForm['telp'], false, false),
-				'email' => validInputan($dataForm['email'], false, true),
-				'jabatan' => validInputan($dataForm['jabatan'], false, false),
+				'nik' => (empty($dataForm['nik'])) ? NULL : validInputan($dataForm['nik'], false, false),
+				'npwp' => (empty($dataForm['npwp'])) ? NULL : validInputan($dataForm['npwp'], false, false),
+				'nama' => (empty($dataForm['nama'])) ? NULL : validInputan($dataForm['nama'], false, false),
+				'tempat_lahir' => (empty($dataForm['tempat_lahir'])) ? NULL : validInputan($dataForm['tempat_lahir'], false, false),
+				'tgl_lahir' => (empty($dataForm['tgl_lahir'])) ? NULL : validInputan($dataForm['tgl_lahir'], false, false),
+				'jk' => (empty($dataForm['jk'])) ? NULL : validInputan($dataForm['jk'], false, false),
+				'alamat' => (empty($dataForm['alamat'])) ? NULL : validInputan($dataForm['alamat'], false, false),
+				'telp' => (empty($dataForm['telp'])) ? NULL : validInputan($dataForm['telp'], false, false),
+				'email' => (empty($dataForm['email'])) ? NULL : validInputan($dataForm['email'], false, true),
+				'tgl_masuk' => (empty($dataForm['tgl_masuk'])) ? NULL : validInputan($dataForm['tgl_masuk'], false, false),
+				'id_pekerjaan' => (empty($dataForm['id_pekerjaan'])) ? NULL : validInputan($dataForm['id_pekerjaan'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
-				'foto' => validInputan($valueFoto, false, true),
+				'foto' => (empty($valueFoto)) ? $valueFoto : validInputan($valueFoto, false, true),
 			);
 
-			// cek duplikat
-			$config_duplikat = array(
-				'no_induk' => array(
-					'tabel' => 'karyawan',
-					'field' => 'no_induk',
-					'value' => $dataForm['no_induk'],
-				),
-				'nik' => array(
-					'tabel' => 'karyawan',
-					'field' => 'nik',
-					'value' => $dataForm['nik'],
-				),
-				'npwp' => array(
-					'tabel' => 'karyawan',
-					'field' => 'npwp',
-					'value' => $dataForm['npwp'],
-				),
-				'email' => array(
-					'tabel' => 'karyawan',
-					'field' => 'email',
-					'value' => $dataForm['email'],
-				),
-			);
-
-			$duplikat = array(
-				'no_induk' => cekDuplikat($koneksi, $config_duplikat['no_induk']) ? 
-					array('duplikat'=> true, 'error' => 'No. Induk Karyawan Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-				'nik' => cekDuplikat($koneksi, $config_duplikat['nik']) ? 
-					array('duplikat'=> true, 'error' => 'NIK Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-				'npwp' => cekDuplikat($koneksi, $config_duplikat['npwp']) ? 
-					array('duplikat'=> true, 'error' => 'NPWP Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-				'email' => cekDuplikat($koneksi, $config_duplikat['email']) ? 
-					array('duplikat'=> true, 'error' => 'Email Sudah Ada, Harap Diganti !') : array('duplikat'=> false, 'error' => ''),
-			);
-
-			if($duplikat['no_induk']['duplikat'] == true || $duplikat['nik']['duplikat'] == true 
-				|| $duplikat['npwp']['duplikat'] == true || $duplikat['email']['duplikat'] == true){
-				$status = false;
-				$setError['no_indukError'] = $duplikat['no_induk']['error'];
-				$setError['nikError'] = $duplikat['nik']['error'];
-				$setError['npwpError'] = $duplikat['npwp']['error'];
-				$setError['emailError'] = $duplikat['email']['error'];
-			}
-			else{
-				// jika upload foto
-				if($foto){
-					$path = "../../assets/images/$valueFoto";
-					if(!move_uploaded_file($foto['tmp_name'], $path)){
-						$pesanError['fotoError'] = "Upload Foto Gagal";
-						$status = $cekFoto = false;
-					}
+			// jika upload foto
+			if($foto){
+				$path = "../../assets/images/$valueFoto";
+				if(!move_uploaded_file($foto['tmp_name'], $path)){
+					$pesanError['fotoError'] = "Upload Foto Gagal";
+					$status = $cekFoto = false;
 				}
+			}
 
-				if($cekFoto){
-					// lakukan insert
-					if(insertKaryawan($koneksi, $dataForm)) {
-						$status = true;
-						session_start();
-						$_SESSION['notif'] = "Tambah Data Berhasil";
-					}
-					else{
-						$status = false;
-						$errorDB = true;
-					}
+			if($cekFoto){
+				// lakukan insert
+				if(insertKaryawan($koneksi, $dataForm)) {
+					$status = true;
+					session_start();
+					$_SESSION['notif'] = "Tambah Data Berhasil";
+				}
+				else{
+					$status = false;
+					$errorDB = true;
 				}
 			}
 		}
@@ -218,7 +168,6 @@
 		$output = array(
 			'status' => $status,
 			'errorDB' => $errorDB,
-			'duplikat' => $duplikat,
 			'setError' => $setError,
 			'setValue' => $setValue,
 		);
@@ -237,14 +186,7 @@
 		$dataForm = isset($_POST) ? $_POST : false;
 
 		// validasi
-			$cekFoto = true;
 			$status = $errorDB = false;
-			$duplikat = array(
-				'no_induk' => false,
-				'nik' => false,
-				'npwp' => false,
-				'email' => false,
-			);
 
 			$configData = setRule_validasi($dataForm);
 			$validasi = set_validasi($configData);
@@ -257,16 +199,17 @@
 			$dataForm = array(
 				'id_karyawan' => validInputan($dataForm['id_karyawan'], false, false),
 				'no_induk' => validInputan($dataForm['no_induk'], false, false),
-				'nik' => validInputan($dataForm['nik'], false, false),
-				'npwp' => validInputan($dataForm['npwp'], false, false),
-				'nama' => validInputan($dataForm['nama'], false, false),
-				'tempat_lahir' => validInputan($dataForm['tempat_lahir'], false, false),
-				'tgl_lahir' => validInputan($dataForm['tgl_lahir'], false, false),
-				'jk' => validInputan($dataForm['jk'], false, false),
-				'alamat' => validInputan($dataForm['alamat'], false, false),
-				'telp' => validInputan($dataForm['telp'], false, false),
-				'email' => validInputan($dataForm['email'], false, true),
-				'jabatan' => validInputan($dataForm['jabatan'], false, false),
+				'nik' => (empty($dataForm['nik'])) ? NULL : validInputan($dataForm['nik'], false, false),
+				'npwp' => (empty($dataForm['npwp'])) ? NULL : validInputan($dataForm['npwp'], false, false),
+				'nama' => (empty($dataForm['nama'])) ? NULL : validInputan($dataForm['nama'], false, false),
+				'tempat_lahir' => (empty($dataForm['tempat_lahir'])) ? NULL : validInputan($dataForm['tempat_lahir'], false, false),
+				'tgl_lahir' => (empty($dataForm['tgl_lahir'])) ? NULL : validInputan($dataForm['tgl_lahir'], false, false),
+				'jk' => (empty($dataForm['jk'])) ? NULL : validInputan($dataForm['jk'], false, false),
+				'alamat' => (empty($dataForm['alamat'])) ? NULL : validInputan($dataForm['alamat'], false, false),
+				'telp' => (empty($dataForm['telp'])) ? NULL : validInputan($dataForm['telp'], false, false),
+				'email' => (empty($dataForm['email'])) ? NULL : validInputan($dataForm['email'], false, true),
+				'tgl_masuk' => (empty($dataForm['tgl_masuk'])) ? NULL : validInputan($dataForm['tgl_masuk'], false, false),
+				'id_pekerjaan' => (empty($dataForm['id_pekerjaan'])) ? NULL : validInputan($dataForm['id_pekerjaan'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
 			);
 
@@ -286,7 +229,6 @@
 		$output = array(
 			'status' => $status,
 			'errorDB' => $errorDB,
-			'duplikat' => $duplikat,
 			'setError' => $setError,
 			'setValue' => $setValue,
 		);
@@ -321,7 +263,7 @@
 		foreach ($data_pekerjaan as $row) {
 			$dataRow = array();
 			$dataRow['value'] = $row['id'];
-			$dataRow['text'] = $row['jabatan'];
+			$dataRow['text'] = $row['nama'];
 
 			$data[] = $dataRow;
 		}
@@ -382,10 +324,15 @@
 				'field' => $data['email'], 'label' => 'email', 'error' => 'emailError',
 				'value' => 'email', 'rule' => 'email | 1 | 50 | not_required',
 			),
-			// jabatan
+			// tgl_masuk
 			array(
-				'field' => $data['jabatan'], 'label' => 'Jabatan', 'error' => 'jabatanError',
-				'value' => 'jabatan', 'rule' => 'angka | 1 | 99999 | required',
+				'field' => $data['tgl_masuk'], 'label' => 'Tanggal Masuk', 'error' => 'tgl_masukError',
+				'value' => 'tgl_masuk', 'rule' => 'string | 1 | 255 | not_required',
+			),
+			// id_pekerjaan
+			array(
+				'field' => $data['id_pekerjaan'], 'label' => 'Jabatan', 'error' => 'id_pekerjaanError',
+				'value' => 'id_pekerjaan', 'rule' => 'angka | 1 | 99999 | required',
 			),
 			// status
 			array(

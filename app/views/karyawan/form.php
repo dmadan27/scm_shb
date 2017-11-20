@@ -1,9 +1,7 @@
 <?php
+	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
 	$id = isset($_GET['id']) ? $_GET['id'] : false;
-
 	$btn = $id ? "edit" : "tambah";
-	// if($id) $btn = "edit";
-	// else $btn = "tambah";
 ?>
 <!-- Breadcrumb -->
 <div class="row bg-title">
@@ -139,7 +137,7 @@
 
 									<!-- foto -->
 									<div class="form-group field-foto has-feedback m-b-5">
-		                                <label class="col-md-12">Upload Foto</label>
+		                                <label class="col-md-12">Foto</label>
 		                                <div class="col-md-12">
 				                            <input id="foto" type="file" class="form-control">
 				                            <span class="help-block small pesan"></span>
@@ -168,7 +166,7 @@
 			    	 			<div class="col-md-6">
 			    	 				<!-- No Induk -->
 									<div class="form-group field-no-induk has-feedback m-b-5">
-										<label class="col-md-12" for="no_induk">No. Induk Karyawan</label>
+										<label class="col-md-12" for="no_induk">No. Induk Karyawan*</label>
 				                        <div class="col-md-12">
 				                            <input id="no_induk" type="text" class="form-control field" placeholder="Masukkan No. Induk">
 				                            <span class="help-block small pesan"></span>
@@ -186,9 +184,9 @@
 
 									<!-- jabatan -->
 									<div class="form-group field-jabatan has-feedback m-b-5">
-										<label class="col-md-12" for="jabatan">Jabatan</label>
+										<label class="col-md-12" for="jabatan">Jabatan*</label>
 				                        <div class="col-md-12">
-				                            <select id="jabatan" class="form-control field"></select>
+				                            <select id="jabatan" class="form-control field select2"></select>
 				                            <span class="help-block small pesan"></span>
 				                        </div>
 									</div>
@@ -205,7 +203,7 @@
 
 									<!-- status -->
 									<div class="form-group field-status has-feedback m-b-5">
-										<label class="col-md-12" for="status">Status</label>
+										<label class="col-md-12" for="status">Status*</label>
 				                        <div class="col-md-12">
 				                            <select id="status" class="form-control field"></select>
 				                            <span class="help-block small pesan"></span>
@@ -223,6 +221,11 @@
 			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 		        <div class="panel panel-default">
 		        	<div class="panel-heading">
+		        		<div class="row">
+							<div class="col-md-12">
+								<span class="help-block small">* Wajib Diisi</span>
+							</div>
+						</div>	
 		        		<div class="text-right">
 		        			<button id="btnSubmit_karyawan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
 		        			<a href="<?=base_url."index.php?m=karyawan&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>

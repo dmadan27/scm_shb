@@ -72,67 +72,70 @@ function getEdit(id){
     window.location.href = base_url+"index.php?m=karyawan&p=form&id="+id;
 }
 
-function createPDF(){
-    getDataPDF(function(data){
-        var doc = new jsPDF('l');
-        var totalPagesExp = "{total_pages_count_string}";
+// function export pdf
+    function createPDF(){
+        getDataPDF(function(data){
+            var doc = new jsPDF('l');
+            var totalPagesExp = "{total_pages_count_string}";
 
-        var pageContent = function(data_){
-            // header
-            doc.setFontSize(14);
-            doc.setTextColor(40);
-            doc.setFontStyle('normal');
-            doc.text("Data Karyawan", data_.settings.margin.left, 22);
+            var pageContent = function(data_){
+                // header
+                doc.setFontSize(14);
+                doc.setTextColor(40);
+                doc.setFontStyle('normal');
+                doc.text("Data Karyawan", data_.settings.margin.left, 22);
 
-            // footer
-            var str = "Page " + data_.pageCount;
-            if (typeof doc.putTotalPages === 'function') {
-                str = str + " of " + totalPagesExp;
-            }
-            doc.setFontSize(10);
-            doc.text(str, data_.settings.margin.left, doc.internal.pageSize.height - 10);
-        };
-
-        doc.autoTable(data.columns, data.rows, {
-            addPageContent: pageContent,
-            margin: {top: 30, horizontal: 10},
-            styles: {overflow: 'linebreak', columnWidth: 'wrap'},
-            columnStyles: {text: {columnWidth: 'auto'}}
-        });
-
-        if (typeof doc.putTotalPages === 'function') {
-            doc.putTotalPages(totalPagesExp);
-        }
-
-        doc.save('data_karyawan.pdf');
-    });
-}
-
-function getDataPDF(handleData){
-    // pecah var data menjadi kolom dan basris
-    $.ajax({
-        url: base_url+"app/controllers/Karyawan.php",
-        type: "post",
-        dataType: "json",
-        data: {
-            "action": "getPdf",
-            "jenis": "default",
-        },
-        beforeSend: function(){
-            $.blockUI({
-                message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
-                css: {
-                    border: '1px solid #fff'
+                // footer
+                var str = "Page " + data_.pageCount;
+                if (typeof doc.putTotalPages === 'function') {
+                    str = str + " of " + totalPagesExp;
                 }
+                doc.setFontSize(10);
+                doc.text(str, data_.settings.margin.left, doc.internal.pageSize.height - 10);
+            };
+
+            doc.autoTable(data.columns, data.rows, {
+                addPageContent: pageContent,
+                margin: {top: 30, horizontal: 10},
+                styles: {overflow: 'linebreak', columnWidth: 'wrap'},
+                columnStyles: {text: {columnWidth: 'auto'}}
             });
-        },
-        success: function(data){
-            $.unblockUI();
-            handleData(data);
-        },
-        error: function (jqXHR, textStatus, errorThrown){
-            console.log(jqXHR, textStatus, errorThrown);
-        }
-    })
-}
+
+            if (typeof doc.putTotalPages === 'function') {
+                doc.putTotalPages(totalPagesExp);
+            }
+
+            doc.save('data_karyawan.pdf');
+        });
+    }
+
+    function getDataPDF(handleData){
+        // pecah var data menjadi kolom dan basris
+        $.ajax({
+            url: base_url+"app/controllers/Karyawan.php",
+            type: "post",
+            dataType: "json",
+            data: {
+                "action": "getPdf",
+                "jenis": "default",
+            },
+            beforeSend: function(){
+                $.blockUI({
+                    message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
+                    css: {
+                        border: '1px solid #fff'
+                    }
+                });
+            },
+            success: function(data){
+                $.unblockUI();
+                handleData(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown){
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        })
+    }
+// ====================================
+    
 

@@ -7,6 +7,8 @@ $(document).ready(function(){
 		cekEdit = true;
 	}
 
+	$("#jabatan").select2();
+
 	setSelect_status();
 	setSelect_jabatan();
 
@@ -121,6 +123,14 @@ $(document).ready(function(){
     		}
     	});
 
+    	// tgl masuk
+    	$("#tgl_masuk").change(function(){
+    		if(this.value !== ""){
+    			$('.field-tgl-masuk').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-tgl-masuk span.help-block").text('');	
+    		}
+    	});
+
     	// jabatan
     	$("#jabatan").change(function(){
     		if(this.value !== ""){
@@ -158,7 +168,8 @@ function getDataForm(){
 	data.append('email', $("#email").val().trim()); // telp
 	data.append('foto', $("#foto")[0].files[0]); // foto
 	data.append('no_induk', $("#no_induk").val().trim()); // no_induk
-	data.append('jabatan', $("#jabatan").val().trim()); // jabatan
+	data.append('tgl_masuk', $("#tgl_masuk").val().trim()); // tgl masuk
+	data.append('id_pekerjaan', $("#jabatan").val().trim()); // jabatan
 	data.append('status', $("#status").val().trim()); // status
 	data.append('action', $("#btnSubmit_karyawan").val().trim()); // action
 
@@ -221,7 +232,7 @@ function submit(){
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
+			setLoading(false);
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             console.log(jqXHR, textStatus, errorThrown);
@@ -251,11 +262,11 @@ function getEdit(id){
 			}
 			else{
 				swal("Pesan Error", "Data Yang Anda Minta Tidak Tersedia", "warning");
+				window.location.href = base_url+"index.php?m=karyawan&p=list";
 			}
-				
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            setLoading();
+			setLoading(false);
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             console.log(jqXHR, textStatus, errorThrown);
@@ -269,140 +280,120 @@ function setError(error){
 	if(!jQuery.isEmptyObject(error.no_indukError)){
 		$('.field-no-induk').addClass('has-error');
 		$(".field-no-induk span.help-block").text(error.no_indukError);
-		$(".field-no-induk span.setError").css("display", "block");
-		$(".field-no-induk span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-no-induk').removeClass('has-error').addClass('has-success');
 		$(".field-no-induk span.help-block").text('');
-		$(".field-no-induk span.setError").css("display", "none");
-		$(".field-no-induk span.setSuccess").css("display", "block");	
 	}
 
 	// nik
 	if(!jQuery.isEmptyObject(error.nikError)){
 		$('.field-nik').addClass('has-error');
 		$(".field-nik span.help-block").text(error.nikError);
-		$(".field-nik span.setError").css("display", "block");
-		$(".field-nik span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-nik').removeClass('has-error').addClass('has-success');
 		$(".field-nik span.help-block").text('');
-		$(".field-nik span.setError").css("display", "none");
-		$(".field-nik span.setSuccess").css("display", "block");	
 	}
 
 	// npwp
 	if(!jQuery.isEmptyObject(error.npwpError)){
 		$('.field-npwp').addClass('has-error');
 		$(".field-npwp span.help-block").text(error.npwpError);
-		$(".field-npwp span.setError").css("display", "block");
-		$(".field-npwp span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-npwp').removeClass('has-error').addClass('has-success');
 		$(".field-npwp span.help-block").text('');	
-		$(".field-npwp span.setError").css("display", "none");
-		$(".field-npwp span.setSuccess").css("display", "block");
 	}
 
 	// nama
 	if(!jQuery.isEmptyObject(error.namaError)){
 		$('.field-nama').addClass('has-error');
 		$(".field-nama span.help-block").text(error.namaError);
-		$(".field-nama span.setError").css("display", "block");
-		$(".field-nama span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-nama').removeClass('has-error').addClass('has-success');
 		$(".field-nama span.help-block").text('');
-		$(".field-nama span.setError").css("display", "none");
-		$(".field-nama span.setSuccess").css("display", "block");
+	}
+
+	// tempat lahir
+	if(!jQuery.isEmptyObject(error.tempat_lahirError)){
+		$('.field-tempat-lahir').addClass('has-error');
+		$(".field-tempat-lahir span.help-block").text(error.tempat_lahirError);
+	}
+	else{
+		$('.field-alamat').removeClass('has-error').addClass('has-success');
+		$(".field-alamat span.help-block").text('');
+	}
+
+	// tgl lahir
+	if(!jQuery.isEmptyObject(error.tgl_lahirError)){
+		$('.field-tgl-lahir').addClass('has-error');
+		$(".field-tgl-lahir span.help-block").text(error.tgl_lahirError);
+	}
+	else{
+		$('.field-alamat').removeClass('has-error').addClass('has-success');
+		$(".field-alamat span.help-block").text('');
 	}
 
 	// telp
 	if(!jQuery.isEmptyObject(error.telpError)){
 		$('.field-telp').addClass('has-error');
 		$(".field-telp span.help-block").text(error.telpError);
-		$(".field-telp span.setError").css("display", "block");
-		$(".field-telp span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-telp').removeClass('has-error').addClass('has-success');
 		$(".field-telp span.help-block").text('');
-		$(".field-telp span.setError").css("display", "none");
-		$(".field-telp span.setSuccess").css("display", "block");
 	}
 
 	// email
 	if(!jQuery.isEmptyObject(error.emailError)){
 		$('.field-email').addClass('has-error');
 		$(".field-email span.help-block").text(error.emailError);
-		$(".field-email span.setError").css("display", "block");
-		$(".field-email span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-email').removeClass('has-error').addClass('has-success');
 		$(".field-email span.help-block").text('');
-		$(".field-email span.setError").css("display", "none");
-		$(".field-email span.setSuccess").css("display", "block");
 	}
 
 	// alamat
 	if(!jQuery.isEmptyObject(error.alamatError)){
 		$('.field-alamat').addClass('has-error');
 		$(".field-alamat span.help-block").text(error.alamatError);
-		$(".field-alamat span.setError").css("display", "block");
-		$(".field-alamat span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-alamat').removeClass('has-error').addClass('has-success');
 		$(".field-alamat span.help-block").text('');
-		$(".field-alamat span.setError").css("display", "none");
-		$(".field-alamat span.setSuccess").css("display", "block");
 	}
 
 	// foto
 	if(!jQuery.isEmptyObject(error.fotoError)){
 		$('.field-foto').addClass('has-error');
 		$(".field-foto span.help-block").text(error.fotoError);
-		$(".field-foto span.setError").css("display", "block");
-		$(".field-foto span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-foto').removeClass('has-error').addClass('has-success');
 		$(".field-foto span.help-block").text('');
-		$(".field-foto span.setError").css("display", "none");
-		$(".field-foto span.setSuccess").css("display", "block");
 	}
 
 	// jabatan
-	if(!jQuery.isEmptyObject(error.jabatanError)){
+	if(!jQuery.isEmptyObject(error.id_pekerjaanError)){
 		$('.field-jabatan').addClass('has-error');
-		$(".field-jabatan span.help-block").text(error.jabatanError);
-		$(".field-jabatan span.setError").css("display", "block");
-		$(".field-jabatan span.setSuccess").css("display", "none");
+		$(".field-jabatan span.help-block").text(error.id_pekerjaanError);
 	}
 	else{
 		$('.field-jabatan').removeClass('has-error').addClass('has-success');
 		$(".field-jabatan span.help-block").text('');
-		$(".field-jabatan span.setError").css("display", "none");
-		$(".field-jabatan span.setSuccess").css("display", "block");
 	}
 
 	// status
 	if(!jQuery.isEmptyObject(error.statusError)){
 		$('.field-status').addClass('has-error');
 		$(".field-status span.help-block").text(error.statusError);
-		$(".field-status span.setError").css("display", "block");
-		$(".field-status span.setSuccess").css("display", "none");
 	}
 	else{
 		$('.field-status').removeClass('has-error').addClass('has-success');
 		$(".field-status span.help-block").text('');
-		$(".field-status span.setError").css("display", "none");
-		$(".field-status span.setSuccess").css("display", "block");
 	}
 }
 
@@ -411,17 +402,18 @@ function setValue(value){
 	var jk = (value.jk=="") ? "" : $("input[name=jk][type=radio][value="+value.jk+"]").prop('checked', true); 
 	jk;
 	
-	$('#no_induk').val(value.no_induk); // no_induk
-	$('#nik').val(value.nik); // nik
-	$('#npwp').val(value.npwp); // npwp
-	$('#nama').val(value.nama); // nama
-	$('#tempat_lahir').val(value.tempat_lahir); // alamat
-	$('#tgl_lahir').val(value.tgl_lahir); // alamat
-	$('#alamat').val(value.alamat); // alamat
-	$('#telp').val(value.telp); // telp
-	$('#email').val(value.email); // email
-	$('#jabatan').val(value.id_jabatan); // alamat
-	$('#status').val(value.status); // status
+	$('#no_induk').val(value.no_induk).trigger('change'); // no_induk
+	$('#nik').val(value.nik).trigger('change'); // nik
+	$('#npwp').val(value.npwp).trigger('change'); // npwp
+	$('#nama').val(value.nama).trigger('change'); // nama
+	$('#tempat_lahir').val(value.tempat_lahir).trigger('change'); // alamat
+	$('#tgl_lahir').datepicker('update',value.tgl_lahir); // alamat
+	$('#alamat').val(value.alamat).trigger('change'); // alamat
+	$('#telp').val(value.telp).trigger('change'); // telp
+	$('#email').val(value.email).trigger('change'); // email
+	$('#tgl_masuk').datepicker('update',value.tgl_masuk); // email
+	$('#jabatan').val(value.id_pekerjaan).trigger('change'); // alamat
+	$('#status').val(value.status).trigger('change'); // status
 	$('#id_karyawan').val(value.id);
 }
 
@@ -430,7 +422,6 @@ function resetForm(){
 	$('#form_karyawan').find("div.form-group .field").val('');
 	$('#form_karyawan').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
 	$('#form_karyawan').find("span.pesan").text(""); // hapus semua span help-block
-	$('#form_karyawan').find("span.setError, span.setSuccess").css("display", "none"); // hapus semua span icon
 	$('#id_karyawan').val("");
 }
 
@@ -445,7 +436,7 @@ function setSelect_jabatan(){
 			console.log(data);
 			$.each(data, function(index, item){
 				var option = new Option(item.text, item.value);
-				$('#jabatan').append(option);
+				$('#jabatan').append(option).trigger('change');
 			});
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
