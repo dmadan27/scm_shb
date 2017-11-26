@@ -102,6 +102,7 @@
 		alamat text,
 		telp varchar(20),
 		email varchar(50),
+		status char(1), -- 1: aktif 0: non-aktif
 
 		CONSTRAINT pk_buyer_id PRIMARY KEY(id)
 	);
@@ -422,6 +423,15 @@
 		FROM supplier s
 		JOIN supplier s2 ON s2.id=s.supplier_utama
 		ORDER BY status DESC, s.id ASC;
+
+	-- ====================================== --
+
+	# view Buyer
+	CREATE OR REPLACE VIEW v_buyer AS
+		SELECT id, npwp, nama, alamat, telp, email, 
+			(CASE WHEN (status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+		FROM buyer
+		ORDER BY id ASC;
 
 	-- ====================================== --
 

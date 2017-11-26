@@ -4,7 +4,7 @@
 	include_once("../function/validasi_form.php");
 	include_once("../library/datatable.php");
 
-	include_once("../models/Supplier_model.php");
+	include_once("../models/Buyer_model.php");
 
 	$action = isset($_POST['action']) ? $_POST['action'] : false;
 	$id = isset($_POST['id']) ? $_POST['id'] : false;
@@ -13,7 +13,7 @@
 	else{
 		switch (strtolower($action)) {
 			case 'list':
-				listSupplier($koneksi);
+				listBuyer($koneksi);
 				break;
 			
 			case 'tambah':
@@ -26,10 +26,6 @@
 
 			case 'edit':
 				action($koneksi, $action);
-				break;
-
-			case 'get_select_supplierutama':
-				get_select_supplierUtama($koneksi);
 				break;
 
 			case 'getview':
@@ -51,23 +47,23 @@
 		}
 	}
 
-	// fungsi list supplier
-	function listSupplier($koneksi){
+	// fungsi list buyer
+	function listBuyer($koneksi){
 		$config_db = array(
-			'tabel' => 'v_supplier',
-			'kolomOrder' => array(null, 'nik', 'npwp', 'nama', 'alamat', 'telp', 'status', null),
-			'kolomCari' => array('nik', 'npwp', 'nama', 'alamat', 'telp', 'status'),
+			'tabel' => 'v_buyer',
+			'kolomOrder' => array(null, 'npwp', 'nama', 'alamat', 'telp', 'email', 'status', null),
+			'kolomCari' => array('npwp', 'nama', 'alamat', 'telp', 'email', 'status'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
 
-		$data_supplier = get_datatable_supplier($koneksi, $config_db);
+		$data_buyer = get_datatable_buyer($koneksi, $config_db);
 
 		$data = array();
 		$no_urut = $_POST['start'];
-		foreach($data_supplier as $row){
+		foreach($data_buyer as $row){
 			$no_urut++;
-			$status = strtolower($row['status'])=='utama' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
+			$status = strtolower($row['status'])=='aktif' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 			
 			// view
 			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
@@ -76,11 +72,11 @@
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = gantiKosong($row['nik']);
 			$dataRow[] = gantiKosong($row['npwp']);
 			$dataRow[] = $row['nama'];
 			$dataRow[] = gantiKosong($row['alamat']);
 			$dataRow[] = gantiKosong($row['telp']);
+			$dataRow[] = gantiKosong($row['email']);
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
@@ -113,27 +109,25 @@
 
 		if($cek){
 			$dataForm = array(
-				'id_supplier' => validInputan($dataForm['id_supplier'], false, false),
-				'nik' => (empty($dataForm['nik'])) ? NULL : validInputan($dataForm['nik'], false, false),
+				'id_buyer' => validInputan($dataForm['id_buyer'], false, false),
 				'npwp' => (empty($dataForm['npwp'])) ? NULL : validInputan($dataForm['npwp'], false, false),
 				'nama' => validInputan($dataForm['nama'], false, false),
 				'alamat' => (empty($dataForm['alamat'])) ? NULL : validInputan($dataForm['alamat'], false, false),
 				'telp' => (empty($dataForm['telp'])) ? NULL : validInputan($dataForm['telp'], false, false),
 				'email' => (empty($dataForm['email'])) ? NULL : validInputan($dataForm['email'], false, true),
 				'status' => validInputan($dataForm['status'], false, false),
-				'supplier_utama' => validInputan($dataForm['supplier_utama'], false, false),
 			);
 
 			// cek aksi
 			if($action === "tambah"){ // insert
-				if(insertSupplier($koneksi, $dataForm)) $status = true;
+				if(insertBuyer($koneksi, $dataForm)) $status = true;
 				else{
 					$status = false;
 					$errorDB = true;
 				}
 			}
 			else if($action === "edit"){ // update
-				if(updateSupplier($koneksi, $dataForm)) $status = true;
+				if(updateBuyer($koneksi, $dataForm)) $status = true;
 				else{
 					$status = false;
 					$errorDB = true;
@@ -157,99 +151,14 @@
 
 	// funsi get data edit
 	function getEdit($koneksi, $id){
-		$data_supplier = empty(getSupplier_by_id($koneksi, $id)) ? false : getSupplier_by_id($koneksi, $id);
+		$data_buyer = empty(getBuyer_by_id($koneksi, $id)) ? false : getBuyer_by_id($koneksi, $id);
 
-		echo json_encode($data_supplier);
-	}
-
-	// fungsi get view
-	function getView($koneksi, $id){
-		// $data_supplier = 
-
-		// echo json_encode($data_supplier);
-	}
-
-	// function get data supplier utama untuk select
-	function get_select_supplierUtama($koneksi){
-		$data_supplierUtama = get_data_supplierUtama($koneksi);
-		$data = array(
-			array(
-				'value' => "",
-				'text' => "-- Pilih Supplier Utama --",
-			),
-		);
-		foreach ($data_supplierUtama as $row) {
-			$text = $row['npwp'].' - '.$row['nama'];
-
-			if(empty($row['npwp'])){ // jika nik kosong
-				// jika npwp ada
-				$text = (!empty($row['nik'])) ? $row['nik'].' (NIK) - '.$row['nama'] : $row['nama'];
-			}
-			$dataRow = array();
-			$dataRow['value'] = $row['id'];
-			$dataRow['text'] = $text;
-
-			$data[] = $dataRow;
-		}
-
-		echo json_encode($data);
-	}
-
-	// function get excel
-	function getExcel(){
-
-	}
-
-	// function get pdf
-	function getPdf($koneksi, $jenis, $id=false){
-		// cek jenis report
-		if(strtolower($jenis) == "default"){ // tampilkan list supplier
-			$data_supplier = get_all_supplier($koneksi);
-			$columns = array(
-				"No", "NIK", "NPWP", "Nama", "Alamat", "No. Telepon", "Status", "Supplier Utama",
-			);
-			$rows = array();
-			$no_urut = 0;
-			// pecah data untuk di sesuaikan format
-			foreach($data_supplier as $row){
-				$no_urut++;
-
-				$dataRow = array();
-				$dataRow[] = $no_urut;
-				$dataRow[] = gantiKosong($row['nik']);
-				$dataRow[] = gantiKosong($row['npwp']);
-				$dataRow[] = $row['nama'];
-				$dataRow[] = gantiKosong($row['alamat']);
-				$dataRow[] = gantiKosong($row['telp']);
-				$dataRow[] = gantiKosong($row['email']);
-				$dataRow[] = $row['status'];
-				$dataRow[] = ($row['nama'] == $row['nama_utama']) ? "-" : $row['nama_utama'];
-
-				$rows[] = $dataRow;
-			}
-
-			$output = array(
-				"columns" => $columns,
-				"rows" => $rows,
-			);
-		}
-		else{ // by id supplier + transaksi
-			$data_supplier = getSupplier_full_by_id($koneksi, $id);
-		}
-
-		echo json_encode($output);
+		echo json_encode($data_buyer);
 	}
 
 	// set rule validasi
 	function setRule_validasi($data){
-		$required_supplierUtama = $data['status']==='0' ? 'required' : 'not_required'; 
-
 		$ruleData = array(
-			// nik
-			array(
-				'field' => $data['nik'], 'label' => 'NIK', 'error' => 'nikError',
-				'value' => 'nik', 'rule' => 'angka | 16 | 16 | not_required',
-			),
 			// npwp
 			array(
 				'field' => $data['npwp'], 'label' => 'NPWP', 'error' => 'npwpError',
@@ -270,15 +179,15 @@
 				'field' => $data['alamat'], 'label' => 'Alamat', 'error' => 'alamatError',
 				'value' => 'alamat', 'rule' => 'string | 1 | 255 | not_required',
 			),
+			// email
+			array(
+				'field' => $data['email'], 'label' => 'Email', 'error' => 'emailError',
+				'value' => 'email', 'rule' => 'email | 1 | 255 | not_required',
+			),
 			// status
 			array(
 				'field' => $data['status'], 'label' => 'Status Supplier', 'error' => 'statusError',
 				'value' => 'status', 'rule' => 'angka | 1 | 1 | required',
-			),
-			// supplier utama
-			array(
-				'field' => $data['supplier_utama'], 'label' => 'Supplier Utama', 'error' => 'supplierUtamaError',
-				'value' => 'supplier_utama', 'rule' => 'angka | 1 | 1000 | '.$required_supplierUtama,
 			),
 		);
 
