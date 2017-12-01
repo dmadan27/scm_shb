@@ -52,6 +52,14 @@ $(document).ready(function(){
     		}
     	});
 
+    	// telp
+    	$("#telp").change(function(){
+    		if(this.value !== ""){
+    			$('.field-telp').addClass('has-success');
+				$(".field-telp span.help-block").text('');
+    		}
+    	});
+
     	// email
     	$("#email").change(function(){
     		if(this.value !== ""){
@@ -258,6 +266,16 @@ function setError(error){
 	else{
 		$('.field-telp').removeClass('has-error').addClass('has-success');
 		$(".field-telp span.help-block").text('');
+	}
+
+	// email
+	if(!jQuery.isEmptyObject(error.emailError)){
+		$('.field-email').addClass('has-error');
+		$(".field-email span.help-block").text(error.emailError);
+	}
+	else{
+		$('.field-email').removeClass('has-error').addClass('has-success');
+		$(".field-email span.help-block").text('');
 	}
 
 	// alamat

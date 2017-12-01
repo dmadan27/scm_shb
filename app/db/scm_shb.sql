@@ -109,13 +109,13 @@
 
 	-- Data User
 		-- Tabel Hak Akses
-		CREATE TABLE hak_akses(
-			id int NOT NULL AUTO_INCREMENT,
-			hak_akses varchar(255),
-			url varchar(255),
+		-- CREATE TABLE hak_akses(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	hak_akses varchar(255),
+		-- 	menu varchar(255),
 
-			CONSTRAINT pk_hak_akses_id PRIMARY KEY(id)
-		);
+		-- 	CONSTRAINT pk_hak_akses_id PRIMARY KEY(id)
+		-- );
 
 		-- Tabel user
 		CREATE TABLE user(
@@ -124,18 +124,16 @@
 			jenis char(1), -- k: karyawan, b: buyer
 			status char(1), -- 1: aktif, 0: non-aktif
 
-			CONSTRAINT pk_user_username PRIMARY KEY(id)
+			CONSTRAINT pk_user_username PRIMARY KEY(username)
 		);
 
 		-- Tabel Detail hak akses user
-		CREATE TABLE detail_user(
+		CREATE TABLE hak_akses(
 			-- id int NOT NULL AUTO_INCREMENT,
 			username varchar(10), -- fk
-			id_hak_akses int, -- fk
+			hak_akses varchar(50),
 
-			CONSTRAINT pk_detail_user_id PRIMARY KEY(id),
-			CONSTRAINT fk_detail_user_username FOREIGN KEY(username) REFERENCES user(username),
-			CONSTRAINT fk_detail_user_hak_akses FOREIGN KEY(hak_akses) REFERENCES hak_akses(id)
+			CONSTRAINT fk_hak_akses_username FOREIGN KEY(username) REFERENCES user(username)
 		);
 		
 		-- Tabel user karyawan
@@ -145,7 +143,8 @@
 			id_karyawan int, -- fk
 
 			-- CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
-			CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username)
+			CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username),
+			CONSTRAINT fk_user_karyawan_id_karyawan FOREIGN KEY(id_karyawan) REFERENCES karyawan(id)
 		);
 		
 		-- Tabel user buyer
@@ -155,7 +154,8 @@
 			id_buyer int, -- fk
 
 			-- CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
-			CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username)
+			CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username),
+			CONSTRAINT fk_user_karyawan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
 		);
 
 		-- Tabel user supplier
@@ -404,6 +404,20 @@
 		-- Tambah Karyawan => Insert karyawan seperti biasa
 		-- Edit Karyawan => Update Karyawan seperti biasa
 		-- Hapus Karyawan => ?
+
+	-- Data User
+		-- Tambah User => Insert user, Insert hak_akses, Insert user_buyer/user_karyawan
+		CREATE PROCEDURE tambah_user(
+			in username_param varchar(10),
+			in password_param text,
+			in jenis_param char(1)
+			in status_param char(1),
+		)
+		BEGIN
+			
+		END;
+
+		-- Edit User => 
 # =========================================== #
 
 # ================== VIEW =================== #
@@ -458,6 +472,38 @@
 		FROM kendaraan k
 		JOIN karyawan kry ON kry.id = k.id_supir
 		ORDER BY id ASC, status ASC;
+
+	-- ====================================== --
+
+	# view user
+	CREATE OR REPLACE VIEW v_user AS
+		-- karyawan
+		SELECT 
+			u.username, k.nama,
+			 (CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
+			GROUP_CONCAT(h.hak_akses separator ', ') hak_akses,
+		    (CASE WHEN (u.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+		FROM user u
+		JOIN user_karyawan uk ON uk.username = u.username
+		JOIN hak_akses h ON h.username = u.username
+		JOIN karyawan k ON uk.id_karyawan = k.id
+		GROUP BY u.username
+
+		UNION
+
+		-- buyer
+		SELECT 
+			u.username, b.nama,
+			 (CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
+			GROUP_CONCAT(h.hak_akses separator ', ') hak_akses,
+		    (CASE WHEN (u.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+		FROM user u
+		JOIN user_buyer ub ON ub.username = u.username
+		JOIN hak_akses h ON h.username = u.username
+		JOIN buyer b ON ub.id_buyer=b.id
+		GROUP BY u.username;		
+
+	-- ====================================== --
 
 -- ====================================== --
 

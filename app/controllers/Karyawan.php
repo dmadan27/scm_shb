@@ -33,6 +33,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'get_select_karyawan':
+				get_select_karyawan($koneksi);
+				break;
+
 			case 'getselect_pekerjaan':
 				getSelect_pekerjaan($koneksi);
 				break;
@@ -264,6 +268,28 @@
 			$dataRow = array();
 			$dataRow['value'] = $row['id'];
 			$dataRow['text'] = $row['nama'];
+
+			$data[] = $dataRow;
+		}
+
+		echo json_encode($data);
+	}
+
+	// fungsi get select karyawan
+	function get_select_karyawan($koneksi){
+		$data_karyawan = get_data_select_karyawan($koneksi);
+		$data = array(
+			array(
+				'value' => "",
+				'text' => "-- Pilih Karyawan --",
+			),
+		);
+		foreach($data_karyawan as $row){
+			$text = $row['nama'].' - '.$row['jabatan'];
+
+			$dataRow = array();
+			$dataRow['value'] = $row['id'];
+			$dataRow['text'] = $text;
 
 			$data[] = $dataRow;
 		}

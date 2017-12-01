@@ -33,23 +33,21 @@
     	 						</div>
     	 					</div>
     	 				</div>
-    	 				<div class="table-responsive">
-    	 					<table id="tabel_kendaraan" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-	    	 					<thead>
-	    	 						<tr>
-	    	 							<th style="width: 15px">No</th>
-	    	 							<th>No. Polisi</th>
-	    	 							<th>Tahun</th>
-                                        <th>Supir</th>
-                                        <th>Pendamping</th>
-	    	 							<th>Jenis</th>
-	    	 							<th>Muatan</th>
-	    	 							<th>Status</th>
-	    	 							<th>Aksi</th>
-	    	 						</tr>
-	    	 					</thead>
-	    	 				</table>
-    	 				</div>	
+	 					<table id="tabel_kendaraan" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+    	 					<thead>
+    	 						<tr>
+    	 							<th style="width: 15px">No</th>
+    	 							<th>No. Polisi</th>
+    	 							<th>Tahun</th>
+                                    <th>Supir</th>
+                                    <th>Pendamping</th>
+    	 							<th>Jenis</th>
+    	 							<th>Muatan</th>
+    	 							<th>Status</th>
+    	 							<th>Aksi</th>
+    	 						</tr>
+    	 					</thead>
+    	 				</table>	
     	 			</div>
     	 		</div>
     	 	</div>

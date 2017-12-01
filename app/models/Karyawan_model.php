@@ -32,6 +32,20 @@
 		return $result;
 	}
 
+	// get data karyawan untuk select
+	function get_data_select_karyawan($koneksi){
+		$status = '1';
+		$query = "SELECT k.id, k.nama, p.nama jabatan FROM karyawan k ";
+		$query .= "JOIN pekerjaan p ON p.id=k.id_pekerjaan WHERE status=:status";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':status', $status);
+		$statement->execute();
+		$result = $statement->fetchAll();
+
+		return $result;
+	}
+
 	// get data select supir
 	function get_data_supir($koneksi){
 		$status = '1';

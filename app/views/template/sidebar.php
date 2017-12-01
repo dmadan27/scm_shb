@@ -51,6 +51,10 @@
                     <li class="menu-data-buyer"><a href="<?= base_url."index.php?m=buyer&p=list"; ?>"><i class="mdi mdi-account-multiple-outline fa-fw"></i><span class="hide-menu">Data Buyer</span></a></li>
                     <!-- data barang -->
                     <li class="menu-data-barang"><a href="<?= base_url."index.php?m=barang&p=list"; ?>"><i class="mdi mdi-cube-outline fa-fw"></i><span class="hide-menu">Data Barang</span></a></li>
+                    <!-- data hak akses -->
+                    <li class="menu-data-hak-akses"><a href="<?= base_url."index.php?m=hak_akses&p=list"; ?>"><i class="mdi mdi-cube-outline fa-fw"></i><span class="hide-menu">Data Hak Akses</span></a></li>
+                    <!-- data user -->
+                    <li class="menu-data-user"><a href="<?= base_url."index.php?m=user&p=list"; ?>"><i class="mdi mdi-cube-outline fa-fw"></i><span class="hide-menu">Data User</span></a></li>
                 </ul>
             </li>
 

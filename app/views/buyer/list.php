@@ -33,20 +33,22 @@
     	 						</div>
     	 					</div>
     	 				</div>
-	 					<table id="tabel_buyer" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-    	 					<thead>
-    	 						<tr>
-    	 							<th style="width: 15px">No</th>
-    	 							<th>NPWP</th>
-    	 							<th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>No. Telepon</th>
-                                    <th>Email</th>
-    	 							<th>Status</th>
-    	 							<th>Aksi</th>
-    	 						</tr>
-    	 					</thead>
-    	 				</table>
+                        <div class="table-responsive">
+                            <table id="tabel_buyer" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15px">No</th>
+                                        <th>NPWP</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>No. Telepon</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
     	 			</div>
     	 		</div>
     	 	</div>

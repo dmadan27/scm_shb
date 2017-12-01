@@ -1,6 +1,29 @@
 <?php
 	define("base_url", "http://localhost/scm_shb/");
 
+	define("base_hak_akses", 
+		array(
+			'beranda' => '<li class="menu-beranda"> <a href="'.base_url.'"> <i class="mdi mdi-home fa-fw" data-icon="v"><i/> <span class="hide-menu">Beranda</span> </a> </li>',
+			// data master //
+				'pekerjaan' => '<li class="menu-data-pekerjaan"> <a href="'.base_url.'index.php?m=pekerjaan&p=list"> <i class="mdi mdi-account-card-details fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Pekerjaan</span> </a> </li>',
+				'karyawan' => '<li class="menu-data-karyawan"> <a href="'.base_url.'index.php?m=karyawan&p=list"> <i class="mdi mdi-home fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Karyawan</span> </a> </li>',
+				'kendaraan' => '<li class="menu-data-kendaraan"> <a href="'.base_url.'index.php?m=kendaraan&p=list"> <i class="mdi mdi-car fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Kendaraan</span> </a> </li>',
+				'barang' => '<li class="menu-data-barang"> <a href="'.base_url.'index.php?m=barang&p=list"> <i class="mdi mdi-cube-outline fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Barang</span> </a> </li>',
+				'supplier' => '<li class="menu-data-supplier"> <a href="'.base_url.'index.php?m=supplier&p=list"> <i class="mdi mdi-account-multiple fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Supplier</span> </a> </li>',
+				'buyer' => '<li class="menu-data-buyer"> <a href="'.base_url.'index.php?m=buyer&p=list"> <i class="mdi mdi-account-multiple-outline fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Buyer</span> </a> </li>',
+				'user' => '<li class="menu-data-user"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data User</span> </a> </li>',
+			// =========== //
+			'kir' => '<li class="menu-data-kir"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data User</span> </a> </li>',
+			'analisa_harga' => '<li class="menu-data-analisa-harga"> <a href="'.base_url.'index.php?m=analisa&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Analisa Harga</span> </a> </li>',
+			'pembelian' => '<li class="menu-data-pembelian"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Pembelian</span> </a> </li>',
+			'pemesanan' => '<li class="menu-data-pemesanan"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Pemesanan</span> </a> </li>',
+			'pengiriman' => '<li class="menu-data-pengiriman"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Pengiriman</span> </a> </li>',
+			'mutasi_barang' => '<li class="menu-data-mutasi-barang"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Mutasi Barang</span> </a> </li>',
+			'produksi' => '<li class="menu-data-produksi"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Produksi</span> </a> </li>',
+			'peramalan' => '<li class="menu-data-peramalan"> <a href="'.base_url.'index.php?m=user&p=list"> <i class="mdi mdi-folder-account fa-fw" data-icon="v"><i/> <span class="hide-menu">Data Peramalan</span> </a> </li>',
+		)
+	);
+
 	function cekDuplikat($koneksi, $config_db){
 		$tabel = $config_db['tabel'];
 		$field = $config_db['field'];
@@ -104,9 +127,9 @@
 		$array = explode(',', $dataItem);
 		$array = array_map('trim', $array);
 
-		$dataList = "<ul class='list-unstyled'>";
+		$dataList = "<ul class='list-icons'>";
 		foreach($array as $list){
-			$dataList .= "<li>".$list."</li>";
+			$dataList .= "<li><i class='ti-angle-right'></i>MENU ".strtoupper($list)."</li>";
 		}
 		$dataList .= "</ul>";
 

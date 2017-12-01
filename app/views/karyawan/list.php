@@ -34,21 +34,19 @@
     	 						</div>
     	 					</div>
     	 				</div>
-    	 				<div class="table-responsive">
-    	 					<table id="tabel_karyawan" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-	    	 					<thead>
-	    	 						<tr>
-	    	 							<th style="width: 15px">No</th>
-	    	 							<th>No. Induk Karyawan</th>
-                                        <th>NPWP</th>
-	    	 							<th>Nama</th>
-	    	 							<th>Jabatan</th>
-	    	 							<th>Status</th>
-	    	 							<th>Aksi</th>
-	    	 						</tr>
-	    	 					</thead>
-	    	 				</table>
-    	 				</div>	
+	 					<table id="tabel_karyawan" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+    	 					<thead>
+    	 						<tr>
+    	 							<th style="width: 15px">No</th>
+    	 							<th>No. Induk Karyawan</th>
+                                    <th>NPWP</th>
+    	 							<th>Nama</th>
+    	 							<th>Jabatan</th>
+    	 							<th>Status</th>
+    	 							<th>Aksi</th>
+    	 						</tr>
+    	 					</thead>
+    	 				</table>
     	 			</div>
     	 		</div>
     	 	</div>

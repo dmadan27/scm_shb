@@ -32,6 +32,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'get_select_buyer':
+				get_select_buyer($koneksi);
+				break;
+
 			case 'getexcel':
 
 				break;
@@ -154,6 +158,26 @@
 		$data_buyer = empty(getBuyer_by_id($koneksi, $id)) ? false : getBuyer_by_id($koneksi, $id);
 
 		echo json_encode($data_buyer);
+	}
+
+	// fungsi get select buyer
+	function get_select_buyer($koneksi){
+		$data_buyer = get_data_select_buyer($koneksi);
+		$data = array(
+			array(
+				'value' => "",
+				'text' => "-- Pilih Buyer --",
+			),
+		);
+		foreach($data_buyer as $row){
+			$dataRow = array();
+			$dataRow['value'] = $row['id'];
+			$dataRow['text'] = $row['nama'];
+
+			$data[] = $dataRow;
+		}
+
+		echo json_encode($data);
 	}
 
 	// set rule validasi
