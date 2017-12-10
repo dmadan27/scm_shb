@@ -275,17 +275,18 @@
 		CREATE TABLE pemesanan(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
-			id_buyer int, -- fk
 			no_kontrak varchar(50),
+			id_buyer int, -- fk
+			id_barang int, -- fk dari barang (produk)
 			jumlah_karung int,
 			ket_karung enum('JUMLAH PASTI', 'PERKIRAAN'),
 			kemasan enum('KARUNG GONI', 'KARUNG PLASTIK'),
-			netto double(12,2), -- jumlah barang (kg)
-			id_barang int, -- fk dari barang (produk)
+			jumlah double(12,2), -- jumlah barang (kg)
 			-- differential int, -- harga
 			-- terminal date, -- month/date
 			waktu_pengiriman date, -- tgl pengiriman
-			catatan text, -- keterangan kontrak
+			batas_waktu_pengiriman date,
+			ket text, -- keterangan kontrak
 			lampiran text, -- lampiran file kontrak
 			status char(1), -- status kontrak/pemesanan, s: sukses, p: pending, r: reject
 			-- user varchar(10),
@@ -298,19 +299,28 @@
 		-- Tabel pengiriman (belum beres)
 		CREATE TABLE pengiriman(
 			id int NOT NULL AUTO_INCREMENT,
-			id_pemesanan int,
+			tgl date,
+			id_pemesanan int, -- fk
+			id_kendaraan int, -- fk
+			colly int,
+			jumlah double(12,2),
+			status char(1), -- status pengiriman. perjalanan/on delivery, terkirim
+
+			CONSTRAINT pk_pengiriman_id PRIMARY KEY(id),
+			CONSTRAINT fk_pengiriman_id_pemesanan FOREIGN KEY(id_pemesanan) REFERENCES pemesanan(id),
+			CONSTRAINT fk_pengiriman_id_kendaraan FOREIGN KEY(id_kendaraan) REFERENCES kendaraan(id)
 		);
 
 		-- Tabel detail pengiriman (belum beres)
-		CREATE TABLE detail_pengiriman(
-			id int NOT NULL AUTO_INCREMENT,
-			tgl date,
-			id_pengiriman int, -- fk
-			id_kendaraan int, -- fk
-			colly int,
-			netto double(12,2),
-			status char(1), -- status pengiriman. perjalanan/on delivery, terkirim 
-		);
+		-- CREATE TABLE detail_pengiriman(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	tgl date,
+		-- 	id_pengiriman int, -- fk
+		-- 	id_kendaraan int, -- fk
+		-- 	colly int,
+		-- 	netto double(12,2),
+		-- 	status char(1), 
+		-- );
 
 	-- Data Persediaan
 		-- Tabel Mutasi Barang (belum yakin)
@@ -339,10 +349,14 @@
 		CREATE TABLE produksi(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
-			id_barang int, -- fk
+			id_barang_produk int, -- fk
+			id_barang_bahan_baku int, -- fk
 			jumlah double(12,2),
 			hasil double(12,2),
 
+			CONSTRAINT pk_produksi_id PRIMARY KEY(id),
+			CONSTRAINT fk_produksi_id_barang_produk FOREIGN KEY(id_barang_produk) REFERENCES barang(id),
+			CONSTRAINT fk_produksi_id_barang_bahan_baku FOREIGN KEY(id_barang_bahan_baku) REFERENCES barang(id)
 		);
 
 # =========================================== #
