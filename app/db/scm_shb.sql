@@ -122,19 +122,20 @@
 			username varchar(10) NOT NULL,
 			password text NOT NULL,
 			jenis char(1), -- k: karyawan, b: buyer
+			hak_akses varchar(50),
 			status char(1), -- 1: aktif, 0: non-aktif
 
 			CONSTRAINT pk_user_username PRIMARY KEY(username)
 		);
 
 		-- Tabel Detail hak akses user
-		CREATE TABLE hak_akses(
-			-- id int NOT NULL AUTO_INCREMENT,
-			username varchar(10), -- fk
-			hak_akses varchar(50),
+		-- CREATE TABLE hak_akses(
+		-- 	-- id int NOT NULL AUTO_INCREMENT,
+		-- 	username varchar(10), -- fk
+		-- 	hak_akses varchar(50),
 
-			CONSTRAINT fk_hak_akses_username FOREIGN KEY(username) REFERENCES user(username)
-		);
+		-- 	CONSTRAINT fk_hak_akses_username FOREIGN KEY(username) REFERENCES user(username)
+		-- );
 		
 		-- Tabel user karyawan
 		CREATE TABLE user_karyawan(
@@ -214,7 +215,7 @@
 		id int NOT NULL AUTO_INCREMENT,
 		tgl date,
 		jenis char(1), -- k: basis kopi, l: basis lada hitam
-		basis double(12,2),
+		harga_basis double(12,2),
 
 		CONSTRAINT pk_harga_basis_id PRIMARY KEY(id)
 	);
