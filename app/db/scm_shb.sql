@@ -8,7 +8,7 @@
 		-- Tabel Pekerjaan
 		CREATE TABLE pekerjaan(
 			id int NOT NULL AUTO_INCREMENT,
-			nama varchar(255),
+			nama varchar(50),
 			ket text,
 
 			CONSTRAINT pk_pekerjaan_id PRIMARY KEY(id)
@@ -102,6 +102,7 @@
 		alamat text,
 		telp varchar(20),
 		email varchar(50),
+		foto text,
 		status char(1), -- 1: aktif 0: non-aktif
 
 		CONSTRAINT pk_buyer_id PRIMARY KEY(id)
@@ -160,21 +161,21 @@
 		);
 
 		-- Tabel user supplier
-		CREATE TABLE user_supplier(
-			-- id int NOT NULL AUTO_INCREMENT, 
-			username varchar(10), -- fk
-			id_supplier int, -- fk
+		-- CREATE TABLE user_supplier(
+		-- 	-- id int NOT NULL AUTO_INCREMENT, 
+		-- 	username varchar(10), -- fk
+		-- 	id_supplier int, -- fk
 
-			-- CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
-			CONSTRAINT fk_user_supplier_username FOREIGN KEY(username) REFERENCES user(username)
-		);
+		-- 	-- CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_user_supplier_username FOREIGN KEY(username) REFERENCES user(username)
+		-- );
 
 	-- Data KIR
 		-- Tabel KIR
 		CREATE TABLE kir(
-			-- id int NOT NULL AUTO_INCREMENT,
+			id int NOT NULL AUTO_INCREMENT,
 			kd_kir varchar(25), -- KIR-kopi/lada-tgl-increment
-			tgl datetime, -- tgl dan jam
+			tgl date, -- tgl dan jam
 			id_supplier int, -- fk
 			id_barang int, -- jenis bahan baku (kopi/lada)
 			status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
@@ -225,8 +226,8 @@
 		id int NOT NULL AUTO_INCREMENT,
 		tgl date,
 		id_kir int, -- fk
-		-- id_basis int,
-		basis double(12,2),
+		id_basis int,
+		harga_basis double(12,2),
 		harga_beli double(12,2),
 
 		CONSTRAINT pk_analisa_harga_id PRIMARY KEY(id),
@@ -245,7 +246,7 @@
 			pph double(12,2),
 			ket text,
 			status char(1), -- l: lunas, t: titipan
-			user varchar(10),
+			-- user varchar(10),
 
 			CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
 			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
@@ -260,7 +261,7 @@
 			-- id_kir int, -- fk
 			id_analisa_harga int, -- fk
 			colly int, -- jumlah karung
-			netto double(12,2), -- jumlah berat barang (kg)
+			jumlah double(12,2), -- jumlah berat barang (kg)
 			harga double(12,2),
 			subtotal double(12,2),
 
@@ -330,8 +331,8 @@
 			tgl date,
 			id_barang int, -- fk
 			-- stok_awal double(12,2),
-			masuk double(12,2),
-			keluar double(12,2),
+			brg_masuk double(12,2),
+			brg_keluar double(12,2),
 			-- stok_akhir double(12,2),
 
 			CONSTRAINT pk_mutasi_barang_id PRIMARY KEY(id),
@@ -342,8 +343,11 @@
 		CREATE TABLE peramalan(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
+			bulan char(1),
+			tahun year,
 			id_barang int, -- fk
-
+			hasil_peramalan double(12,2),
+			jumlah_bahan_baku double(12,2),
 		);
 
 		-- Tabel produksi
@@ -358,6 +362,14 @@
 			CONSTRAINT pk_produksi_id PRIMARY KEY(id),
 			CONSTRAINT fk_produksi_id_barang_produk FOREIGN KEY(id_barang_produk) REFERENCES barang(id),
 			CONSTRAINT fk_produksi_id_barang_bahan_baku FOREIGN KEY(id_barang_bahan_baku) REFERENCES barang(id)
+		);
+
+		CREATE TABLE safety_stok(
+			id int NOT NULL AUTO_INCREMENT,
+			id_peramalan int,
+			safety_stok_produk double(12,2),
+			safety_stok_bahan_baku double(12,2),
+
 		);
 
 # =========================================== #
