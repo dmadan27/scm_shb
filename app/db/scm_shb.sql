@@ -53,18 +53,39 @@
 		CONSTRAINT fk_kendaraan_id_supir FOREIGN KEY(id_supir) REFERENCES karyawan(id)
 	);
 
-	-- Tabel Barang
-	CREATE TABLE barang(
+	-- Tabel Bahan baku
+	CREATE TABLE bahan_baku(
 		id int NOT NULL AUTO_INCREMENT,
-		kd_barang varchar(25),
+		kd_bahan_baku varchar(25),
 		nama varchar(50),
-		ket text,
-		jenis enum('BAHAN BAKU', 'BAHAN SEKUNDER', 'PRODUK'),
 		satuan enum('KG', 'PCS'),
+		ket text,
 		foto text,
 		stok double(12,2),
 
-		CONSTRAINT pk_barang_id PRIMARY KEY(id)
+		CONSTRAINT pk_bahan_baku_id PRIMARY KEY(id)
+	);
+
+	-- Tabel Produk
+	CREATE TABLE produk(
+		id int NOT NULL AUTO_INCREMENT,
+		kd_produk varchar(25),
+		nama varchar(50),
+		satuan enum('KG', 'PCS'),
+		ket text,
+		foto text,
+		stok double(12,2),
+
+		CONSTRAINT pk_produk_id PRIMARY KEY(id)	
+	);
+
+	-- Tabel komposisi
+	CREATE TABLE komposisi(
+		id_produk int,
+		id_bahan_baku int,
+
+		CONSTRAINT fk_komposisi_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
+		CONSTRAINT fk_komposisi_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
 	);
 
 	-- Data Supplier
@@ -177,11 +198,12 @@
 			kd_kir varchar(25), -- KIR-kopi/lada-tgl-increment
 			tgl date, -- tgl dan jam
 			id_supplier int, -- fk
-			id_barang int, -- jenis bahan baku (kopi/lada)
+			id_bahan_baku int, -- jenis bahan baku (kopi/lada)
 			status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
 
-			-- CONSTRAINT pk_kir_id PRIMARY KEY(id),
-			CONSTRAINT fk_kir_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+			CONSTRAINT pk_kir_id PRIMARY KEY(id),
+			CONSTRAINT fk_kir_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
+			CONSTRAINT fk_kir_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
 		);
 
 		-- Tabel KIR Kopi
@@ -241,36 +263,41 @@
 			tgl date,
 			invoice varchar(25), -- kombinasi kode PB-tgl-increment
 			id_supplier int, -- fk
+			id_bahan_baku int, -- fk
+			id_analisa_harga int, --fk
+			colly int,
+			jumlah double(12,2), -- jumlah berat barang (kg)
 			jenis_pembayaran char(1), -- c: cash, t: transfer
 			jenis_pph double(5,2),
 			pph double(12,2),
+			harga double(12,2),
+			total double(12,2),
 			ket text,
 			status char(1), -- l: lunas, t: titipan
 			-- user varchar(10),
 
 			CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
 			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-			CONSTRAINT fk_pembelian_user FOREIGN KEY(user) REFERENCES user(username)
+			CONSTRAINT fk_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id),
+			CONSTRAINT fk_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id),
 		);
 
-		-- Tabel Detail Pembelian
-		CREATE TABLE detail_pembelian(
-			id int NOT NULL AUTO_INCREMENT,
-			id_pembelian int, -- fk
-			id_barang int, -- fk
-			-- id_kir int, -- fk
-			id_analisa_harga int, -- fk
-			colly int, -- jumlah karung
-			jumlah double(12,2), -- jumlah berat barang (kg)
-			harga double(12,2),
-			subtotal double(12,2),
+		-- -- Tabel Detail Pembelian
+		-- CREATE TABLE detail_pembelian(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	id_pembelian int, -- fk
+		-- 	id_barang int, -- fk
+		-- 	-- id_kir int, -- fk
+		-- 	id_analisa_harga int, -- fk
+		-- 	colly int, -- jumlah karung
+			
 
-			CONSTRAINT pk_detail_pembelian_id PRIMARY KEY(id),
-			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
-			CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
-			-- CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
-			CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
-		);
+		-- 	CONSTRAINT pk_detail_pembelian_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
+		-- 	CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
+		-- 	-- CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
+		-- 	CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
+		-- );
 
 	-- Data Penjualan
 		-- Tabel pemesanan (belum beres)
@@ -279,7 +306,7 @@
 			tgl date,
 			no_kontrak varchar(50),
 			id_buyer int, -- fk
-			id_barang int, -- fk dari barang (produk)
+			id_produk int, -- fk dari barang (produk)
 			jumlah_karung int,
 			ket_karung enum('JUMLAH PASTI', 'PERKIRAAN'),
 			kemasan enum('KARUNG GONI', 'KARUNG PLASTIK'),
@@ -295,7 +322,7 @@
 
 			CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
 			CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id),
-			CONSTRAINT fk_pemesanan_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
+			CONSTRAINT fk_pemesanan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
 		);
 
 		-- Tabel pengiriman (belum beres)
@@ -345,7 +372,7 @@
 			tgl date,
 			bulan char(1),
 			tahun year,
-			id_barang int, -- fk
+			id_produk int, -- fk
 			hasil_peramalan double(12,2),
 			jumlah_bahan_baku double(12,2),
 		);
@@ -354,8 +381,7 @@
 		CREATE TABLE produksi(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
-			id_barang_produk int, -- fk
-			id_barang_bahan_baku int, -- fk
+			id_produk int, -- fk
 			jumlah double(12,2),
 			hasil double(12,2),
 
