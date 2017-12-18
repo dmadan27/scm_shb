@@ -507,12 +507,11 @@
 		-- karyawan
 		SELECT 
 			u.username, k.nama,
-			 (CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
-			GROUP_CONCAT(h.hak_akses separator ', ') hak_akses,
+			(CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
+			u.hak_akses, 
 		    (CASE WHEN (u.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
 		FROM user u
 		JOIN user_karyawan uk ON uk.username = u.username
-		JOIN hak_akses h ON h.username = u.username
 		JOIN karyawan k ON uk.id_karyawan = k.id
 		GROUP BY u.username
 
@@ -521,12 +520,11 @@
 		-- buyer
 		SELECT 
 			u.username, b.nama,
-			 (CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
-			GROUP_CONCAT(h.hak_akses separator ', ') hak_akses,
+			(CASE WHEN (u.jenis = 'k') THEN 'KARYAWAN' ELSE 'BUYER' END) jenis,
+			u.hak_akses,
 		    (CASE WHEN (u.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
 		FROM user u
 		JOIN user_buyer ub ON ub.username = u.username
-		JOIN hak_akses h ON h.username = u.username
 		JOIN buyer b ON ub.id_buyer=b.id
 		GROUP BY u.username;		
 
