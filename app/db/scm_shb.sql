@@ -463,11 +463,25 @@
 		CREATE PROCEDURE tambah_user(
 			in username_param varchar(10),
 			in password_param text,
-			in jenis_param char(1)
+			in jenis_param char(1),
 			in status_param char(1),
+			in pengguna_param int,
+			in hak_akses_param varchar(50)
 		)
 		BEGIN
-			
+			-- insert user
+			INSERT INTO user(
+				username, password, jenis, hak_akses, status) 
+			VALUES(
+				username_param, password_param, jenis_param, hak_akses_param, status_param);
+
+			IF jenis_param = 'K' THEN -- jika jenis karyawan
+				-- insert user_karyawan
+				INSERT INTO user_karyawan(username, id_karyawan) VALUES(username_param, pengguna_param);
+			ELSE
+				-- insert user_buyer
+				INSERT INTO user_buyer(username, id_buyer) VALUES(username_param, pengguna_param);
+			END IF;
 		END;
 
 		-- Edit User => 

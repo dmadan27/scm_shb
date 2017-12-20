@@ -73,7 +73,7 @@
 							<div class="form-group field-hak-akses has-feedback m-b-5">
 								<label class="col-md-12" for="hak_akses">Hak Akses*</label>
 		                        <div class="col-md-12">
-		                            <select id="hak_akses" class="select2 select2-multiple form-control" multiple="multiple" data-placeholder="-- Pilih Hak Akses --">
+		                            <select id="hak_akses" class="form-control">
 		                            </select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
