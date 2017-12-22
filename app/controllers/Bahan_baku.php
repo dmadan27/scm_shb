@@ -39,22 +39,21 @@
 	}
 
 	// fungsi list bahan baku
-	function listSupplier($koneksi){
+	function listBahanBaku($koneksi){
 		$config_db = array(
 			'tabel' => 'bahan_baku',
-			'kolomOrder' => array(null, 'kd_bahan_baku', 'nama', 'satuan', 'alamat', 'telp', 'status', null),
-			'kolomCari' => array('nik', 'npwp', 'nama', 'alamat', 'telp', 'status'),
-			'orderBy' => false,
+			'kolomOrder' => array(null, 'kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok', null),
+			'kolomCari' => array('kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok'),
+			'orderBy' => array('id' => 'asc'),
 			'kondisi' => false,
 		);
 
-		$data_supplier = get_datatable_supplier($koneksi, $config_db);
+		$data_bahan_baku = get_datatable_bahan_baku($koneksi, $config_db);
 
 		$data = array();
 		$no_urut = $_POST['start'];
-		foreach($data_supplier as $row){
+		foreach($data_bahan_baku as $row){
 			$no_urut++;
-			$status = strtolower($row['status'])=='utama' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 			
 			// view
 			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
@@ -63,12 +62,11 @@
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = gantiKosong($row['nik']);
-			$dataRow[] = gantiKosong($row['npwp']);
+			$dataRow[] = $row['kd_bahan_baku'];
 			$dataRow[] = $row['nama'];
-			$dataRow[] = gantiKosong($row['alamat']);
-			$dataRow[] = gantiKosong($row['telp']);
-			$dataRow[] = $status;
+			$dataRow[] = $row['satuan'];
+			$dataRow[] = gantiKosong($row['ket']);
+			$dataRow[] = $row['stok'];
 			$dataRow[] = $aksi;
 
 			$data[] = $dataRow;

@@ -30,7 +30,7 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 7], // disable order di kolom 1 dan 3
+                "targets":[0, 6], // disable order di kolom 1 dan 3
                 "orderable":false,
             }
         ],
