@@ -352,18 +352,31 @@
 		-- );
 
 	-- Data Persediaan
-		-- Tabel Mutasi Barang (belum yakin)
-		CREATE TABLE mutasi_barang(
+		-- Tabel Mutasi Bahan Baku
+		CREATE TABLE mutasi_bahan_baku(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
-			id_barang int, -- fk
+			id_bahan_baku int, -- fk
 			-- stok_awal double(12,2),
 			brg_masuk double(12,2),
 			brg_keluar double(12,2),
 			-- stok_akhir double(12,2),
 
-			CONSTRAINT pk_mutasi_barang_id PRIMARY KEY(id),
-			CONSTRAINT fk_mutasi_barang_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
+			CONSTRAINT pk_mutasi_bahan_baku_id PRIMARY KEY(id),
+			CONSTRAINT fk_mutasi_bahan_baku_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+		);
+
+		CREATE TABLE mutasi_produk(
+			id int NOT NULL AUTO_INCREMENT,
+			tgl date,
+			id_produk int, -- fk
+			-- stok_awal double(12,2),
+			brg_masuk double(12,2),
+			brg_keluar double(12,2),
+			-- stok_akhir double(12,2),
+
+			CONSTRAINT pk_mutasi_produk_id PRIMARY KEY(id),
+			CONSTRAINT fk_mutasi_produk_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
 		);
 
 		-- Tabel peramalan (belum beres)
@@ -485,6 +498,42 @@
 		END;
 
 		-- Edit User => 
+
+		-- Hapus User =>
+
+	-- Data Bahan Baku
+		-- Tambah Bahan Baku => Insert bahan baku, Insert mutasi bahan baku
+		CREATE PROCEDURE tambah_bahan_baku(
+			in id_bahan_baku_param int,
+			in kd_bahan_baku_param int,
+			in nama_param varchar(50),
+			in satuan_param varchar(10),
+			in ket_param text,
+			in foto_param text,
+			in tgl_param date,
+			in stok_param double(12,2)
+		)
+		BEGIN
+			DECLARE id_param int;
+
+			SELECT `AUTO_INCREMENT` INTO id_param 
+		    FROM INFORMATION_SCHEMA.TABLES 
+		    WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'bahan_baku';
+			
+			-- Insert bahan baku
+			INSERT INTO bahan_baku(
+				kd_bahan_baku, nama, satuan, ket, foto, stok) 
+			VALUES(
+				kd_bahan_baku_param, nama_param, satuan_param, ket_param, foto_param, stok_param);
+
+			-- Insert mutasi barang
+			INSERT INTO mutasi_bahan_baku(
+				tgl, id_bahan_baku, brg_masuk, brg_keluar) 
+			VALUES(tgl_param, id_param, 0, 0);
+			
+		END;
+
+	-- Data Produk
 # =========================================== #
 
 # ================== VIEW =================== #
