@@ -196,6 +196,7 @@ function submit(){
 			console.log(output);
 			if(!output.status){ // jika gagal
 				resetForm();
+				setValue(output.setValue);
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
@@ -212,12 +213,10 @@ function submit(){
 					});
 					setError(output.setError);
 				}
-				setValue(output.setValue);
 			}
 			else{
 				resetForm();
-				$(".field-foto a.fileinput-exists").trigger('click');
-				$("#modal_karyawan").modal('hide');
+				// $(".field-foto a.fileinput-exists").trigger('click');
 				var toastText = ($("#btnSubmit_karyawan").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
 				$.toast({
 					heading: 'Pesan Berhasil',

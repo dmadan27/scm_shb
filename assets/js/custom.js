@@ -154,13 +154,118 @@ $(document).ready(function () {
                     $('.menu-data-buyer').find('a').first().addClass('active');
                     break;
 
-                // menu data transportasi
+                // menu data bahan baku
+                case "bahan_baku":
+                    $('.menu-data-master').addClass('active');
+                    $('.menu-data-master').find('a').first().addClass('active');
+                    $('.menu-data-master').find('ul').first().addClass('in');
+                    $('.menu-data-bahan-baku').addClass('active');
+                    $('.menu-data-bahan-baku').find('a').first().addClass('active');
+                    break;
+
+                // menu data produk
+                case "produk":
+                    $('.menu-data-master').addClass('active');
+                    $('.menu-data-master').find('a').first().addClass('active');
+                    $('.menu-data-master').find('ul').first().addClass('in');
+                    $('.menu-data-produk').addClass('active');
+                    $('.menu-data-produk').find('a').first().addClass('active');
+                    break;
+
+                // menu data harga basis
+                case "harga_basis":
+                    $('.menu-data-master').addClass('active');
+                    $('.menu-data-master').find('a').first().addClass('active');
+                    $('.menu-data-master').find('ul').first().addClass('in');
+                    $('.menu-data-harga-basis').addClass('active');
+                    $('.menu-data-harga-basis').find('a').first().addClass('active');
+                    break;
+
+                // menu data kendaraan
                 case "kendaraan":
                     $('.menu-data-master').addClass('active');
                     $('.menu-data-master').find('a').first().addClass('active');
                     $('.menu-data-master').find('ul').first().addClass('in');
                     $('.menu-data-kendaraan').addClass('active');
                     $('.menu-data-kendaraan').find('a').first().addClass('active');
+                    break;
+
+                // menu data user
+                case "user":
+                    $('.menu-data-master').addClass('active');
+                    $('.menu-data-master').find('a').first().addClass('active');
+                    $('.menu-data-master').find('ul').first().addClass('in');
+                    $('.menu-data-user').addClass('active');
+                    $('.menu-data-user').find('a').first().addClass('active');
+                    break;
+
+                // menu data kir
+                case "kir":
+                    $('.menu-data-kir').addClass('active');
+                    $('.menu-data-kir').find('a').first().addClass('active');
+                    break;
+
+                // menu data analisa harga
+                case "kir":
+                    $('.menu-data-analisa-harga').addClass('active');
+                    $('.menu-data-analisa-harga').find('a').first().addClass('active');
+                    break;
+
+                // menu data pembelian
+                case "pembelian":
+                    $('.menu-data-pembelian').addClass('active');
+                    $('.menu-data-pembelian').find('a').first().addClass('active');
+                    break;
+
+                // menu data pemesanan
+                case "pemesanan":
+                    $('.menu-data-pemesanan').addClass('active');
+                    $('.menu-data-pemesanan').find('a').first().addClass('active');
+                    break;
+
+                // menu data pengiriman
+                case "pengiriman":
+                    $('.menu-data-pengiriman').addClass('active');
+                    $('.menu-data-pengiriman').find('a').first().addClass('active');
+                    break;
+
+                // menu data perencanaan bahan baku
+                case "perencanaan_bahan_baku":
+                    $('.menu-data-peramalan').addClass('active');
+                    $('.menu-data-peramalan').find('a').first().addClass('active');
+                    break;
+
+                 // menu data safety stock
+                case "safety_stock":
+                    $('.menu-data-monitoring-persediaan').addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('a').first().addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('ul').first().addClass('in');
+                    $('.menu-data-safety-stock').addClass('active');
+                    $('.menu-data-safety-stock').find('a').first().addClass('active');
+                    break;
+
+                 // menu data mutasi bahan baku
+                case "mutasi_bahan_baku":
+                    $('.menu-data-monitoring-persediaan').addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('a').first().addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('ul').first().addClass('in');
+                    $('.menu-data-mutasi-bahan-baku').addClass('active');
+                    $('.menu-data-mutasi-bahan-baku').find('a').first().addClass('active');
+                    break;
+
+                 // menu data mutasi produk
+                case "mutasi_produk":
+                    $('.menu-data-monitoring-persediaan').addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('a').first().addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('ul').first().addClass('in');
+                    $('.menu-data-mutasi-produk').addClass('active');
+                    $('.menu-data-mutasi-produk').find('a').first().addClass('active');
+                    break;
+
+                // menu data produksi
+                case "produksi":
+                    $('.menu-data-produksi').addClass('active');
+                    $('.menu-data-produksi').find('a').first().addClass('active');
                     break;
 
                 // default menu beranda

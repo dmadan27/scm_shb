@@ -62,7 +62,10 @@
 							<div class="form-group field-stok has-feedback m-b-5">
 								<label class="col-md-12" for="stok">Stok Awal</label>
 		                        <div class="col-md-12">
-		                            <input id="stok" type="number" min="0" class="form-control" placeholder="Masukkan Stok Awal">
+		                        	<div class="input-group">
+		                        		<input id="stok" type="number" min="0" class="form-control" placeholder="Masukkan Stok Awal">
+		                        		<span class="input-group-addon satuan-stok"></span>
+		                        	</div>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>							

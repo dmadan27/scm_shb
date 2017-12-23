@@ -1,5 +1,7 @@
 <?php
-	Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
+    Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung");
+    $notif = isset($_SESSION['notif']) ? $_SESSION['notif'] : false;
+    unset($_SESSION['notif']);
 ?>
 <!-- Breadcrumb -->
 <div class="row bg-title">
@@ -17,52 +19,55 @@
 
 <!-- panel utama -->
 <div class="row">
-	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-        	<div class="panel-heading">List Data Produk</div>
-    	 	<div class="panel-wrapper collapse in">
-    	 		<div class="panel-wrapper collapse in">
-    	 			<div class="panel-body">
-    	 				<!-- panel button -->
-    	 				<div class="row">
-    	 					<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-    	 						<div class="btn-group m-b-30">
-    	 							<button id="tambah_produk" class="fcbtn btn btn-info btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
-    	 							<button id="exportExcel" class="fcbtn btn btn-success btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Export Data Ke Excel"><i class="fa fa-file-excel-o"></i> Export Excel</button>
-    	 							<button id="exportPdf" class="fcbtn btn btn-danger btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Export Data Ke Pdf"><i class="fa fa-file-pdf-o"></i> Export Pdf</button>
-    	 						</div>
-    	 					</div>
-    	 				</div>
-	 					<table id="tabel_produk" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-    	 					<thead>
-    	 						<tr>
-    	 							<th style="width: 15px">No</th>
-    	 							<th>No. KTP</th>
-    	 							<th>NPWP</th>
-    	 							<th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>No. Telepon</th>
-    	 							<th>Status</th>
-    	 							<th>Aksi</th>
-    	 						</tr>
-    	 					</thead>
-    	 				</table>
-    	 			</div>
-    	 		</div>
-    	 	</div>
+            <div class="panel-heading">List Data Produk</div>
+            <div class="panel-wrapper collapse in">
+                <div class="panel-wrapper collapse in">
+                    <div class="panel-body">
+                        <!-- panel button -->
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                                <div class="btn-group m-b-30">
+                                    <button id="tambah_produk" class="fcbtn btn btn-info btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Tambah Data"><i class="fa fa-plus"></i> Tambah</button>
+                                    <button id="exportExcel" class="fcbtn btn btn-success btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Export Data Ke Excel"><i class="fa fa-file-excel-o"></i> Export Excel</button>
+                                    <button id="exportPdf" class="fcbtn btn btn-danger btn-outline waves-effect waves-light btn-1b" data-toggle="tooltip" data-placement="top" title="Export Data Ke Pdf"><i class="fa fa-file-pdf-o"></i> Export Pdf</button>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="tabel_produk" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15px">No</th>
+                                    <th>Kode Produk</th>
+                                    <th>Nama</th>
+                                    <th>Satuan</th>
+                                    <th>Komposisi Bahan Baku</th>
+                                    <th>Keterangan</th>
+                                    <th>Stok</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Form Modal dan view Supplier -->
 <?php 
-    include_once('form.php');
-    include_once('view.php'); 
+    if($notif){
+        ?>
+        <script>var notif = "<?php echo $notif; ?>";</script>
+        <?php
+    }
+    else{
+        ?>
+        <script>var notif = false;</script>
+        <?php
+    } 
 ?>
 
 <!-- js list -->
-<script type="text/javascript" src="<?= base_url."app/views/supplier/js/initList.js"; ?>"></script>
-<!-- js form modal -->
-<script type="text/javascript" src="<?= base_url."app/views/supplier/js/initForm.js"; ?>"></script>
-<!-- js view modal -->
-<script type="text/javascript" src="<?= base_url."app/views/supplier/js/initView.js"; ?>"></script>
+<script type="text/javascript" src="<?= base_url."app/views/produk/js/initList.js"; ?>"></script>

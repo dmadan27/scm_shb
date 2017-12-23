@@ -257,8 +257,8 @@
 						$cek = true;
 					}
 				}
-				break;
-				case 'nilai':
+			break;
+			case 'nilai':
 				// cek required
 				if($required){ // jika wajib
 					// cek kosong
@@ -310,7 +310,7 @@
 						$cek = true;
 					}
 				}
-				break;
+			break;
 			default:
 				die();
 				break;

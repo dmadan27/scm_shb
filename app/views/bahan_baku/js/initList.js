@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	// setting datatable
-    var tabel_supplier = $("#tabel_bahanBaku").DataTable({
+    var tabel_bahanBaku = $("#tabel_bahanBaku").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",

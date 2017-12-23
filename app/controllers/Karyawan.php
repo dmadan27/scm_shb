@@ -246,7 +246,7 @@
 	}
 
 	// function edit foto
-	function EditFoto($koneksi, $id){
+	function editFoto($koneksi, $id){
 
 	}
 

@@ -81,9 +81,11 @@
 
 	-- Tabel komposisi
 	CREATE TABLE komposisi(
+		id int,
 		id_produk int,
 		id_bahan_baku int,
 
+		CONSTRAINT pk_komposisi_id PRIMARY KEY(id),
 		CONSTRAINT fk_komposisi_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
 		CONSTRAINT fk_komposisi_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
 	);
@@ -505,7 +507,7 @@
 		-- Tambah Bahan Baku => Insert bahan baku, Insert mutasi bahan baku
 		CREATE PROCEDURE tambah_bahan_baku(
 			in id_bahan_baku_param int,
-			in kd_bahan_baku_param int,
+			in kd_bahan_baku_param varchar(25),
 			in nama_param varchar(50),
 			in satuan_param varchar(10),
 			in ket_param text,
@@ -533,7 +535,25 @@
 			
 		END;
 
+		-- Edit Bahan Baku => Update Bahan Baku seperti biasa
+		-- Hapus Bahan Baku => ??
+
 	-- Data Produk
+		-- Tambah Produk => Insert produk, insert komposisi, insert mutasi produk
+		CREATE PROCEDURE tambah_produk(
+			in id_bahan_baku_param int,
+			in kd_bahan_baku_param varchar(25),
+			in nama_param varchar(50),
+			in satuan_param varchar(10),
+			in ket_param text,
+			in foto_param text,
+			in tgl_param date,
+			in stok_param double(12,2)
+		)
+		BEGIN
+		END;
+
+		-- Edit produk => update produk, update komposisi 
 # =========================================== #
 
 # ================== VIEW =================== #
