@@ -343,6 +343,7 @@ function setSelect_hak_akses(){
 		{value: "BAGIAN ANALISA HARGA", text: "HAK AKSES BAGIAN ANALISA HARGA"},
 		{value: "BAGIAN KIR", text: "HAK AKSES BAGIAN KIR"},
 		{value: "BAGIAN TEKNISI DAN OPERASIONAL", text: "HAK AKSES BAGIAN TEKNISI & OPERASIONAL"},
+		{value: "ADMINISTRATOR", text: "ADMINISTRATOR"},
 		{value: "BUYER", text: "HAK AKSES BUYER"},
 	];
 

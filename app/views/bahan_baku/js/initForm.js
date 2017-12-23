@@ -1,20 +1,16 @@
 $(document).ready(function(){
-	$("#supplier_utama").select2();
-	$("#supplier_utama").prop("disabled", true);
-
-	setSelect_status();
-	setSelect_supplierUtama();
-    $("#tambah_supplier").click(function(){
+	setSelect_satuan();
+    $("#tambah_bahanBaku").click(function(){
     	// bersihkan modal dan tampilkan modal
     	setLoading(false);
     	resetForm();
-    	$("#labelModalSupplier").text("Form Tambah Data Supplier");
-    	$("#btnSubmit_supplier").prop("value", "tambah");
-    	$("#btnSubmit_supplier").text("Tambah");
-    	$("#modal_supplier").modal();
+    	$("#labelModalBahanBaku").text("Form Tambah Data Bahan Baku");
+    	$("#btnSubmit_bahan_baku").prop("value", "tambah");
+    	$("#btnSubmit_bahan_baku").text("Tambah");
+    	$("#modal_bahan_baku").modal();
     });
 
-    $("#form_supplier").submit(function(e){
+    $("#form_bahan_baku").submit(function(e){
     	e.preventDefault();
     	submit();
     	return false;
@@ -103,18 +99,15 @@ $(document).ready(function(){
 // function get form
 function getDataForm(){
 	var data = new FormData();
-	var supplier_utama = ($("#status").val()!=="0") ? $("#id_supplier").val() : $("#supplier_utama").val();
 
-	data.append('id_supplier', $("#id_supplier").val().trim()); // id
-	data.append('nik', $("#nik").val().trim()); // nik
-	data.append('npwp', $("#npwp").val().trim()); // npwp
+	data.append('id_bahan_baku', $("#id_bahan_baku").val().trim()); // id
+	data.append('kd_bahan_baku', $("#kd_bahan_baku").val().trim()); // kode bahan baku
 	data.append('nama', $("#nama").val().trim()); // nama
-	data.append('alamat', $("#alamat").val().trim()); // alamat
-	data.append('telp', $("#telp").val().trim()); // telp
-	data.append('email', $("#email").val().trim()); // alamat
-	data.append('status', $("#status").val().trim()); // status
-	data.append('supplier_utama', supplier_utama); // supplier utama
-	data.append('action', $("#btnSubmit_supplier").val().trim()); // action
+	data.append('satuan', $("#satuan").val().trim()); // satuan
+	data.append('ket', $("#ket").val().trim()); // ket
+	data.append('foto', $("#foto")[0].files[0]); // foto
+	data.append('stok', $("#stok").val().trim()); // stok
+	data.append('action', $("#btnSubmit_bahan_baku").val().trim()); // action
 
 	return data;
 }
@@ -124,7 +117,7 @@ function submit(){
 	var data = getDataForm();
 
 	$.ajax({
-		url: base_url+'app/controllers/Supplier.php',
+		url: base_url+'app/controllers/Bahan_baku.php',
 		type: 'POST',
 		dataType: 'json',
 		data: data,
@@ -161,7 +154,7 @@ function submit(){
 			else{
 				resetForm();
 				$("#modal_supplier").modal('hide');
-				var toastText = ($("#btnSubmit_supplier").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
+				var toastText = ($("#btnSubmit_bahan_baku").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
 				$.toast({
 					heading: 'Pesan Berhasil',
 					text: toastText,
@@ -171,15 +164,13 @@ function submit(){
 		            hideAfter: 3000,
 		            stack: 6
 				});
-				$("#tabel_supplier").DataTable().ajax.reload();
-				$('#supplier_utama').find('option').remove().end();
-				setSelect_supplierUtama();
+				$("#tabel_bahan_baku").DataTable().ajax.reload();
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            $("#modal_supplier").modal('hide');
+            $("#modal_bahan_baku").modal('hide');
             console.log(jqXHR, textStatus, errorThrown);
         }
 	})
@@ -362,16 +353,16 @@ function setSelect_supplierUtama(){
 }
 
 // function set select status
-function setSelect_status(){
-	var arrStatus = [
-		{value: "", text: "-- Pilih Status Supplier --"},
-		{value: "1", text: "UTAMA"},
-		{value: "0", text: "PENGGANTI"},
+function setSelect_satuan(){
+	var arrSatuan = [
+		{value: "", text: "-- Pilih Satuan --"},
+		{value: "1", text: "KG"},
+		{value: "0", text: "PCS"},
 	];
 
-	$.each(arrStatus, function(index, item){
+	$.each(arrSatuan, function(index, item){
 		var option = new Option(item.text, item.value);
-		$("#status").append(option);
+		$("#satuan").append(option);
 	});
 }
 

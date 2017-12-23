@@ -1,31 +1,22 @@
 <?php Defined("BASE_PATH") or die("Dilarang Mengakses File Secara Langsung"); ?>
 <!-- Form Modal untuk Tambah dan Edit Data -->
-<div class="modal fade" id="modal_supplier" tabindex="-1" role="dialog" aria-labelledby="labelModalSupplier" aria-hidden="true">
+<div class="modal fade" id="modal_bahan_baku" tabindex="-1" role="dialog" aria-labelledby="labelModalBahanBaku" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="labelModalSupplier">Form Data Supplier</h4>
+                <h4 class="modal-title" id="labelModalBahanBaku">Form Data Bahan Baku</h4>
 			</div>
-			<form id="form_supplier" class="form-material" role="form" enctype="multipart/form-data">
-				<input type="hidden" name="id_supplier" id="id_supplier">
+			<form id="form_bahan_baku" class="form-material" role="form" enctype="multipart/form-data">
+				<input type="hidden" name="id_bahan_baku" id="id_bahan_baku">
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-6">
-							<!-- NIK -->
-							<div class="form-group field-nik has-feedback m-b-5">
-								<label class="col-md-12" for="nik">NIK</label>
+							<!-- kode bahan baku -->
+							<div class="form-group field-kd-bahan-baku has-feedback m-b-5">
+								<label class="col-md-12" for="kd_bahan_baku">Kode Bahan Baku</label>
 		                        <div class="col-md-12">
-		                            <input id="nik" type="text" class="form-control" placeholder="Masukkan NIK">
-		                            <span class="help-block small pesan"></span>
-		                        </div>
-							</div>
-
-							<!-- NPWP -->
-							<div class="form-group field-npwp has-feedback m-b-5">
-								<label class="col-md-12" for="npwp">NPWP</label>
-		                        <div class="col-md-12">
-		                            <input id="npwp" type="text" class="form-control" placeholder="Masukkan NPWP">
+		                            <input id="kd_bahan_baku" type="text" class="form-control" placeholder="Masukkan Kode Bahan Baku">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
@@ -38,66 +29,53 @@
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
-							<!-- alamat -->
-							<div class="form-group field-alamat has-feedback m-b-5">
-								<label class="col-md-12" for="alamat">Alamat</label>
+
+							<!-- satuan -->
+							<div class="form-group field-satuan has-feedback m-b-5">
+								<label class="col-md-12" for="satuan">Satuan*</label>
 		                        <div class="col-md-12">
-		                            <textarea id="alamat" class="form-control" rows="3" placeholder="Masukkan Alamat"></textarea>
+		                            <select id="satuan" class="form-control"></select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>							
 						</div>
 						<div class="col-md-6">
-							<!-- no telp -->
-							<div class="form-group field-telp has-feedback m-b-5">
-								<label class="col-md-12" for="telp">No. Telepon</label>
+							<!-- ket -->
+							<div class="form-group field-ket has-feedback m-b-5">
+								<label class="col-md-12" for="ket">Keterangan</label>
 		                        <div class="col-md-12">
-		                            <input id="telp" type="text" class="form-control" placeholder="Masukkan No. Telepon">
+		                            <textarea id="ket" class="form-control" rows="3" placeholder="Masukkan Keterangan"></textarea>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
 
-							<!-- email -->
-							<div class="form-group field-email has-feedback m-b-5">
-								<label class="col-md-12" for="email">Email</label>
+							<!-- foto -->
+							<div class="form-group field-foto has-feedback m-b-5">
+                                <label class="col-md-12">Foto</label>
+                                <div class="col-md-12">
+		                            <input id="foto" type="file" class="form-control">
+		                            <span class="help-block small pesan"></span>
+		                        </div>
+                            </div>
+
+							<!-- stok awal -->
+							<div class="form-group field-stok has-feedback m-b-5">
+								<label class="col-md-12" for="stok">Stok Awal</label>
 		                        <div class="col-md-12">
-		                            <input id="email" type="email" class="form-control" placeholder="Masukkan Email">
+		                            <input id="stok" type="number" min="0" class="form-control" placeholder="Masukkan Stok Awal">
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>							
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<!-- status -->
-							<div class="form-group field-status has-feedback m-b-5">
-								<label class="col-md-12" for="status">Status*</label>
-		                        <div class="col-md-12">
-		                            <select id="status" class="form-control"></select>
-		                            <span class="help-block small pesan"></span>
-		                        </div>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<!-- supplier asli -->
-							<div class="form-group field-supplier-utama has-feedback m-b-5">
-								<label class="col-md-12" for="supplier_utama">Supplier Utama**</label>
-		                        <div class="col-md-12">
-		                            <select id="supplier_utama" class="form-control select2"></select>
-		                            <span class="help-block small pesan"></span>
-		                        </div>
-							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<span class="help-block small">* Wajib Diisi</span>
-							<span class="help-block small">** Wajib Diisi Jika Status Supplier adalah Pengganti</span>
 						</div>
 					</div>	
 				</div>
 				<div class="modal-footer">
-                    <button id="btnSubmit_supplier" type="submit" class="btn btn-info btn-outline waves-effect waves-light" value="tambah">Tambah</button>
+                    <button id="btnSubmit_bahan_baku" type="submit" class="btn btn-info btn-outline waves-effect waves-light" value="tambah">Tambah</button>
                     <button type="button" class="btn btn-default btn-outline waves-effect waves-light" data-dismiss="modal">Batal</button>
 				</div>
 			</form>
