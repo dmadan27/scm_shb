@@ -121,17 +121,31 @@ function add_komposisi(){
 		indexKomposisi -= 1;
 	}
 	else{
-		listKomposisi.push(dataKomposisi);
-		$("#tabel_komposisi > tbody:last-child").append(
-			"<tr>"+
-				"<td></td>"+ // nomor
-				"<td>"+kode_bahan_baku+"</td>"+ // kode
-				"<td>"+bahan_baku_text+"</td>"+ // bahan baku
-				"<td>"+btnAksi(index)+"</td>"+ // aksi
-			"</tr>"
-		);
-		numberingList();
-		$('#bahan_baku').select2().val('').trigger('change');
+		if(bahan_baku_value === ""){
+			$.toast({
+	            heading: 'Pesan Error',
+	            text: 'Bahan Baku Tidak Boleh Kosong !',
+	            position: 'top-right',
+	            loaderBg: '#ff6849',
+	            icon: 'error',
+	            hideAfter: 3000,
+	            stack: 6
+	        });
+			indexKomposisi -= 1;
+		}
+		else{
+			listKomposisi.push(dataKomposisi);
+			$("#tabel_komposisi > tbody:last-child").append(
+				"<tr>"+
+					"<td></td>"+ // nomor
+					"<td>"+kode_bahan_baku+"</td>"+ // kode
+					"<td>"+bahan_baku_text+"</td>"+ // bahan baku
+					"<td>"+btnAksi(index)+"</td>"+ // aksi
+				"</tr>"
+			);
+			numberingList();
+			$('#bahan_baku').select2().val('').trigger('change');
+		}
 	}
 
 	console.log(dataKomposisi);
@@ -161,28 +175,31 @@ function delList(index, val){
 
 // function get form
 function getDataForm(){
-	var dataProduk = new FormData();
+	var data = new FormData();
 
-	dataProduk.append('id_produk', $("#id_produk").val().trim()); // id
-	dataProduk.append('kd_produk', $("#kd_produk").val().trim()); // kode produk
-	dataProduk.append('nama', $("#nama").val().trim()); // nama
-	dataProduk.append('satuan', $("#satuan").val().trim()); // satuan
-	dataProduk.append('ket', $("#ket").val().trim()); // ket
+	data.append('id_produk', $("#id_produk").val().trim()); // id
+	data.append('kd_produk', $("#kd_produk").val().trim()); // kode produk
+	data.append('nama', $("#nama").val().trim()); // nama
+	data.append('satuan', $("#satuan").val().trim()); // satuan
+	data.append('ket', $("#ket").val().trim()); // ket
 	dataProduk.append('foto', $("#foto")[0].files[0]); // foto
 	dataProduk.append('stok', $("#stok").val().trim()); // stok
+	dataProduk.append('action', $("#btnSubmit_produk").val().trim()); // stok
 
-	var data = {
-		"action" : $("#btnSubmit_produk").val().trim(),
-		"dataProduk": dataProduk,
-	}
+	// var data = {
+	// 	"action" : $("#btnSubmit_produk").val().trim(),
+	// 	"dataProduk": dataProduk,
+	// }
 
-	return data;
+	return dataProduk;
 }
 
 // function submit
 function submit(){
 	var data = getDataForm();
-	data.dataKomposisi = listKomposisi;
+	// data.dataKomposisi = listKomposisi;
+
+	console.log(data);
 
 	$.ajax({
 		url: base_url+'app/controllers/Produk.php',
@@ -200,21 +217,34 @@ function submit(){
 			console.log(output);
 			if(!output.status){ // jika gagal
 				resetForm();
-				setValue(output.setValue);
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
 				}
 				else{
-					$.toast({
-						heading: 'Pesan Error',
-						text: 'Harap Cek Kembali Form Isian!',
-						position: 'top-right',
-			            loaderBg: '#ff6849',
-			            icon: 'error',
-			            hideAfter: 3000,
-			            stack: 6
-					});
+					if(!output.cekList){
+						$.toast({
+							heading: 'Pesan Error',
+							text: 'Komposisi Tidak Boleh Kosong',
+							position: 'top-right',
+				            loaderBg: '#ff6849',
+				            icon: 'error',
+				            hideAfter: 3000,
+				            stack: 6
+						});
+					}
+					else{
+						$.toast({
+							heading: 'Pesan Error',
+							text: 'Harap Cek Kembali Form Isian!',
+							position: 'top-right',
+				            loaderBg: '#ff6849',
+				            icon: 'error',
+				            hideAfter: 3000,
+				            stack: 6
+						});
+					}
+					setValue(output.setValue);
 					setError(output.setError);
 				}
 			}

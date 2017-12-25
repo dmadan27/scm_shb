@@ -42,8 +42,8 @@
                                     <th>Kode Produk</th>
                                     <th>Nama</th>
                                     <th>Satuan</th>
-                                    <th>Komposisi Bahan Baku</th>
                                     <th>Keterangan</th>
+                                    <th>Komposisi Bahan Baku</th>
                                     <th>Stok</th>
                                     <th>Aksi</th>
                                 </tr>

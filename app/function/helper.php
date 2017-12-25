@@ -401,7 +401,7 @@
 
 		$dataList = "<ul class='list-icons'>";
 		foreach($array as $list){
-			$dataList .= "<li><i class='ti-angle-right'></i>MENU ".strtoupper($list)."</li>";
+			$dataList .= "<li><i class='ti-angle-right'></i>".strtoupper($list)."</li>";
 		}
 		$dataList .= "</ul>";
 

@@ -81,7 +81,7 @@
 
 	-- Tabel komposisi
 	CREATE TABLE komposisi(
-		id int,
+		id int NOT NULL AUTO_INCREMENT,
 		id_produk int,
 		id_bahan_baku int,
 
@@ -506,7 +506,7 @@
 	-- Data Bahan Baku
 		-- Tambah Bahan Baku => Insert bahan baku, Insert mutasi bahan baku
 		CREATE PROCEDURE tambah_bahan_baku(
-			in id_bahan_baku_param int,
+			-- in id_bahan_baku_param int,
 			in kd_bahan_baku_param varchar(25),
 			in nama_param varchar(50),
 			in satuan_param varchar(10),
@@ -541,8 +541,8 @@
 	-- Data Produk
 		-- Tambah Produk => Insert produk, insert komposisi, insert mutasi produk
 		CREATE PROCEDURE tambah_produk(
-			in id_bahan_baku_param int,
-			in kd_bahan_baku_param varchar(25),
+			-- in id_produk_param int,
+			in kd_produk_param varchar(25),
 			in nama_param varchar(50),
 			in satuan_param varchar(10),
 			in ket_param text,
@@ -551,6 +551,23 @@
 			in stok_param double(12,2)
 		)
 		BEGIN
+			DECLARE id_param int;
+
+			SELECT `AUTO_INCREMENT` INTO id_param 
+		    FROM INFORMATION_SCHEMA.TABLES 
+		    WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'produk';
+
+		    -- Insert produk
+			INSERT INTO produk(
+				kd_produk, nama, satuan, ket, foto, stok) 
+			VALUES(
+				kd_produk_param, nama_param, satuan_param, ket_param, foto_param, stok_param);
+
+			-- Insert mutasi produk
+			INSERT INTO mutasi_produk(
+				tgl, id_produk, brg_masuk, brg_keluar) 
+			VALUES(tgl_param, id_param, 0, 0);
+
 		END;
 
 		-- Edit produk => update produk, update komposisi 
@@ -585,7 +602,7 @@
 
 	-- ====================================== --
 
-	# view karyawan
+	# view karyawans
 	CREATE OR REPLACE VIEW v_karyawan AS
 		SELECT 
 			k.id, k.no_induk, k.nik, k.npwp, k.nama, k.tempat_lahir, k.tgl_lahir,
@@ -638,6 +655,17 @@
 		GROUP BY u.username;		
 
 	-- ====================================== --
+
+	# view produk
+	CREATE OR REPLACE VIEW v_produk AS
+		SELECT 
+			p.id, p.kd_produk, p.nama, p.satuan, p.ket, p.foto, 
+			GROUP_CONCAT(concat_ws(' - ', b.kd_bahan_baku, b.nama)) komposisi,
+			p.stok
+		FROM produk p
+		JOIN komposisi k ON k.id_produk=p.id
+		JOIN bahan_baku b ON b.id=k.id_bahan_baku
+		GROUP BY p.id ASC;
 
 -- ====================================== --
 

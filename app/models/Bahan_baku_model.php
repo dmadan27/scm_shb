@@ -35,10 +35,10 @@
 	// function insert
 	function insertBahan_baku($koneksi, $data){
 		$tgl = date("Y-m-d");
-		$query = "CALL tambah_bahan_baku (:id_bahan_baku, :kd_bahan_baku, :nama, :satuan, :ket, :foto, :tgl, :stok) ";
+		$query = "CALL tambah_bahan_baku (:kd_bahan_baku, :nama, :satuan, :ket, :foto, :tgl, :stok) ";
 
 		$statement = $koneksi->prepare($query);
-		$statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
+		// $statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
 		$statement->bindParam(':kd_bahan_baku', $data['kd_bahan_baku']);
 		$statement->bindParam(':nama', $data['nama']);
 		$statement->bindParam(':satuan', $data['satuan']);
