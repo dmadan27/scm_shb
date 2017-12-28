@@ -42,14 +42,14 @@ $(document).ready(function(){
     	// nik
     	$("#nik").change(function(){
     		if(this.value !== ""){
-    			$('.field-nik').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-nik').removeClass('has-error').addClass('has-success');
 				$(".field-nik span.help-block").text('');	
     		}
     	});
     	// npwp
     	$("#npwp").change(function(){
     		if(this.value !== ""){
-    			$('.field-npwp').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-npwp').removeClass('has-error').addClass('has-success');
 				$(".field-npwp span.help-block").text('');	
     		}
     	});
@@ -57,7 +57,7 @@ $(document).ready(function(){
     	// nama
     	$("#nama").change(function(){
     		if(this.value !== ""){
-    			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-nama').removeClass('has-error').addClass('has-success');
 				$(".field-nama span.help-block").text('');	
     		}
     	});
@@ -65,7 +65,7 @@ $(document).ready(function(){
     	// tempat lahir
     	$("#tempat_lahir").change(function(){
     		if(this.value !== ""){
-    			$('.field-tempat-lahir').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-tempat-lahir').removeClass('has-error').addClass('has-success');
 				$(".field-tempat-lahir span.help-block").text('');
     		}
     	});
@@ -73,7 +73,7 @@ $(document).ready(function(){
     	// tgl lahir
     	$("#tgl_lahir").change(function(){
     		if(this.value !== ""){
-    			$('.field-tgl-lahir').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-tgl-lahir').removeClass('has-error').addClass('has-success');
 				$(".field-tgl-lahir span.help-block").text('');
     		}
     	});
@@ -86,7 +86,7 @@ $(document).ready(function(){
     	// alamat
     	$("#alamat").change(function(){
     		if(this.value !== ""){
-    			$('.field-alamat').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-alamat').removeClass('has-error').addClass('has-success');
 				$(".field-alamat span.help-block").text('');
     		}
     	});
@@ -94,7 +94,7 @@ $(document).ready(function(){
     	// telp
     	$("#telp").change(function(){
     		if(this.value !== ""){
-    			$('.field-telp').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-telp').removeClass('has-error').addClass('has-success');
 				$(".field-telp span.help-block").text('');	
     		}
     	});
@@ -102,7 +102,7 @@ $(document).ready(function(){
     	// email
     	$("#email").change(function(){
     		if(this.value !== ""){
-    			$('.field-email').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-email').removeClass('has-error').addClass('has-success');
 				$(".field-email span.help-block").text('');	
     		}
     	});
@@ -110,7 +110,7 @@ $(document).ready(function(){
     	// foto
     	$("#foto").change(function(){
     		if(this.value !== ""){
-    			$('.field-foto').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-foto').removeClass('has-error').addClass('has-success');
 				$(".field-foto span.help-block").text('');	
     		}
     	});
@@ -118,7 +118,7 @@ $(document).ready(function(){
     	// no. induk
     	$("#no_induk").change(function(){
     		if(this.value !== ""){
-    			$('.field-no-induk').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-no-induk').removeClass('has-error').addClass('has-success');
 				$(".field-no-induk span.help-block").text('');	
     		}
     	});
@@ -126,7 +126,7 @@ $(document).ready(function(){
     	// tgl masuk
     	$("#tgl_masuk").change(function(){
     		if(this.value !== ""){
-    			$('.field-tgl-masuk').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-tgl-masuk').removeClass('has-error').addClass('has-success');
 				$(".field-tgl-masuk span.help-block").text('');	
     		}
     	});
@@ -134,7 +134,7 @@ $(document).ready(function(){
     	// jabatan
     	$("#jabatan").change(function(){
     		if(this.value !== ""){
-    			$('.field-jabatan').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-jabatan').removeClass('has-error').addClass('has-success');
 				$(".field-jabatan span.help-block").text('');
     		}
     	});
@@ -142,7 +142,7 @@ $(document).ready(function(){
     	// status
     	$("#status").change(function(){
     		if(this.value !== ""){
-    			$('.field-status').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-status').removeClass('has-error').addClass('has-success');
 				$(".field-status span.help-block").text('');
     		}
     	});
@@ -160,12 +160,12 @@ function getDataForm(){
 	data.append('nik', $("#nik").val().trim()); // nik
 	data.append('npwp', $("#npwp").val().trim()); // npwp
 	data.append('nama', $("#nama").val().trim()); // nama
-	data.append('tempat_lahir', $("#tempat_lahir").val().trim()); // alamat
-	data.append('tgl_lahir', $("#tgl_lahir").val().trim()); // alamat
-	data.append('jk', jk); // alamat
+	data.append('tempat_lahir', $("#tempat_lahir").val().trim()); // tempat lahir
+	data.append('tgl_lahir', $("#tgl_lahir").val().trim()); // tgl lahir
+	data.append('jk', jk); // jenis kelamin
 	data.append('alamat', $("#alamat").val().trim()); // alamat
 	data.append('telp', $("#telp").val().trim()); // telp
-	data.append('email', $("#email").val().trim()); // telp
+	data.append('email', $("#email").val().trim()); // email
 	data.append('foto', $("#foto")[0].files[0]); // foto
 	data.append('no_induk', $("#no_induk").val().trim()); // no_induk
 	data.append('tgl_masuk', $("#tgl_masuk").val().trim()); // tgl masuk
@@ -277,7 +277,7 @@ function getEdit(id){
 function setError(error){
 	// no induk
 	if(!jQuery.isEmptyObject(error.no_indukError)){
-		$('.field-no-induk').addClass('has-error');
+		$('.field-no-induk').removeClass('has-success').addClass('has-error');
 		$(".field-no-induk span.help-block").text(error.no_indukError);
 	}
 	else{
@@ -287,7 +287,7 @@ function setError(error){
 
 	// nik
 	if(!jQuery.isEmptyObject(error.nikError)){
-		$('.field-nik').addClass('has-error');
+		$('.field-nik').removeClass('has-success').addClass('has-error');
 		$(".field-nik span.help-block").text(error.nikError);
 	}
 	else{
@@ -297,7 +297,7 @@ function setError(error){
 
 	// npwp
 	if(!jQuery.isEmptyObject(error.npwpError)){
-		$('.field-npwp').addClass('has-error');
+		$('.field-npwp').removeClass('has-success').addClass('has-error');
 		$(".field-npwp span.help-block").text(error.npwpError);
 	}
 	else{
@@ -307,7 +307,7 @@ function setError(error){
 
 	// nama
 	if(!jQuery.isEmptyObject(error.namaError)){
-		$('.field-nama').addClass('has-error');
+		$('.field-nama').removeClass('has-success').addClass('has-error');
 		$(".field-nama span.help-block").text(error.namaError);
 	}
 	else{
@@ -317,7 +317,7 @@ function setError(error){
 
 	// tempat lahir
 	if(!jQuery.isEmptyObject(error.tempat_lahirError)){
-		$('.field-tempat-lahir').addClass('has-error');
+		$('.field-tempat-lahir').removeClass('has-success').addClass('has-error');
 		$(".field-tempat-lahir span.help-block").text(error.tempat_lahirError);
 	}
 	else{
@@ -327,7 +327,7 @@ function setError(error){
 
 	// tgl lahir
 	if(!jQuery.isEmptyObject(error.tgl_lahirError)){
-		$('.field-tgl-lahir').addClass('has-error');
+		$('.field-tgl-lahir').removeClass('has-success').addClass('has-error');
 		$(".field-tgl-lahir span.help-block").text(error.tgl_lahirError);
 	}
 	else{
@@ -337,7 +337,7 @@ function setError(error){
 
 	// telp
 	if(!jQuery.isEmptyObject(error.telpError)){
-		$('.field-telp').addClass('has-error');
+		$('.field-telp').removeClass('has-success').addClass('has-error');
 		$(".field-telp span.help-block").text(error.telpError);
 	}
 	else{
@@ -347,7 +347,7 @@ function setError(error){
 
 	// email
 	if(!jQuery.isEmptyObject(error.emailError)){
-		$('.field-email').addClass('has-error');
+		$('.field-email').removeClass('has-success').addClass('has-error');
 		$(".field-email span.help-block").text(error.emailError);
 	}
 	else{
@@ -357,7 +357,7 @@ function setError(error){
 
 	// alamat
 	if(!jQuery.isEmptyObject(error.alamatError)){
-		$('.field-alamat').addClass('has-error');
+		$('.field-alamat').removeClass('has-success').addClass('has-error');
 		$(".field-alamat span.help-block").text(error.alamatError);
 	}
 	else{
@@ -367,7 +367,7 @@ function setError(error){
 
 	// foto
 	if(!jQuery.isEmptyObject(error.fotoError)){
-		$('.field-foto').addClass('has-error');
+		$('.field-foto').removeClass('has-success').addClass('has-error');
 		$(".field-foto span.help-block").text(error.fotoError);
 	}
 	else{
@@ -377,7 +377,7 @@ function setError(error){
 
 	// jabatan
 	if(!jQuery.isEmptyObject(error.id_pekerjaanError)){
-		$('.field-jabatan').addClass('has-error');
+		$('.field-jabatan').removeClass('has-success').addClass('has-error');
 		$(".field-jabatan span.help-block").text(error.id_pekerjaanError);
 	}
 	else{
@@ -387,7 +387,7 @@ function setError(error){
 
 	// status
 	if(!jQuery.isEmptyObject(error.statusError)){
-		$('.field-status').addClass('has-error');
+		$('.field-status').removeClass('has-success').addClass('has-error');
 		$(".field-status span.help-block").text(error.statusError);
 	}
 	else{

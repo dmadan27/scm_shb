@@ -28,8 +28,8 @@ $(document).ready(function(){
     	// kode produk
     	$("#kd_produk").change(function(){
     		if(this.value !== ""){
-    			$('.field-produk').removeClass('has-error').addClass('has-success');
-				$(".field-produk span.help-block").text('');
+    			$('.field-kd-produk').removeClass('has-error').addClass('has-success');
+				$(".field-kd-produk span.help-block").text('');
     		}
     	});
 
@@ -84,47 +84,37 @@ $(document).ready(function(){
     // ========================================= //
 });
 
-// function cek bahan baku dilist
-function validBahanBaku(bahan_baku){
-	var ada = false;
+// funcgsi untuk list komposisi
+	// function cek bahan baku dilist
+	function validBahanBaku(bahan_baku){
+		var ada = false;
 
-    $.each(listKomposisi, function(i, item){
-    	if(bahan_baku==item.id_bahan_baku && item.status != "hapus") ada = true;
-    });
+	    $.each(listKomposisi, function(i, item){
+	    	if(bahan_baku==item.id_bahan_baku && item.status != "hapus") ada = true;
+	    });
 
-    return ada;
-}
-
-// function add komposisi
-function add_komposisi(){
-	var index = indexKomposisi++;
-	var kode_bahan_baku = $("#bahan_baku option:selected").text().split(' - ')[0];
-	var bahan_baku_text = $("#bahan_baku option:selected").text().split(' - ')[1];
-	var bahan_baku_value = $("#bahan_baku").val().trim();
-	var dataKomposisi = {
-		aksi: "tambah", status: "", 
-		index: index, id: "",
-		id_bahan_baku: bahan_baku_value, 
-	};
-
-	// validasi komposisi
-	if(validBahanBaku(bahan_baku_value)){
-		$.toast({
-            heading: 'Pesan Error',
-            text: bahan_baku_text+' Sudah Ada Di List !',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'error',
-            hideAfter: 3000,
-            stack: 6
-        });
-		indexKomposisi -= 1;
+	    return ada;
 	}
-	else{
-		if(bahan_baku_value === ""){
+
+	// function add komposisi
+	function add_komposisi(){
+		var index = indexKomposisi++;
+		var kode_bahan_baku = $("#bahan_baku option:selected").text().split(' - ')[0];
+		var bahan_baku_text = $("#bahan_baku option:selected").text().split(' - ')[1];
+		var bahan_baku_value = $("#bahan_baku").val().trim();
+		var dataKomposisi = {
+			aksi: "tambah", status: "", 
+			index: index, id_komposisi: "",
+			id_bahan_baku: bahan_baku_value,
+			kd_bahan_baku: kode_bahan_baku,
+			nama_bahan_baku: bahan_baku_text, 
+		};
+
+		// validasi komposisi
+		if(validBahanBaku(bahan_baku_value)){
 			$.toast({
 	            heading: 'Pesan Error',
-	            text: 'Bahan Baku Tidak Boleh Kosong !',
+	            text: bahan_baku_text+' Sudah Ada Di List !',
 	            position: 'top-right',
 	            loaderBg: '#ff6849',
 	            icon: 'error',
@@ -134,70 +124,83 @@ function add_komposisi(){
 			indexKomposisi -= 1;
 		}
 		else{
-			listKomposisi.push(dataKomposisi);
-			$("#tabel_komposisi > tbody:last-child").append(
-				"<tr>"+
-					"<td></td>"+ // nomor
-					"<td>"+kode_bahan_baku+"</td>"+ // kode
-					"<td>"+bahan_baku_text+"</td>"+ // bahan baku
-					"<td>"+btnAksi(index)+"</td>"+ // aksi
-				"</tr>"
-			);
-			numberingList();
-			$('#bahan_baku').select2().val('').trigger('change');
+			if(bahan_baku_value === ""){
+				$.toast({
+		            heading: 'Pesan Error',
+		            text: 'Bahan Baku Tidak Boleh Kosong !',
+		            position: 'top-right',
+		            loaderBg: '#ff6849',
+		            icon: 'error',
+		            hideAfter: 3000,
+		            stack: 6
+		        });
+				indexKomposisi -= 1;
+			}
+			else{
+				listKomposisi.push(dataKomposisi);
+				$("#tabel_komposisi > tbody:last-child").append(
+					"<tr>"+
+						"<td></td>"+ // nomor
+						"<td>"+kode_bahan_baku+"</td>"+ // kode
+						"<td>"+bahan_baku_text+"</td>"+ // bahan baku
+						"<td>"+btnAksi(index)+"</td>"+ // aksi
+					"</tr>"
+				);
+				numberingList();
+				$('#bahan_baku').select2().val('').trigger('change');
+			}
 		}
+
+		console.log(dataKomposisi);
+		console.log(listKomposisi);
 	}
 
-	console.log(dataKomposisi);
-	console.log(listKomposisi);
-}
+	function numberingList(){
+		$('#tabel_komposisi tbody tr').each(function (index) {
+	        $(this).children("td:eq(0)").html(index + 1);
+	    });
+	}
 
-function numberingList(){
-	$('#tabel_komposisi tbody tr').each(function (index) {
-        $(this).children("td:eq(0)").html(index + 1);
-    });
-}
+	function btnAksi(index){
+		var btn = '<button type="button" class="btn btn-danger btn-sm bnt-flat" onclick="delList('+index+',this)" title="Hapus dari list">'+
+	              '<i class="fa fa-trash"></button>';
+	    return btn;
+	}
 
-function btnAksi(index){
-	var btn = '<button type="button" class="btn btn-danger btn-sm bnt-flat" onclick="delList('+index+',this)" title="Hapus dari list">'+
-              '<i class="fa fa-trash"></button>';
-    return btn;
-}
-
-function delList(index, val){
-	$(val).parent().parent().remove(); // hapus data ditabel
-	$.each(listKomposisi, function(i, item){
-		if(item.index == index) item.status = "hapus";
-	});
-	numberingList(); // reset ulang nomer
-	console.log(listKomposisi);
-}
+	function delList(index, val){
+		$(val).parent().parent().remove(); // hapus data ditabel
+		$.each(listKomposisi, function(i, item){
+			if(item.index == index) item.status = "hapus";
+		});
+		numberingList(); // reset ulang nomer
+		console.log(listKomposisi);
+	}
+// ====================================== //
 
 // function get form
 function getDataForm(){
 	var data = new FormData();
 
-	data.append('id_produk', $("#id_produk").val().trim()); // id
-	data.append('kd_produk', $("#kd_produk").val().trim()); // kode produk
-	data.append('nama', $("#nama").val().trim()); // nama
-	data.append('satuan', $("#satuan").val().trim()); // satuan
-	data.append('ket', $("#ket").val().trim()); // ket
-	dataProduk.append('foto', $("#foto")[0].files[0]); // foto
-	dataProduk.append('stok', $("#stok").val().trim()); // stok
-	dataProduk.append('action', $("#btnSubmit_produk").val().trim()); // stok
+	var dataProduk = {
+		id_produk: $("#id_produk").val().trim(),
+		kd_produk: $("#kd_produk").val().trim(),
+		nama: $("#nama").val().trim(),
+		satuan: $("#satuan").val().trim(),
+		ket: $("#ket").val().trim(),
+		stok: $("#stok").val().trim(),
+	};
 
-	// var data = {
-	// 	"action" : $("#btnSubmit_produk").val().trim(),
-	// 	"dataProduk": dataProduk,
-	// }
+	data.append('dataProduk', JSON.stringify(dataProduk)); // dataProduk
+	data.append('dataKomposisi', JSON.stringify(listKomposisi)); // dataKomposisi
+	data.append('foto', $("#foto")[0].files[0]); // foto
+	data.append('action', $("#btnSubmit_produk").val().trim()); // stok
 
-	return dataProduk;
+	return data;
 }
 
 // function submit
 function submit(){
 	var data = getDataForm();
-	// data.dataKomposisi = listKomposisi;
 
 	console.log(data);
 
@@ -275,12 +278,11 @@ function submit(){
 // function get edit
 function getEdit(id){
 	resetForm();
-	$("#labelModalSupplier").text("Form Edit Data Supplier");
-	$("#btnSubmit_supplier").prop("value", "edit");
-	$("#btnSubmit_supplier").text("Edit");
+	$(".field-foto").css("display", "none");
+	$(".field-stok").css("display", "none");
 
 	$.ajax({
-		url: base_url+'app/controllers/Supplier.php',
+		url: base_url+'app/controllers/Produk.php',
 		type: 'post',
 		dataType: 'json',
 		data: {"id": id, "action": "getEdit"},
@@ -288,20 +290,37 @@ function getEdit(id){
 			setLoading();
 		},
 		success: function(data){
-			if(data){
-				console.log(data);
+			console.log(data);
+			if(data.dataProduk){
+				// console.log(data);
 				setLoading(false);
-				if(data.status==='1'){
-					$("#supplier_utama option").prop("disabled", false);
-					$('#supplier_utama option[value="'+data.supplier_utama+'"]').prop("disabled", true);
-				}
-				else $("#supplier_utama option").prop("disabled", false);
-
-				setValue(data);
-				$("#modal_supplier").modal();
+				setValue(data.dataProduk);
+				// set value di tabel komposisi
+				$.each(data.listKomposisi, function(index, item){
+					var index = indexKomposisi++;
+					// masukkan data dari server ke array listItem
+					var dataKomposisi = {
+						aksi: "edit", status: "", 
+						index: index, id_komposisi: item.id_komposisi,
+						id_bahan_baku: item.id_bahan_baku,
+						kd_bahan_baku: item.kd_bahan_baku,
+						nama_bahan_baku: item.nama_bahan_baku, 
+					};
+					listKomposisi.push(dataKomposisi);
+					$("#tabel_komposisi > tbody:last-child").append(
+						"<tr>"+
+							"<td></td>"+ // nomor
+							"<td>"+item.kd_bahan_baku+"</td>"+ // kode
+							"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+							"<td>"+btnAksi(dataKomposisi.index)+"</td>"+ // aksi
+						"</tr>"
+					);
+					numberingList();
+				});
 			}
 			else{
 				swal("Pesan Error", "Data Yang Anda Minta Tidak Tersedia", "warning");
+				window.location.href = base_url+"index.php?m=produk&p=list";
 			}	
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
@@ -315,29 +334,19 @@ function getEdit(id){
 
 // function set error
 function setError(error){
-	// nik
-	if(!jQuery.isEmptyObject(error.nikError)){
-		$('.field-nik').addClass('has-error');
-		$(".field-nik span.help-block").text(error.nikError);
+	// kd_produk
+	if(!jQuery.isEmptyObject(error.kd_produkError)){
+		$('.field-kd-produk').removeClass('has-success').addClass('has-error');
+		$(".field-kd-produk span.help-block").text(error.kd_produkError);
 	}
 	else{
-		$('.field-nik').removeClass('has-error').addClass('has-success');
-		$(".field-nik span.help-block").text('');	
-	}
-
-	// npwp
-	if(!jQuery.isEmptyObject(error.npwpError)){
-		$('.field-npwp').addClass('has-error');
-		$(".field-npwp span.help-block").text(error.npwpError);
-	}
-	else{
-		$('.field-npwp').removeClass('has-error').addClass('has-success');
-		$(".field-npwp span.help-block").text('');
+		$('.field-kd-bahan-baku').removeClass('has-error').addClass('has-success');
+		$(".field-kd-bahan-baku span.help-block").text('');
 	}
 
 	// nama
 	if(!jQuery.isEmptyObject(error.namaError)){
-		$('.field-nama').addClass('has-error');
+		$('.field-nama').removeClass('has-success').addClass('has-error');
 		$(".field-nama span.help-block").text(error.namaError);
 	}
 	else{
@@ -345,86 +354,65 @@ function setError(error){
 		$(".field-nama span.help-block").text('');
 	}
 
-	// telp
-	if(!jQuery.isEmptyObject(error.telpError)){
-		$('.field-telp').addClass('has-error');
-		$(".field-telp span.help-block").text(error.telpError);
+	// satuan
+	if(!jQuery.isEmptyObject(error.satuanError)){
+		$('.field-satuan').removeClass('has-success').addClass('has-error');
+		$(".field-satuan span.help-block").text(error.satuanError);
 	}
 	else{
-		$('.field-telp').removeClass('has-error').addClass('has-success');
-		$(".field-telp span.help-block").text('');
+		$('.field-satuan').removeClass('has-error').addClass('has-success');
+		$(".field-satuan span.help-block").text('');
 	}
 
-	// email
-	if(!jQuery.isEmptyObject(error.emailError)){
-		$('.field-email').addClass('has-error');
-		$(".field-email span.help-block").text(error.emailError);
+	// ket
+	if(!jQuery.isEmptyObject(error.ketError)){
+		$('.field-ket').removeClass('has-success').addClass('has-error');
+		$(".field-ket span.help-block").text(error.ketError);
 	}
 	else{
-		$('.field-email').removeClass('has-error').addClass('has-success');
-		$(".field-email span.help-block").text('');
+		$('.field-ket').removeClass('has-error').addClass('has-success');
+		$(".field-ket span.help-block").text('');
 	}
 
-	// alamat
-	if(!jQuery.isEmptyObject(error.alamatError)){
-		$('.field-alamat').addClass('has-error');
-		$(".field-alamat span.help-block").text(error.alamatError);
+	// foto
+	if(!jQuery.isEmptyObject(error.fotoError)){
+		$('.field-foto').removeClass('has-success').addClass('has-error');
+		$(".field-foto span.help-block").text(error.fotoError);
 	}
 	else{
-		$('.field-alamat').removeClass('has-error').addClass('has-success');
-		$(".field-alamat span.help-block").text('');
+		$('.field-foto').removeClass('has-error').addClass('has-success');
+		$(".field-foto span.help-block").text('');
 	}
 
-	// status
-	if(!jQuery.isEmptyObject(error.statusError)){
-		$('.field-status').addClass('has-error');
-		$(".field-status span.help-block").text(error.statusError);
+	// stok
+	if(!jQuery.isEmptyObject(error.stokError)){
+		$('.field-stok').removeClass('has-success').addClass('has-error');
+		$(".field-stok span.help-block").text(error.stokError);
 	}
 	else{
-		$('.field-status').removeClass('has-error').addClass('has-success');
-		$(".field-status span.help-block").text('');
-	}
-
-	// supplier utama
-	if(!jQuery.isEmptyObject(error.supplierUtamaError)){
-		$('.field-supplier-utama').addClass('has-error');
-		$(".field-supplier-utama span.help-block").text(error.supplierUtamaError);
-	}
-	else{
-		$('.field-supplier-utama').removeClass('has-error').addClass('has-success');
-		$(".field-supplier-utama span.help-block").text('');
+		$('.field-stok').removeClass('has-error').addClass('has-success');
+		$(".field-stok span.help-block").text('');
 	}
 }
 
 // function set value
 function setValue(value){
-	$('#nik').val(value.nik).trigger('change'); // nik
-	$('#npwp').val(value.npwp).trigger('change'); // npwp
-	$('#nama').val(value.nama).trigger('change'); // nama
-	$('#telp').val(value.telp).trigger('change'); // telp
-	$('#alamat').val(value.alamat).trigger('change'); // alamat
-	$('#status').val(value.status).trigger('change'); // status
-	$('#id_supplier').val(value.id);
+	var stok = parseFloat(value.stok) ? parseFloat(value.stok) : value.stok;
 
-	if(value.status==='0'){
-		$('#supplier_utama').val(value.supplier_utama).trigger('change'); // supplier utama
-		$("#supplier_utama").prop("disabled", false);
-	}
-	else{
-		$("#supplier_utama").prop("disabled", true);
-		$('#supplier_utama').val("").trigger('change');
-	}
+	$('#kd_produk').val(value.kd_produk).trigger('change'); // kode bahan baku
+	$('#nama').val(value.nama).trigger('change'); // nama
+	$('#satuan').val(value.satuan).trigger('change'); // satuan
+	$('#ket').val(value.ket).trigger('change'); // ket
+	$('#stok').val(stok).trigger('change'); // stok
+	$('#id_produk').val(value.id);
 }
 
 // function reset form
 function resetForm(){
-	$('#form_supplier').trigger('reset');
-	$('#form_supplier').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
-	$('#form_supplier').find("span.pesan").text(""); // hapus semua span help-block
-	$("#supplier_utama").val("").trigger('change');
-	$("#supplier_utama option").prop("disabled", false);
-	$("#supplier_utama").prop("disabled", true);
-	$('#id_supplier').val("");
+	$('#form_produk').trigger('reset');
+	$('#form_produk').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
+	$('#form_produk').find("span.pesan").text(""); // hapus semua span help-block
+	$('#id_produk').val("");
 }
 
 // function set select bahan baku

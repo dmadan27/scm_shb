@@ -139,6 +139,8 @@ function submit(){
 			setLoading(false);
 			console.log(output);
 			if(!output.status){ // jika gagal
+				resetForm();
+				setValue(output.setValue);
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
@@ -156,7 +158,6 @@ function submit(){
 					});
 					setError(output.setError);
 				}
-				setValue(output.setValue);
 			}
 			else{
 				resetForm();
@@ -225,7 +226,7 @@ function getEdit(id){
 function setError(error){
 	// no_polis
 	if(!jQuery.isEmptyObject(error.no_polisError)){
-		$('.field-no-polis').addClass('has-error');
+		$('.field-no-polis').removeClass('has-success').addClass('has-error');
 		$(".field-no-polis span.help-block").text(error.no_polisError);
 	}
 	else{
@@ -235,7 +236,7 @@ function setError(error){
 
 	// supir
 	if(!jQuery.isEmptyObject(error.id_supirError)){
-		$('.field-supir').addClass('has-error');
+		$('.field-supir').removeClass('has-success').addClass('has-error');
 		$(".field-supir span.help-block").text(error.id_supirError);
 	}
 	else{
@@ -245,7 +246,7 @@ function setError(error){
 
 	// pendamping
 	if(!jQuery.isEmptyObject(error.pendampingError)){
-		$('.field-pendamping').addClass('has-error');
+		$('.field-pendamping').removeClass('has-success').addClass('has-error');
 		$(".field-pendamping span.help-block").text(error.pendampingError);
 	}
 	else{
@@ -255,7 +256,7 @@ function setError(error){
 
 	// status
 	if(!jQuery.isEmptyObject(error.statusError)){
-		$('.field-status').addClass('has-error');
+		$('.field-status').removeClass('has-success').addClass('has-error');
 		$(".field-status span.help-block").text(error.statusError);
 	}
 	else{
@@ -265,7 +266,7 @@ function setError(error){
 
 	// tahun
 	if(!jQuery.isEmptyObject(error.tahunError)){
-		$('.field-tahun').addClass('has-error');
+		$('.field-tahun').removeClass('has-success').addClass('has-error');
 		$(".field-tahun span.help-block").text(error.tahunError);
 	}
 	else{
@@ -275,7 +276,7 @@ function setError(error){
 
 	// jenis
 	if(!jQuery.isEmptyObject(error.jenisError)){
-		$('.field-jenis').addClass('has-error');
+		$('.field-jenis').removeClass('has-success').addClass('has-error');
 		$(".field-jenis span.help-block").text(error.jenisError);
 	}
 	else{
@@ -285,7 +286,7 @@ function setError(error){
 
 	// muatan
 	if(!jQuery.isEmptyObject(error.muatanError)){
-		$('.field-muatan').addClass('has-error');
+		$('.field-muatan').removeClass('has-success').addClass('has-error');
 		$(".field-muatan span.help-block").text(error.muatanError);
 	}
 	else{
@@ -295,7 +296,7 @@ function setError(error){
 
 	// foto
 	if(!jQuery.isEmptyObject(error.fotoError)){
-		$('.field-foto').addClass('has-error');
+		$('.field-foto').removeClass('has-success').addClass('has-error');
 		$(".field-foto span.help-block").text(error.fotoError);
 	}
 	else{

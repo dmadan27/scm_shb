@@ -1,5 +1,5 @@
 <?php
-	// get all data karyawan
+	// get all data pekerjaan
 	function get_datatable_pekerjaan($koneksi, $config_db){
 		$query = get_dataTable($config_db);
 		$statement = $koneksi->prepare($query);

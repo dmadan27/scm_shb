@@ -571,6 +571,38 @@
 		END;
 
 		-- Edit produk => update produk, update komposisi 
+
+		-- Hapus produk
+	
+	-- Data Komposisi
+		-- Tambah komposisi => insert komposisi
+		CREATE PROCEDURE tambah_komposisi(
+			in kd_produk_param varchar(25),
+			in id_bahan_baku_param int
+		)
+		BEGIN
+			DECLARE id_produk_param int;
+
+			SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
+
+			-- insert komposisi
+			INSERT INTO komposisi(id_produk, id_bahan_baku) VALUES(id_produk_param, id_bahan_baku_param);
+		END;
+
+		-- Edit Komposisi
+		-- CREATE PROCEDURE edit_komposisi(
+		-- 	in id_param int,
+		-- 	in kd_produk_param varchar(25),
+		-- 	in id_bahan_baku_param int
+		-- )
+		-- BEGIN
+		-- 	DECLARE id_produk_param int;
+
+		-- 	SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
+
+		-- 	-- update komposisi
+		-- 	UPDATE komposisi SET id_produk = id_produk_param, id_bahan_baku = id_bahan_baku_param WHERE id = id_param;
+		-- END;
 # =========================================== #
 
 # ================== VIEW =================== #
@@ -666,6 +698,17 @@
 		JOIN komposisi k ON k.id_produk=p.id
 		JOIN bahan_baku b ON b.id=k.id_bahan_baku
 		GROUP BY p.id ASC;
+
+	-- ====================================== --
+
+	# view harga basis
+	CREATE OR REPLACE VIEW v_harga_basis AS
+		SELECT
+			id, tgl,
+			(CASE WHEN (jenis = 'k') THEN 'KOPI' ELSE 'LADA' END) jenis,
+			harga_basis
+		FROM harga_basis
+		ORDER BY tgl DESC;
 
 -- ====================================== --
 

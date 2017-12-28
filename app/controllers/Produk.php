@@ -32,6 +32,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'get_select_produk':
+				get_select_produk($koneksi);
+				break;
+
 			default:
 				# code...
 				break;
@@ -84,8 +88,8 @@
 	}
 
 	function actionAdd($koneksi){
-		$dataProduk = isset($_POST['dataProduk']) ? $_POST['dataProduk'] : false;
-		$dataKomposisi = isset($_POST['dataKomposisi']) ? $_POST['dataKomposisi'] : false;
+		$dataProduk = isset($_POST['dataProduk']) ? json_decode($_POST['dataProduk'],true) : false;
+		$dataKomposisi = isset($_POST['dataKomposisi']) ? json_decode($_POST['dataKomposisi'],true) : false;
 		$foto = isset($_FILES['foto']) ? $_FILES['foto'] : false;
 
 		// validasi
@@ -178,6 +182,135 @@
 		);
 
 		echo json_encode($output);
+	}
+
+	function getEdit($koneksi, $id){
+		$dataProduk = empty(getProduk_by_id($koneksi, $id)) ? false : getProduk_by_id($koneksi, $id);
+		$dataKomposisi = empty(getKomposisi_by_id($koneksi, $id)) ? false : getKomposisi_by_id($koneksi, $id);
+
+		$output = array(
+			'dataProduk' => $dataProduk,
+			'listKomposisi' => $dataKomposisi,
+		);
+
+		echo json_encode($output);
+	}
+
+	function actionEdit($koneksi){
+		$dataProduk = isset($_POST['dataProduk']) ? json_decode($_POST['dataProduk'],true) : false;
+		$dataKomposisi = isset($_POST['dataKomposisi']) ? json_decode($_POST['dataKomposisi'],true) : false;
+
+		// validasi
+			$cekFoto = true;
+			$status = $errorDB = $cekArray = false;
+			
+			if($dataKomposisi){ // cek isi list komposisi ada / tidak
+				if(cekArray($dataKomposisi)) $cekArray = false; // array kosong
+				else $cekArray = true;
+			}
+
+			$configData = setRule_validasi($dataProduk);
+			$validasi = set_validasi($configData);
+			$cek = $validasi['cek'];
+			$setError = $validasi['setError'];
+			$setValue = $validasi['setValue'];
+			
+			if(!$cekArray) $cek = false;
+		// ================================== //
+		if($cek){
+			$dataProduk = array(
+				'id_produk' => validInputan($dataProduk['id_produk'], false, false),
+				'kd_produk' => validInputan($dataProduk['kd_produk'], false, false),
+				'nama' => (empty($dataProduk['nama'])) ? NULL : validInputan($dataProduk['nama'], false, false),
+				'satuan' => (empty($dataProduk['satuan'])) ? NULL : validInputan($dataProduk['satuan'], false, false),
+				'ket' => (empty($dataProduk['ket'])) ? NULL : validInputan($dataProduk['ket'], false, false),
+			);
+
+			if(updateProduk($koneksi, $dataProduk)){
+				foreach($dataKomposisi as $index => $array){
+					// update hanya yg statusnya bukan hapus dan aksinya edit
+					if(($dataKomposisi[$index]['status'] != "hapus") && ($dataKomposisi[$index]['aksi'] == "edit")) {
+						$dataUpdate['id_produk'] = $dataProduk['id_produk'];
+						// get data list item
+						foreach ($dataKomposisi[$index] as $key => $value) {
+							$dataUpdate[$key] = $value;
+						}
+						updateKomposisi($koneksi,$dataUpdate);
+					}
+					// insert data
+					else if(($dataKomposisi[$index]['status'] != "hapus") && ($dataKomposisi[$index]['aksi'] == "tambah")){
+						$dataUpdate['kd_produk'] = $dataProduk['kd_produk'];
+						// get data list item
+						foreach ($dataKomposisi[$index] as $key => $value) {
+							$dataUpdate[$key] = $value;
+						}
+						insertKomposisi($koneksi,$dataUpdate);
+					}
+					// hapus list
+					else if(($dataKomposisi[$index]['status'] == "hapus") && ($dataKomposisi[$index]['aksi'] == "edit")){
+						// get data list item
+						foreach ($dataKomposisi[$index] as $key => $value) {
+							$dataUpdate[$key] = $value;
+						}
+						deleteKomposisi($koneksi,$dataUpdate);
+					}
+				}
+				$status = true;
+				session_start();
+				$_SESSION['notif'] = "Edit Data Berhasil";
+			}
+			else{
+				$status = false;
+				$errorDB = true;
+			}
+
+		}
+		else $status = false;
+
+		$output = array(
+			'status' => $status,
+			'errorDB' => $errorDB,
+			'cekList' => $cekArray,
+			'setError' => $setError,
+			'setValue' => $setValue,
+		);
+
+		echo json_encode($output);
+	}
+
+	// function get view
+	function getView($koneksi, $id){
+
+	}
+
+	// function edit foto
+	function editFoto($koneksi, $id){
+
+	}
+
+	// function hapus foto
+	function hapusFoto($koneksi, $id){
+
+	}
+
+	// function get select produk
+	function get_select_produk($koneksi){
+		$data_produk = get_all_produk($koneksi);
+		$data = array(
+			array(
+				'value' => "",
+				'text' => "-- Pilih Produk --",
+			),
+		);
+		foreach ($data_produk as $row) {
+			$dataRow = array();
+			$dataRow['value'] = $row['id'];
+			$dataRow['text'] = $row['kd_produk']." - ".$row['nama'];
+
+			$data[] = $dataRow;
+		}
+
+		echo json_encode($data);
 	}
 
 	// function set rule

@@ -20,7 +20,7 @@ $(document).ready(function(){
     	// nama jabatan/pekerjaan
     	$("#nama").change(function(){
     		if(this.value !== ""){
-    			$('.field-nama').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-nama').removeClass('has-error').addClass('has-success');
 				$(".field-nama span.help-block").text('');	
     		}
     	});
@@ -28,7 +28,7 @@ $(document).ready(function(){
     	// keterangan
     	$("#ket").change(function(){
     		if(this.value !== ""){
-    			$('.field-ket').removeClass('has-error').removeClass('has-error').addClass('has-success');
+    			$('.field-ket').removeClass('has-error').addClass('has-success');
 				$(".field-ket span.help-block").text('');	
     		}
     	});
@@ -68,6 +68,7 @@ function submit(){
 			console.log(output);
 			if(!output.status){ // jika gagal
 				resetForm();
+				setValue(output.setValue);
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
@@ -85,7 +86,6 @@ function submit(){
 					});
 					setError(output.setError);
 				}
-				setValue(output.setValue);
 			}
 			else{
 				resetForm();
@@ -156,7 +156,7 @@ function getEdit(id){
 
 function setError(error){
 	if(!jQuery.isEmptyObject(error.namaError)){
-		$('.field-nama').addClass('has-error');
+		$('.field-nama').removeClass('has-success').addClass('has-error');
 		$(".field-nama span.help-block").text(error.namaError);
 	}
 	else{
@@ -165,7 +165,7 @@ function setError(error){
 	}
 
 	if(!jQuery.isEmptyObject(error.ketError)){
-		$('.field-keterangan').addClass('has-error');
+		$('.field-keterangan').removeClass('has-success').addClass('has-error');
 		$(".field-keterangan span.help-block").text(error.ketError);
 	}
 	else{

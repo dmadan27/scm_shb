@@ -320,6 +320,21 @@
 		return $cek;
 	}
 
+	// fungsi untuk cek array list
+	function cekArray($data){
+		$cekKosong = true;
+
+		foreach($data as $array){
+			foreach ($array as $key => $value) {
+				if($key == "status"){
+					if($value != "hapus") $cekKosong = false;
+				}
+			}
+		}
+
+		return $cekKosong; // true --> list kosong, false --> ada isinya.
+	}
+
 	//fungsi format rupiah
 	function rupiah($harga){
 		$string = "Rp. ".number_format($harga,2,",",".");

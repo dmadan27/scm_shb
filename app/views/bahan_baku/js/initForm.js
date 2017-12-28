@@ -267,7 +267,7 @@ function resetForm(){
 	$('#form_bahan_baku').trigger('reset');
 	$('#form_bahan_baku').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
 	$('#form_bahan_baku').find("span.pesan").text(""); // hapus semua span help-block
-	$('#id_supplier').val("");
+	$('#id_bahan_baku').val("");
 }
 
 // function set select satuan
