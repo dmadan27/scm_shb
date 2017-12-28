@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 22 Des 2017 pada 12.22
+-- Generation Time: 28 Des 2017 pada 03.24
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -24,7 +24,15 @@ DELIMITER $$
 --
 -- Prosedur
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_bahan_baku` (IN `id_bahan_baku_param` INT, IN `kd_bahan_baku_param` INT, IN `nama_param` VARCHAR(50), IN `satuan_param` VARCHAR(10), IN `ket_param` TEXT, IN `foto_param` TEXT, IN `tgl_param` DATE, IN `stok_param` DOUBLE(12,2))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `edit_komposisi` (IN `id_param` INT, IN `kd_produk_param` VARCHAR(25), IN `id_bahan_baku_param` INT)  BEGIN
+			DECLARE id_produk_param int;
+
+			SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
+
+						UPDATE komposisi SET id_produk = id_produk_param, id_bahan_baku = id_bahan_baku_param WHERE id = id_param;
+		END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_bahan_baku` (IN `kd_bahan_baku_param` VARCHAR(25), IN `nama_param` VARCHAR(50), IN `satuan_param` VARCHAR(10), IN `ket_param` TEXT, IN `foto_param` TEXT, IN `tgl_param` DATE, IN `stok_param` DOUBLE(12,2))  BEGIN
 			DECLARE id_param int;
 
 			SELECT `AUTO_INCREMENT` INTO id_param 
@@ -40,6 +48,32 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_bahan_baku` (IN `id_bahan_ba
 				tgl, id_bahan_baku, brg_masuk, brg_keluar) 
 			VALUES(tgl_param, id_param, 0, 0);
 			
+		END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_komposisi` (IN `kd_produk_param` VARCHAR(25), IN `id_bahan_baku_param` INT)  BEGIN
+			DECLARE id_produk_param int;
+
+			SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
+
+						INSERT INTO komposisi(id_produk, id_bahan_baku) VALUES(id_produk_param, id_bahan_baku_param);
+		END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_produk` (IN `kd_produk_param` VARCHAR(25), IN `nama_param` VARCHAR(50), IN `satuan_param` VARCHAR(10), IN `ket_param` TEXT, IN `foto_param` TEXT, IN `tgl_param` DATE, IN `stok_param` DOUBLE(12,2))  BEGIN
+			DECLARE id_param int;
+
+			SELECT `AUTO_INCREMENT` INTO id_param 
+		    FROM INFORMATION_SCHEMA.TABLES 
+		    WHERE TABLE_SCHEMA = 'scm_shb' AND TABLE_NAME = 'produk';
+
+		    			INSERT INTO produk(
+				kd_produk, nama, satuan, ket, foto, stok) 
+			VALUES(
+				kd_produk_param, nama_param, satuan_param, ket_param, foto_param, stok_param);
+
+						INSERT INTO mutasi_produk(
+				tgl, id_produk, brg_masuk, brg_keluar) 
+			VALUES(tgl_param, id_param, 0, 0);
+
 		END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_supplier` (IN `nik_param` VARCHAR(16), IN `npwp_param` VARCHAR(20), IN `nama_param` VARCHAR(255), IN `alamat_param` TEXT, IN `telp_param` VARCHAR(20), IN `email_param` VARCHAR(50), IN `status_param` CHAR(1), IN `id_supplier_utama_param` INT)  BEGIN
@@ -92,6 +126,15 @@ CREATE TABLE `bahan_baku` (
   `stok` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `bahan_baku`
+--
+
+INSERT INTO `bahan_baku` (`id`, `kd_bahan_baku`, `nama`, `satuan`, `ket`, `foto`, `stok`) VALUES
+(4, 'KP-ASALAN', 'KOPI ASALAN', 'KG', 'KOPI ROBUSTA', 'barang/dee1d4a187091ddbdb3522af2b0c13f049573d4a.jpg', 100.00),
+(5, 'KP-SUTA', 'KOPI SUTON A', 'KG', 'TEST', NULL, 100.00),
+(6, 'KP-SUTB', 'KOPI SUTON B', 'KG', NULL, NULL, 100.00);
+
 -- --------------------------------------------------------
 
 --
@@ -121,6 +164,14 @@ CREATE TABLE `harga_basis` (
   `jenis` char(1) DEFAULT NULL,
   `harga_basis` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `harga_basis`
+--
+
+INSERT INTO `harga_basis` (`id`, `tgl`, `jenis`, `harga_basis`) VALUES
+(1, '2017-12-27', 'K', 25750.00),
+(2, '2017-12-27', 'L', 78900.00);
 
 -- --------------------------------------------------------
 
@@ -198,9 +249,18 @@ CREATE TABLE `kendaraan` (
 --
 
 CREATE TABLE `komposisi` (
+  `id` int(11) NOT NULL,
   `id_produk` int(11) DEFAULT NULL,
   `id_bahan_baku` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `komposisi`
+--
+
+INSERT INTO `komposisi` (`id`, `id_produk`, `id_bahan_baku`) VALUES
+(7, 12, 4),
+(9, 12, 6);
 
 -- --------------------------------------------------------
 
@@ -216,6 +276,15 @@ CREATE TABLE `mutasi_bahan_baku` (
   `brg_keluar` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `mutasi_bahan_baku`
+--
+
+INSERT INTO `mutasi_bahan_baku` (`id`, `tgl`, `id_bahan_baku`, `brg_masuk`, `brg_keluar`) VALUES
+(4, '2017-12-23', 4, 0.00, 0.00),
+(5, '2017-12-26', 5, 0.00, 0.00),
+(6, '2017-12-26', 6, 0.00, 0.00);
+
 -- --------------------------------------------------------
 
 --
@@ -229,6 +298,13 @@ CREATE TABLE `mutasi_produk` (
   `brg_masuk` double(12,2) DEFAULT NULL,
   `brg_keluar` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `mutasi_produk`
+--
+
+INSERT INTO `mutasi_produk` (`id`, `tgl`, `id_produk`, `brg_masuk`, `brg_keluar`) VALUES
+(12, '2017-12-26', 12, 0.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -281,6 +357,13 @@ CREATE TABLE `produk` (
   `stok` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `produk`
+--
+
+INSERT INTO `produk` (`id`, `kd_produk`, `nama`, `satuan`, `ket`, `foto`, `stok`) VALUES
+(12, 'KP-DEF80', 'KOPI DEF 80', 'KG', 'AGFSDGSD', NULL, 150000.00);
+
 -- --------------------------------------------------------
 
 --
@@ -319,6 +402,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`username`, `password`, `jenis`, `hak_akses`, `status`) VALUES
 ('aghany', '$2y$10$Fmb53c5iL7yEQQCgUH21aeoq7b.rFsNogcmMYOFGMlmw2W6sadyJa', 'K', 'BAGIAN GUDANG', '1'),
+('indraa', '$2y$10$4El7mXcaBAs0DrJsq1alDeLKeURlGOOcO6h/I.FB5S0N4lRtV4wYO', 'K', 'ADMINISTRATOR', '1'),
 ('liliss', '$2y$10$yntJ1sWqsdcCp8a0K1Zr0u/xQ2Z5oVv.LFu.wF9wCF5qus6tXlDxa', 'K', 'BAGIAN ADMINISTRASI DAN KEUANGAN', '1'),
 ('sarifhifni', '$2y$10$4v8SU4WKmqyBmRP97lz.1uXxkxX1Y./qu6wZFgsIQcGkUqAQ7bMYO', 'K', 'DIREKTUR', '1');
 
@@ -351,7 +435,8 @@ CREATE TABLE `user_karyawan` (
 INSERT INTO `user_karyawan` (`username`, `id_karyawan`) VALUES
 ('sarifhifni', 1),
 ('liliss', 6),
-('aghany', 7);
+('aghany', 7),
+('indraa', 11);
 
 -- --------------------------------------------------------
 
@@ -367,6 +452,19 @@ CREATE TABLE `v_buyer` (
 ,`telp` varchar(20)
 ,`email` varchar(50)
 ,`status` varchar(9)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_harga_basis`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_harga_basis` (
+`id` int(11)
+,`tgl` date
+,`jenis` varchar(4)
+,`harga_basis` double(12,2)
 );
 
 -- --------------------------------------------------------
@@ -416,6 +514,23 @@ CREATE TABLE `v_kendaraan` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_produk`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_produk` (
+`id` int(11)
+,`kd_produk` varchar(25)
+,`nama` varchar(50)
+,`satuan` enum('KG','PCS')
+,`ket` text
+,`foto` text
+,`komposisi` text
+,`stok` double(12,2)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `v_supplier`
 -- (Lihat di bawah untuk tampilan aktual)
 --
@@ -458,6 +573,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Struktur untuk view `v_harga_basis`
+--
+DROP TABLE IF EXISTS `v_harga_basis`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_harga_basis`  AS  select `harga_basis`.`id` AS `id`,`harga_basis`.`tgl` AS `tgl`,(case when (`harga_basis`.`jenis` = 'k') then 'KOPI' else 'LADA' end) AS `jenis`,`harga_basis`.`harga_basis` AS `harga_basis` from `harga_basis` order by `harga_basis`.`tgl` desc ;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur untuk view `v_karyawan`
 --
 DROP TABLE IF EXISTS `v_karyawan`;
@@ -472,6 +596,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `v_kendaraan`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_kendaraan`  AS  select `k`.`id` AS `id`,`k`.`no_polis` AS `no_polis`,`k`.`id_supir` AS `id_supir`,`kry`.`nama` AS `supir`,`k`.`pendamping` AS `pendamping`,`k`.`tahun` AS `tahun`,(case when (`k`.`jenis` = 'C') then 'COLT DIESEL' else 'FUSSO' end) AS `jenis`,`k`.`muatan` AS `muatan`,`k`.`foto` AS `foto`,(case when (`k`.`status` = '1') then 'TERSEDIA' else 'TIDAK TERSEDIA' end) AS `status` from (`kendaraan` `k` join `karyawan` `kry` on((`kry`.`id` = `k`.`id_supir`))) order by `k`.`id`,(case when (`k`.`status` = '1') then 'TERSEDIA' else 'TIDAK TERSEDIA' end) ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur untuk view `v_produk`
+--
+DROP TABLE IF EXISTS `v_produk`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_produk`  AS  select `p`.`id` AS `id`,`p`.`kd_produk` AS `kd_produk`,`p`.`nama` AS `nama`,`p`.`satuan` AS `satuan`,`p`.`ket` AS `ket`,`p`.`foto` AS `foto`,group_concat(concat_ws(' - ',`b`.`kd_bahan_baku`,`b`.`nama`) separator ',') AS `komposisi`,`p`.`stok` AS `stok` from ((`produk` `p` join `komposisi` `k` on((`k`.`id_produk` = `p`.`id`))) join `bahan_baku` `b` on((`b`.`id` = `k`.`id_bahan_baku`))) group by `p`.`id` ;
 
 -- --------------------------------------------------------
 
@@ -531,6 +664,7 @@ ALTER TABLE `kendaraan`
 -- Indexes for table `komposisi`
 --
 ALTER TABLE `komposisi`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `fk_komposisi_id_produk` (`id_produk`),
   ADD KEY `fk_komposisi_id_bahan_baku` (`id_bahan_baku`);
 
@@ -594,7 +728,7 @@ ALTER TABLE `user_karyawan`
 -- AUTO_INCREMENT for table `bahan_baku`
 --
 ALTER TABLE `bahan_baku`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `buyer`
 --
@@ -604,7 +738,7 @@ ALTER TABLE `buyer`
 -- AUTO_INCREMENT for table `harga_basis`
 --
 ALTER TABLE `harga_basis`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `karyawan`
 --
@@ -616,15 +750,20 @@ ALTER TABLE `karyawan`
 ALTER TABLE `kendaraan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `komposisi`
+--
+ALTER TABLE `komposisi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
 -- AUTO_INCREMENT for table `mutasi_bahan_baku`
 --
 ALTER TABLE `mutasi_bahan_baku`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `mutasi_produk`
 --
 ALTER TABLE `mutasi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `pekerjaan`
 --
@@ -634,7 +773,7 @@ ALTER TABLE `pekerjaan`
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `supplier`
 --
