@@ -265,41 +265,33 @@
 			tgl date,
 			invoice varchar(25), -- kombinasi kode PB-tgl-increment
 			id_supplier int, -- fk
-			id_bahan_baku int, -- fk
-			id_analisa_harga int, --fk
-			colly int,
-			jumlah double(12,2), -- jumlah berat barang (kg)
 			jenis_pembayaran char(1), -- c: cash, t: transfer
 			jenis_pph double(5,2),
 			pph double(12,2),
-			harga double(12,2),
-			total double(12,2),
 			ket text,
 			status char(1), -- l: lunas, t: titipan
 			-- user varchar(10),
 
 			CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
-			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-			CONSTRAINT fk_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id),
-			CONSTRAINT fk_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id),
+			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
 		);
 
-		-- -- Tabel Detail Pembelian
-		-- CREATE TABLE detail_pembelian(
-		-- 	id int NOT NULL AUTO_INCREMENT,
-		-- 	id_pembelian int, -- fk
-		-- 	id_barang int, -- fk
-		-- 	-- id_kir int, -- fk
-		-- 	id_analisa_harga int, -- fk
-		-- 	colly int, -- jumlah karung
-			
+		-- Tabel Detail Pembelian
+		CREATE TABLE detail_pembelian(
+			id int NOT NULL AUTO_INCREMENT,
+			id_pembelian int, -- fk
+			id_bahan_baku int, -- fk
+			id_analisa_harga int, -- fk
+			colly int,
+			jumlah double(12,2),
+			harga double(12,2),
+			subtotal double(12,2),
 
-		-- 	CONSTRAINT pk_detail_pembelian_id PRIMARY KEY(id),
-		-- 	CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
-		-- 	CONSTRAINT fk_detail_pembelian_id_barang FOREIGN KEY(id_barang) REFERENCES barang(id),
-		-- 	-- CONSTRAINT fk_detail_pembelian_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id),
-		-- 	CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
-		-- );
+			CONSTRAINT pk_detail_pembelian PRIMARY KEY(id),
+			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
+			CONSTRAINT fk_detail_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id),
+			CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
+		);
 
 	-- Data Penjualan
 		-- Tabel pemesanan (belum beres)
