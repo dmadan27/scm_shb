@@ -6,158 +6,212 @@
 <!-- Breadcrumb -->
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h4 class="page-title">Form <?= ucfirst($btn); ?> Data Pemesanan</h4>
+        <h4 class="page-title">Form <?= ucfirst($btn); ?> Data Pengiriman</h4>
     </div>
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="<?= base_url; ?>">Beranda</a></li>
-            <li class="active">Data Pemesanan</li>
+            <li class="active">Data Pengiriman</li>
         </ol>
     </div>
 </div>
-<div class="form-pemesanan">
-	<form id="form_pemesanan" class="form-material" role="form" enctype="multipart/form-data">
-		<!-- panel form -->
+<div class="form-pengiriman">
+	<form id="form_pengiriman" class="form-material" role="form" enctype="multipart/form-data">
+		<input type="hidden" name="id_pengiriman" id="id_pengiriman">
+		<!-- panel form 1-->
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 		        <div class="panel panel-default">
+		        	<div class="panel-heading">
+		        		Data Pengiriman
+		        		<div class="panel-action">
+		        		 	<a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a>
+					 	</div>
+		        	</div>
 		    	 	<div class="panel-wrapper collapse in">
 			 			<div class="panel-body">
-							<input type="hidden" name="id_pemesanan" id="id_pemesanan">
+							<!-- panel kontrak - info kontrak - rekomendasi penjadwalan -->
 			    	 		<div class="row">
 			    	 			<div class="col-md-6">
-			    	 				<!-- tgl -->
-			    	 				<div class="form-group field-tgl has-feedback m-b-5">
-										<label class="col-md-12" for="tgl">Tanggal Pemesanan*</label>
-				                        <div class="col-md-12">
-				                            <input id="tgl" type="text" class="form-control datepicker" placeholder="Masukkan Tanggal Pemesanan">
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-			    	 				<!-- no_kontrak -->
-			    	 				<div class="form-group field-no-kontrak has-feedback m-b-5">
-										<label class="col-md-12" for="no_kontrak">No. Kontrak*</label>
-				                        <div class="col-md-12">
-				                            <input id="no_kontrak" type="text" class="form-control" placeholder="Masukkan No. Kontrak">
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-			    	 				<!-- buyer -->
-			    	 				<div class="form-group field-buyer has-feedback m-b-5">
-										<label class="col-md-12" for="buyer">Buyer*</label>
-				                        <div class="col-md-12">
-				                            <select id="buyer" class="form-control select2"></select>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-									<!-- produk - jumlah produk -->
-									<div class="row">
-										<div class="col-md-6">
-											<!-- produk -->
-					    	 				<div class="form-group field-produk has-feedback m-b-5">
-												<label class="col-md-12" for="produk">Produk*</label>
+			    	 				<fieldset>
+			    	 					<legend>Data Pemesanan</legend>
+			    	 					<!-- id_pemesanan - kontrak -->
+			    	 					<div class="form-group field-kontrak has-feedback m-b-5">
+											<label class="col-md-12" for="kontrak">No. Kontrak*</label>
+					                        <div class="col-md-12">
+					                            <select id="kontrak" class="form-control select2"></select>
+					                            <span class="help-block small pesan"></span>
+					                        </div>
+										</div>
+										<div class="info-detail-pemesanan" style="display: block;">
+											<!-- info buyer -->
+				    	 					<div class="form-group field-info-buyer has-feedback m-b-5">
+												<label class="col-md-12" for="info_buyer">Buyer:</label>
 						                        <div class="col-md-12">
-						                            <select id="produk" class="form-control select2"></select>
+						                            <p class="form-control-static" id="info_buyer">Info Buyer</p>
+						                            <span class="help-block small pesan"></span>
+						                        </div>
+											</div>
+											<!-- info alamat pengiriman -->
+											<div class="form-group field-info-alamat has-feedback m-b-5">
+												<label class="col-md-12" for="info_alamat">Alamat Pengiriman:</label>
+						                        <div class="col-md-12">
+						                            <p class="form-control-static" id="info_alamat">Info Alamat</p>
+						                            <span class="help-block small pesan"></span>
+						                        </div>
+											</div>
+											<!-- info produk - info jumlah -->
+											<div class="row">
+												<div class="col-md-6">
+													<!-- info produk -->
+						    	 					<div class="form-group field-info-produk has-feedback m-b-5">
+														<label class="col-md-12" for="info_produk">Produk:</label>
+								                        <div class="col-md-12">
+								                            <p class="form-control-static" id="info_produk">Info Produk</p>
+								                            <span class="help-block small pesan"></span>
+								                        </div>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<!-- info jumlah -->
+						    	 					<div class="form-group field-info-jumlah has-feedback m-b-5">
+														<label class="col-md-12" for="info_jumlah">Jumlah:</label>
+								                        <div class="col-md-12">
+								                            <p class="form-control-static" id="info_jumlah">Info Jumlah</p>
+								                            <span class="help-block small pesan"></span>
+								                        </div>
+													</div>
+												</div>
+											</div>
+				    	 					<!-- info waktu pengiriman -->
+				    	 					<div class="form-group field-tgl has-feedback m-b-5">
+												<label class="col-md-12" for="tgl">Waktu Pengiriman:</label>
+						                        <div class="col-md-12">
+						                            <p class="form-control-static" id="info_waktu_pengiriman">Info Waktu Pengiriman</p>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
 										</div>
-										<div class="col-md-6">
-											<!-- jumlah produk -->
-					    	 				<div class="form-group field-jumlah-produk has-feedback m-b-5">
-												<label class="col-md-12" for="jumlah">Jumlah Produk*</label>
-						                        <div class="col-md-12">
-						                        	<div class="input-group">
-						                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah Produk">
-						                        		<span class="input-group-addon satuan-produk"></span>
-						                        	</div>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
+										<!-- button proses penjadwalan -->
+										<div class="form-group field-produk has-feedback m-b-5">
+					                        <div class="col-md-12 text-right">
+					                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung">Rekomendasi Penjadwalan Pengiriman</button>
+					                        </div>
 										</div>
-									</div>	
-			    	 				<!-- jumlah karung -->
-			    	 				<div class="form-group field-jumlah-karung has-feedback m-b-5">
-										<label class="col-md-12" for="jumlah_karung">Jumlah Karung*</label>
-				                        <div class="col-md-12">
-				                            <input id="jumlah_karung" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah Karung">
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-					    	 		<!-- ket karung - kemasan -->	
-									<div class="row">
-										<div class="col-md-6">
-											<!-- ket karung -->
-					    	 				<div class="form-group field-ket-karung has-feedback m-b-5">
-												<label class="col-md-12" for="ket_karung">Keterangan Karung*</label>
-						                        <div class="col-md-12">
-						                            <select id="ket_karung" class="form-control"></select>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-										</div>
-										<div class="col-md-6">
-											<!-- kemasan -->
-					    	 				<div class="form-group field-kemasan has-feedback m-b-5">
-												<label class="col-md-12" for="kemasan">Kemasan*</label>
-						                        <div class="col-md-12">
-						                            <select id="kemasan" class="form-control"></select>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-										</div>
-									</div>
+			    	 				</fieldset>
 			    	 			</div>
 			    	 			<div class="col-md-6">
-			    	 				<!-- waktu pengiriman - batas wakru -->
-			    	 				<div class="row">
-			    	 					<div class="col-md-6">
-			    	 						<!-- waktu pengiriman -->
-					    	 				<div class="form-group field-waktu-pengiriman has-feedback m-b-5">
-												<label class="col-md-12" for="waktu_pengiriman">Waktu Pengiriman*</label>
-						                        <div class="col-md-12">
-						                            <input id="waktu_pengiriman" type="text" class="form-control datepicker" placeholder="Masukkan Waktu Pengiriman">
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-			    	 					</div>
-			    	 					<div class="col-md-6">
-			    	 						<!-- batas waktu -->
-					    	 				<div class="form-group field-batas-waktu has-feedback m-b-5">
-												<label class="col-md-12" for="batas_waktu_pengiriman">Batas Waktu Pengiriman*</label>
-						                        <div class="col-md-12">
-						                            <input id="batas_waktu_pengiriman" type="text" class="form-control datepicker" placeholder="Masukkan Batas Waktu Pengiriman">
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-			    	 					</div>
-			    	 				</div>	
-			    	 				<!-- ket -->
-			    	 				<div class="form-group field-ket has-feedback m-b-5">
-										<label class="col-md-12" for="ket">Keterangan</label>
-				                        <div class="col-md-12">
-				                            <textarea id="ket" class="form-control" rows="6" placeholder="Masukkan Keterangan Pemesanan"></textarea>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-			    	 				<!-- lampiran -->
-			    	 				<div class="form-group field-lampiran has-feedback m-b-5">
-		                                <label class="col-md-12">Lampiran</label>
-		                                <div class="col-md-12">
-				                            <input id="lampiran" type="file" class="form-control">
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-		                            </div>
-			    	 				<!-- status -->
-			    	 				<div class="form-group field-status has-feedback m-b-5">
-										<label class="col-md-12" for="status">Status*</label>
-				                        <div class="col-md-12">
-				                            <select id="status" class="form-control"></select>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
+			    	 				<fieldset>
+			    	 					<legend>Rekomendasi Penjadwalan</legend>
+			    	 					<!-- info rekomendasi -->
+			    	 					<div class="form-group field-info-rekomendasi has-feedback m-b-5">
+											<label class="col-md-12" for="info_rekomendasi_pengiriman">Rekomendasi Penjadwalan Pengiriman:</label>
+					                        <div class="col-md-12">
+					                            <p class="form-control-static" id="info_rekomendasi_pengiriman">Info Rekomendasi Penjadwalan Pengiriman</p>
+					                            <span class="help-block small pesan"></span>
+					                        </div>
+										</div>
+			    	 					<!-- tabel rekomendasi penjadwalan -->
+			    	 					<div class="table-responsive">
+											<table id="tabel_rekomendasi_pengiriman" class="table table-bordered table-hover">
+												<thead>
+													<tr>
+														<th style="width: 15px">No</th>
+														<th>Tanggal</th>
+														<th>Kendaraan</th>
+														<th>Jumlah</th>
+													</tr>
+												</thead>
+												<tbody></tbody>
+											</table>
+										</div>	
+			    	 				</fieldset>
 			    	 			</div>
 			    	 		</div>
+			 			</div>
+		    	 	</div>
+		        </div>
+		    </div>
+		</div>
+		<!-- panel form 2 -->
+		<div class="row">
+			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+		        <div class="panel panel-default">
+		        	<div class="panel-heading">
+		        		Data Detail Pengiriman
+		        		<div class="panel-action">
+		        		 	<a href="#" data-perform="panel-collapse"><i class="ti-minus"></i></a>
+					 	</div>
+		        	</div>
+		    	 	<div class="panel-wrapper collapse in">
+			 			<div class="panel-body">
+			 				<div class="row">
+			 					<div class="col-md-6">
+			 						<!-- tgl -->
+									<div class="form-group field-tgl has-feedback m-b-5">
+										<label class="col-md-12" for="kontrak">Tanggal*</label>
+				                        <div class="col-md-12">
+				                            <input id="tgl" type="text" class="form-control datepicker" placeholder="Masukkan Tanggal">
+				                            <span class="help-block small pesan"></span>
+				                        </div> 
+									</div>
+									<!-- kendaraan -->
+									<div class="form-group field-kendaraan has-feedback m-b-5">
+										<label class="col-md-12" for="kendaraan">Kendaraan*</label>
+				                        <div class="col-md-12">
+				                            <select id="kendaraan" class="form-control select2"></select>
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+			 					</div>
+			 					<div class="col-md-6">
+			 						<!-- colly -->
+									<div class="form-group field-colly has-feedback m-b-5">
+										<label class="col-md-12" for="kontrak">Colly*</label>
+				                        <div class="col-md-12">
+				                            <div class="input-group">
+				                        		<input id="colly" type="number" min="0" class="form-control" placeholder="Masukkan Colly">
+				                        		<span class="input-group-addon">PCS</span>
+				                        	</div>
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+									<!-- jumlah -->
+									<div class="form-group field-jumlah has-feedback m-b-5">
+										<label class="col-md-12" for="kontrak">Jumlah*</label>
+				                        <div class="col-md-12">
+				                            <div class="input-group">
+				                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah">
+				                        		<span class="input-group-addon"></span>
+				                        		<span class="input-group-btn">
+				                        			<button type="button" id="btnTambah_barang" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pengiriman"><i class="fa fa-plus"></i></button>
+				                        		</span>
+				                        	</div>
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+			 					</div>
+			 				</div>
+			 				<!-- tabel list pengiriman -->
+			    	 		<div class="row">
+			    	 			<div class="col-md-12">
+			    	 				<div class="table-responsive">
+										<table id="tabel_detail_pengiriman" class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th style="width: 15px">No</th>
+													<th>Tanggal</th>
+													<th>Kendaraan</th>
+													<th>Colly</th>
+													<th>Jumlah</th>
+													<th>Aksi</th>
+												</tr>
+											</thead>
+											<tbody></tbody>
+										</table>
+									</div>	
+			    	 			</div>
+			    	 		</div>		
 			 			</div>
 		    	 	</div>
 		        </div>
@@ -184,9 +238,9 @@
 	</form>
 </div>
 
-<!-- <script type="text/javascript">
-    var listKomposisi = [];
-    var indexKomposisi = 0;
-</script> -->
+<script type="text/javascript">
+    var listDetailPengiriman = [];
+    var indexDetailPengiriman = 0;
+</script>
 <!-- js form -->
-<script type="text/javascript" src="<?= base_url."app/views/pemesanan/js/initForm.js"; ?>"></script>
+<script type="text/javascript" src="<?= base_url."app/views/pengiriman/js/initForm.js"; ?>"></script>

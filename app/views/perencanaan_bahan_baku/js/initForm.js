@@ -20,7 +20,11 @@ $(document).ready(function(){
         todayHighlight: true,
     });
 
-    $("#form_hargaBasis").submit(function(e){
+    $("#btnHitung_peramalan").click(function(){
+
+    });
+
+    $("#form_peramalan").submit(function(e){
     	e.preventDefault();
     	submit();
     	return false;
@@ -55,7 +59,10 @@ $(document).ready(function(){
     	$("#produk").change(function(){
     		if(this.value !== ""){
     			$('.field-produk').removeClass('has-error').addClass('has-success');
-				$(".field-produk span.help-block").text('');	
+				$(".field-produk span.help-block").text('');
+
+				// get satuan produk
+				get_satuanProduk(this.value);	
     		}
     	});
     // ==================================
@@ -257,6 +264,23 @@ function setSelect_produk(){
 				var option = new Option(item.text, item.value);
 				$('#produk').append(option).trigger('change');
 			});
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
+}
+
+// function get satuan produk
+function get_satuanProduk(id){
+	$.ajax({
+		url: base_url+"app/controllers/Produk.php",
+		type: "post",
+		dataType: "json",
+		data: {"action": "get_satuan_produk", "id": id},
+		success: function(data){
+			$('.satuan-produk').text(data);
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");

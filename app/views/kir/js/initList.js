@@ -1,6 +1,29 @@
 $(document).ready(function(){
+     if(notif == "gagal") {
+        $.toast({
+            heading: 'Pesan Error',
+            text: 'Data Tidak Ditemukan',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'error',
+            hideAfter: 3000,
+            stack: 6
+        });
+    }
+    else if(notif != false) {
+        $.toast({
+            heading: 'Pesan Berhasil',
+            text: notif,
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'success',
+            hideAfter: 3000,
+            stack: 6
+        });
+    };
+
 	// setting datatable
-    var tabel_produksi = $("#tabel_produksi").DataTable({
+    var tabel_kir = $("#tabel_kir").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",
@@ -22,7 +45,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url: base_url+"app/controllers/Produksi.php",
+            url: base_url+"app/controllers/Kir.php",
             type: 'POST',
             data: {
                 "action" : "list",
@@ -30,19 +53,29 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 5], // disable order di kolom 1 dan 3
+                "targets":[0, 6], // disable order di kolom 1 dan 3
                 "orderable":false,
             }
         ],
     });
 
+    $("#tambah_kir").click(function(){
+        window.location.href = base_url+"index.php?m=kir&p=form";
+    });
+
+
 
     // $("#exportPdf").click(function(){
     //     createPDF();
     // });
+
 });
 
-// function export pdf
+function getEdit(id){
+    window.location.href = base_url+"index.php?m=kir&p=form&id="+id;
+}
+
+// Function export PDF
     // function createPDF(){
     //     getDataPDF(function(data){
     //         var doc = new jsPDF('l');
@@ -53,7 +86,7 @@ $(document).ready(function(){
     //             doc.setFontSize(14);
     //             doc.setTextColor(40);
     //             doc.setFontStyle('normal');
-    //             doc.text("Data Karyawan", data_.settings.margin.left, 22);
+    //             doc.text("Data Supplier", data_.settings.margin.left, 22);
 
     //             // footer
     //             var str = "Page " + data_.pageCount;
@@ -75,14 +108,14 @@ $(document).ready(function(){
     //             doc.putTotalPages(totalPagesExp);
     //         }
 
-    //         doc.save('data_karyawan.pdf');
+    //         doc.save('data_supplier.pdf');
     //     });
     // }
 
     // function getDataPDF(handleData){
     //     // pecah var data menjadi kolom dan basris
     //     $.ajax({
-    //         url: base_url+"app/controllers/Karyawan.php",
+    //         url: base_url+"app/controllers/Supplier.php",
     //         type: "post",
     //         dataType: "json",
     //         data: {
@@ -106,4 +139,6 @@ $(document).ready(function(){
     //         }
     //     })
     // }
-// ====================================
+// =============================================
+
+

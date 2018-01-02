@@ -200,12 +200,11 @@
 			kd_kir varchar(25), -- KIR-kopi/lada-tgl-increment
 			tgl date, -- tgl dan jam
 			id_supplier int, -- fk
-			id_bahan_baku int, -- jenis bahan baku (kopi/lada)
+			jenis_bahan_baku char(1), -- jenis bahan baku (kopi/lada) k: kopi, l: lada
 			status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
 
 			CONSTRAINT pk_kir_id PRIMARY KEY(id),
-			CONSTRAINT fk_kir_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-			CONSTRAINT fk_kir_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+			CONSTRAINT fk_kir_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
 		);
 
 		-- Tabel KIR Kopi

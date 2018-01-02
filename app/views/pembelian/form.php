@@ -230,8 +230,15 @@
 							</div>
 						</div>	
 		        		<div class="text-right">
-		        			<button id="btnSubmit_pemesanan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
-		        			<a href="<?=base_url."index.php?m=pemesanan&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
+		        			<button id="btnSubmit_pembelian" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
+		        			<?php
+		        				if(!$id){
+		        					?>
+		        						<button id="btnSubmit_pembelian_print" type="submit" class="btn btn-lg btn-success btn-outline waves-effect waves-light" value="<?= $btn ?>">Tambah dan Cetak</button>
+		        					<?php
+		        				}
+		        			?>
+		        			<a href="<?=base_url."index.php?m=pembelian&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
 		        		</div>
 		        	</div>
 		        </div>
@@ -241,8 +248,8 @@
 </div>
 
 <script type="text/javascript">
-    var listKomposisi = [];
-    var indexKomposisi = 0;
+    var listDetailPembelian = [];
+    var indexDetailPembelian = 0;
 </script>
 <!-- js form -->
 <script type="text/javascript" src="<?= base_url."app/views/pembelian/js/initForm.js"; ?>"></script>

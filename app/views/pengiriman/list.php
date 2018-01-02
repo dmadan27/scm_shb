@@ -41,11 +41,10 @@
                                     <th>No. Kontrak</th>
                                     <th>Buyer</th>
                                     <th>Tanggal</th>
-                                    <th>Kendaraan</th>
                                     <th>Produk</th>
+                                    <th>Kendaraan</th>
                                     <th>Colly</th>
                                     <th>Jumlah</th>
-                                    <th>Waktu Pengiriman</th>
                                     <th>Status</th>
     	 							<th>Aksi</th>
     	 						</tr>

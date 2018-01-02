@@ -36,6 +36,10 @@
 				get_select_produk($koneksi);
 				break;
 
+			case 'get_satuan_produk':
+				get_satuan_produk($koneksi, $id);
+				break;
+
 			default:
 				# code...
 				break;
@@ -311,6 +315,13 @@
 		}
 
 		echo json_encode($data);
+	}
+
+	// function get satuan produk
+	function get_satuan_produk($koneksi, $id){
+		$data_satuan = getProduk_by_id($koneksi, $id);
+
+		echo json_encode($data_satuan['satuan']);
 	}
 
 	// function set rule

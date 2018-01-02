@@ -23,7 +23,7 @@ $(document).ready(function(){
     };
 
 	// setting datatable
-    var tabel_pemesanan = $("#tabel_pemesanan").DataTable({
+    var tabel_pengiriman = $("#tabel_pengiriman").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",
@@ -45,7 +45,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url: base_url+"app/controllers/Pemesanan.php",
+            url: base_url+"app/controllers/Pengiriman.php",
             type: 'POST',
             data: {
                 "action" : "list",
@@ -53,14 +53,14 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 8], // disable order di kolom 1 dan 3
+                "targets":[0, 9],
                 "orderable":false,
             }
         ],
     });
 
-    $("#tambah_pemesanan").click(function(){
-        window.location.href = base_url+"index.php?m=pemesanan&p=form";
+    $("#tambah_pengiriman").click(function(){
+        window.location.href = base_url+"index.php?m=pengiriman&p=form";
     });
 
     // $("#exportPdf").click(function(){
@@ -69,7 +69,7 @@ $(document).ready(function(){
 });
 
 function getEdit(id){
-    window.location.href = base_url+"index.php?m=pemesanan&p=form&id="+id;
+    window.location.href = base_url+"index.php?m=pengiriman&p=form&id="+id;
 }
 
 // function export pdf
