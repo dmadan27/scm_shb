@@ -6,17 +6,7 @@
     <div class="container-fluid">
       	
     	<?php
-    		if(file_exists($filename)){
-                if($p == "list"){
-                    include_once("app/views/template/css/list_css.php");
-                    include_once("app/views/template/js/list_js.php");
-                }
-                else if ($p == "view"){
-                    include_once("app/views/template/css/view_css.php");
-                    include_once("app/views/template/js/view_js.php");
-                }
-                include_once($filename);
-            }
+    		if(file_exists($filename)) include_once($filename);
         	else include_once("app/views/beranda/dashboard.php");
     	?>
 

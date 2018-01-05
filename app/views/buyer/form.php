@@ -33,7 +33,7 @@
 							<div class="form-group field-alamat has-feedback m-b-5">
 								<label class="col-md-12" for="alamat">Alamat</label>
 		                        <div class="col-md-12">
-		                            <textarea id="alamat" class="form-control" rows="3" placeholder="Masukkan Alamat"></textarea>
+		                            <textarea id="alamat" class="form-control" rows="6" placeholder="Masukkan Alamat"></textarea>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>							
@@ -56,6 +56,15 @@
 		                            <span class="help-block small pesan"></span>
 		                        </div>
 							</div>
+
+							<!-- foto -->
+							<div class="form-group field-foto has-feedback m-b-5">
+                                <label class="col-md-12">Foto</label>
+                                <div class="col-md-12">
+		                            <input id="foto" type="file" class="form-control">
+		                            <span class="help-block small pesan"></span>
+		                        </div>
+                            </div>
 
 							<!-- status -->
 							<div class="form-group field-status has-feedback m-b-5">

@@ -28,8 +28,8 @@
 				action($koneksi, $action);
 				break;
 
-			case 'getview':
-				getView($koneksi, $id);
+			case 'getpdf':
+				getpdf($koneksi);
 				break;
 
 			default:
@@ -42,8 +42,8 @@
 	function listPekerjaan($koneksi){
 		$config_db = array(
 			'tabel' => 'pekerjaan',
-			'kolomOrder' => array(null, 'jabatan', null, null),
-			'kolomCari' => array('id', 'jabatan', 'ket'),
+			'kolomOrder' => array(null, 'nama', null, null),
+			'kolomCari' => array('id', 'nama', 'ket'),
 			'orderBy' => array('id'=>'asc'),
 			'kondisi' => false,
 		);
@@ -54,11 +54,13 @@
 		$no_urut = $_POST['start'];
 		foreach($data_pekerjaan as $row){
 			$no_urut++;
-
-			// view
-			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
+			
 			// edit
-			$aksi .= '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			$aksiEdit = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			// hapus
+			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
+
+			$aksi = $aksiEdit.$aksiHapus;
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
@@ -134,6 +136,33 @@
 	function getEdit($koneksi, $id){
 		$data_pekerjaan = empty(getPekerjaan_by_id($koneksi, $id)) ? false : getPekerjaan_by_id($koneksi, $id);
 		echo json_encode($data_pekerjaan);
+	}
+
+	// function get pdf
+	function getPdf($koneksi){
+		$data_pekerjaan = get_all_pekerjaan($koneksi);
+		$columns = array(
+			"No", "Jabatan / Pekerjaan", "Keterangan",
+		);
+		$rows = array();
+		$no_urut = 0;
+		foreach($data_pekerjaan as $row){
+			$no_urut++;
+
+			$dataRow = array();
+			$dataRow[] = $no_urut;
+			$dataRow[] = $row['nama'];
+			$dataRow[] = gantiKosong($row['ket']);
+
+			$rows[] = $dataRow;
+		}
+
+		$output = array(
+				"columns" => $columns,
+				"rows" => $rows,
+			);
+
+		echo json_encode($output);
 	}
 
 	// set rule validasi

@@ -175,8 +175,8 @@ function setError(error){
 }
 
 function setValue(value){
-	$("#nama").val(value.nama);
-	$("#ket").val(value.ket);
+	$("#nama").val(value.nama).trigger('change');
+	$("#ket").val(value.ket).trigger('change');
 	$("#id_pekerjaan").val(value.id);
 }
 

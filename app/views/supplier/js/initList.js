@@ -30,7 +30,7 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 7], // disable order di kolom 1 dan 3
+                "targets":[0, 7],
                 "orderable":false,
             }
         ],
@@ -87,7 +87,6 @@ $(document).ready(function(){
             dataType: "json",
             data: {
                 "action": "getPdf",
-                "jenis": "default",
             },
             beforeSend: function(){
                 $.blockUI({

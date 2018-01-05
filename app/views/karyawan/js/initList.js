@@ -117,7 +117,6 @@ function getEdit(id){
             dataType: "json",
             data: {
                 "action": "getPdf",
-                "jenis": "default",
             },
             beforeSend: function(){
                 $.blockUI({

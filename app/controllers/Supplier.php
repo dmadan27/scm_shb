@@ -41,8 +41,7 @@
 				break;
 
 			case 'getpdf':
-				$jenis = isset($_POST['jenis']) ? $_POST['jenis'] : false;
-				getPdf($koneksi, $jenis, $id);
+				getPdf($koneksi);
 				break;
 
 			default:
@@ -70,9 +69,13 @@
 			$status = strtolower($row['status'])=='utama' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 			
 			// view
-			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
+			$aksiView = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
 			// edit
-			$aksi .= '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			$aksiEdit = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			// hapus
+			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
+
+			$aksi = $aksiView.$aksiEdit.$aksiHapus;
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
@@ -201,41 +204,35 @@
 	}
 
 	// function get pdf
-	function getPdf($koneksi, $jenis, $id=false){
-		// cek jenis report
-		if(strtolower($jenis) == "default"){ // tampilkan list supplier
-			$data_supplier = get_all_supplier($koneksi);
-			$columns = array(
-				"No", "NIK", "NPWP", "Nama", "Alamat", "No. Telepon", "Status", "Supplier Utama",
-			);
-			$rows = array();
-			$no_urut = 0;
-			// pecah data untuk di sesuaikan format
-			foreach($data_supplier as $row){
-				$no_urut++;
+	function getPdf($koneksi){
+		$data_supplier = get_all_supplier($koneksi);
+		$columns = array(
+			"No", "NIK", "NPWP", "Nama", "Alamat", "No. Telepon", "Status", "Supplier Utama",
+		);
+		$rows = array();
+		$no_urut = 0;
+		// pecah data untuk di sesuaikan format
+		foreach($data_supplier as $row){
+			$no_urut++;
 
-				$dataRow = array();
-				$dataRow[] = $no_urut;
-				$dataRow[] = gantiKosong($row['nik']);
-				$dataRow[] = gantiKosong($row['npwp']);
-				$dataRow[] = $row['nama'];
-				$dataRow[] = gantiKosong($row['alamat']);
-				$dataRow[] = gantiKosong($row['telp']);
-				$dataRow[] = gantiKosong($row['email']);
-				$dataRow[] = $row['status'];
-				$dataRow[] = ($row['nama'] == $row['nama_utama']) ? "-" : $row['nama_utama'];
+			$dataRow = array();
+			$dataRow[] = $no_urut;
+			$dataRow[] = gantiKosong($row['nik']);
+			$dataRow[] = gantiKosong($row['npwp']);
+			$dataRow[] = $row['nama'];
+			$dataRow[] = gantiKosong($row['alamat']);
+			$dataRow[] = gantiKosong($row['telp']);
+			$dataRow[] = gantiKosong($row['email']);
+			$dataRow[] = $row['status'];
+			$dataRow[] = ($row['nama'] == $row['nama_utama']) ? "-" : $row['nama_utama'];
 
-				$rows[] = $dataRow;
-			}
-
-			$output = array(
-				"columns" => $columns,
-				"rows" => $rows,
-			);
+			$rows[] = $dataRow;
 		}
-		else{ // by id supplier + transaksi
-			$data_supplier = getSupplier_full_by_id($koneksi, $id);
-		}
+
+		$output = array(
+			"columns" => $columns,
+			"rows" => $rows,
+		);
 
 		echo json_encode($output);
 	}

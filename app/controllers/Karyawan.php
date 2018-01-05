@@ -41,6 +41,14 @@
 				getSelect_pekerjaan($koneksi);
 				break;
 
+			case 'getexcel':
+
+				break;
+
+			case 'getpdf':
+				getPdf($koneksi);
+				break;
+
 			default:
 				# code...
 				break;
@@ -66,9 +74,13 @@
 			$status = strtolower($row['status'])=='aktif' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-danger label-rouded">'.$row['status'].'</span>';
 
 			// view
-			$aksi = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
+			$aksiView = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';			
 			// edit
-			$aksi .= '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			$aksiEdit = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
+			// hapus
+			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
+
+			$aksi = $aksiView.$aksiEdit.$aksiHapus;
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
@@ -295,6 +307,39 @@
 		}
 
 		echo json_encode($data);
+	}
+
+	// function get pdf
+	function getPdf($koneksi){
+		$data_supplier = get_all_karyawan($koneksi);
+		$columns = array(
+			"No", "NIK", "NPWP", "No. Induk Karyawan", "Nama", "Jabatan", "No. Telepon", "Status",
+		);
+		$rows = array();
+		$no_urut = 0;
+		// pecah data untuk di sesuaikan format
+		foreach($data_supplier as $row){
+			$no_urut++;
+
+			$dataRow = array();
+			$dataRow[] = $no_urut;
+			$dataRow[] = gantiKosong($row['nik']);
+			$dataRow[] = gantiKosong($row['npwp']);
+			$dataRow[] = $row['no_induk'];
+			$dataRow[] = $row['nama'];
+			$dataRow[] = $row['jabatan'];
+			$dataRow[] = gantiKosong($row['telp']);
+			$dataRow[] = $row['status'];
+
+			$rows[] = $dataRow;
+		}
+
+		$output = array(
+			"columns" => $columns,
+			"rows" => $rows,
+		);
+
+		echo json_encode($output);
 	}
 
 	// set rule validasi

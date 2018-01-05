@@ -1,42 +1,38 @@
 $(document).ready(function(){
-
+	var tabel_supplier_pengganti = $("#tabel_supplier_pengganti").DataTable({
+        "language" : {
+            "lengthMenu": "Tampilkan _MENU_ data/page",
+            "zeroRecords": "Data Tidak Ada",
+            "info": "Menampilkan _START_ s.d _END_ dari _TOTAL_ data",
+            "infoEmpty": "Menampilkan 0 s.d 0 dari 0 data",
+            "search": "Pencarian:",
+            "loadingRecords": "Loading...",
+            "processing": "Processing...",
+            "paginate": {
+                "first": "Pertama",
+                "last": "Terakhir",
+                "next": "Selanjutnya",
+                "previous": "Sebelumnya"
+            }
+        },
+        "lengthMenu": [ 5, 10, 25, 100 ],
+        "pageLength": 5,
+        order: [],
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: base_url+"app/controllers/Supplier.php",
+            type: 'POST',
+            data: {
+                "action" : "listPengganti",
+                "id" : urlParams.id,
+            }
+        },
+        "columnDefs": [
+            {
+                "targets":[0],
+                "orderable":false,
+            }
+        ],
+    });
 });
-
-// function get view
-function getView(id){
-	// $.ajax({
-	// 	url: base_url+'app/controllers/Supplier.php',
-	// 	type: 'post',
-	// 	dataType: 'json',
-	// 	data: {"id": id, "action": "getView"},
-	// 	beforeSend: function(){
-	// 		setLoading();
-	// 	},
-	// 	success: function(data){
-	// 		if(data){
-	// 			console.log(data);
-	// 			setLoading(false);
-	// 			// if(data.status==='1'){
-	// 			// 	$("#supplier_utama option").prop("disabled", false);
-	// 			// 	$('#supplier_utama option[value="'+data.supplier_utama+'"]').prop("disabled", true);
-	// 			// }
-	// 			// else $("#supplier_utama option").prop("disabled", false);
-
-	// 			// setValue(data);
-	// 		}
-	// 		else{
-	// 			swal("Pesan Error", "Data Yang Anda Minta Tidak Tersedia", "warning");
-	// 		}
-				
-	// 	},
-	// 	error: function (jqXHR, textStatus, errorThrown){ // error handling
- //            setLoading;
- //            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
- //            $("#modal_v_supplier").modal('hide');
- //            console.log(jqXHR, textStatus, errorThrown);
- //        }
-	// })
-
-
-	$("#modal_v_supplier").modal();
-}

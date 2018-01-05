@@ -33,7 +33,7 @@
     	 						</div>
     	 					</div>
     	 				</div>
-                        <div class="table-responsive">
+                        <!-- <div class="table-responsive"> -->
                             <table id="tabel_buyer" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
@@ -48,7 +48,7 @@
                                     </tr>
                                 </thead>
                             </table>
-                        </div>
+                        <!-- </div> -->
     	 			</div>
     	 		</div>
     	 	</div>

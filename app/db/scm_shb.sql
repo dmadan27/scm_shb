@@ -619,7 +619,8 @@
 	# view Buyer
 	CREATE OR REPLACE VIEW v_buyer AS
 		SELECT id, npwp, nama, alamat, telp, email, 
-			(CASE WHEN (status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+			(CASE WHEN (status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status,
+			foto
 		FROM buyer
 		ORDER BY id ASC;
 

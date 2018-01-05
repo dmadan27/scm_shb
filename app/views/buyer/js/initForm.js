@@ -58,6 +58,14 @@ $(document).ready(function(){
     		}
     	});
 
+    	// foto
+    	$("#foto").change(function(){
+    		if(this.value !== ""){
+    			$('.field-foto').removeClass('has-error').removeClass('has-error').addClass('has-success');
+				$(".field-foto span.help-block").text('');	
+    		}
+    	});
+
     	// status
     	$("#status").change(function(){
     		// jika tidak diisi
@@ -80,6 +88,7 @@ function getDataForm(){
 	data.append('alamat', $("#alamat").val().trim()); // alamat
 	data.append('telp', $("#telp").val().trim()); // telp
 	data.append('email', $("#email").val().trim()); // alamat
+	data.append('foto', $("#foto")[0].files[0]); // foto
 	data.append('status', $("#status").val().trim()); // status
 	data.append('action', $("#btnSubmit_buyer").val().trim()); // action
 
@@ -153,6 +162,7 @@ function submit(){
 // function get edit
 function getEdit(id){
 	resetForm();
+	$(".field-foto").css("display", "none");
 	$("#labelModalBuyer").text("Form Edit Data Buyer");
 	$("#btnSubmit_buyer").prop("value", "edit");
 	$("#btnSubmit_buyer").text("Edit");
@@ -235,6 +245,16 @@ function setError(error){
 	else{
 		$('.field-email').removeClass('has-error').addClass('has-success');
 		$(".field-email span.help-block").text('');
+	}
+
+	// foto
+	if(!jQuery.isEmptyObject(error.fotoError)){
+		$('.field-foto').removeClass('has-success').addClass('has-error');
+		$(".field-foto span.help-block").text(error.fotoError);
+	}
+	else{
+		$('.field-foto').removeClass('has-error').addClass('has-success');
+		$(".field-foto span.help-block").text('');	
 	}
 
 	// status
