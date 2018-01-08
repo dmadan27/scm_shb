@@ -61,44 +61,44 @@
 		                    	<!-- nik -->
 		                        <div class="form-group m-b-5">
 									<label>NIK:</label>
-		                            <p class="form-control-static" id="nik">Info NIK</p>
+		                            <p class="form-control-static" id="info_nik">Info NIK</p>
 								</div>
 								<!-- npwp -->
 		                        <div class="form-group m-b-5">
 									<label>NPWP:</label>
-		                            <p class="form-control-static" id="npwp">Info NPWP</p>
+		                            <p class="form-control-static" id="info_npwp">Info NPWP</p>
 								</div>
 								<!-- nama -->
 		                        <div class="form-group m-b-5">
 									<label>Nama:</label>
-		                            <p class="form-control-static" id="nama">Info Nama</p>
+		                            <p class="form-control-static" id="info_nama">Info Nama</p>
 								</div>
 								<!-- ttl -->
 		                        <div class="form-group m-b-5">
 									<label>Tempat dan Tanggal Lahir:</label>
-		                            <p class="form-control-static" id="ttl">Info Tempat dan Tanggal Lahir</p>
+		                            <p class="form-control-static" id="info_ttl">Info Tempat dan Tanggal Lahir</p>
 								</div>
 								<!-- jenis kelamin -->
 		                        <div class="form-group m-b-5">
 									<label>Jenis Kelamin:</label>
-		                            <p class="form-control-static" id="jk">Info Jenis Kelamin</p>
+		                            <p class="form-control-static" id="info_jk">Info Jenis Kelamin</p>
 								</div>
 		                    </div>
 							<div class="col-md-6">
 								<!-- alamat -->
 		                        <div class="form-group m-b-5">
 									<label>Alamat:</label>
-		                            <p class="form-control-static" id="alamat">Info Alamat</p>
+		                            <p class="form-control-static" id="info_alamat">Info Alamat</p>
 								</div>
 								<!-- telp -->
 		                        <div class="form-group m-b-5">
 									<label>No. Telepon:</label>
-		                            <p class="form-control-static" id="telp">Info No. Telepon</p>
+		                            <p class="form-control-static" id="info_telp">Info No. Telepon</p>
 								</div>
 								<!-- email -->
 		                        <div class="form-group m-b-5">
 									<label>Email:</label>
-		                            <p class="form-control-static" id="email">Info Email</p>
+		                            <p class="form-control-static" id="info_email">Info Email</p>
 								</div>
 							</div>
                     	</div>
@@ -107,22 +107,22 @@
                         <!-- no induk -->
                         <div class="form-group m-b-5">
 							<label>No. Induk Karyawan:</label>
-                            <p class="form-control-static" id="no_induk">Info No. Induk Karyawan</p>
+                            <p class="form-control-static" id="info_no_induk">Info No. Induk Karyawan</p>
 						</div>
 						<!-- jabatan -->
                         <div class="form-group m-b-5">
 							<label>Jabatan:</label>
-                            <p class="form-control-static" id="jabatan">Info Jabatan</p>
+                            <p class="form-control-static" id="info_jabatan">Info Jabatan</p>
 						</div>
 						<!-- tanggal masuk -->
                         <div class="form-group m-b-5">
 							<label>Tanggal Masuk:</label>
-                            <p class="form-control-static" id="tgl_masuk">Info Tanggal Masuk</p>
+                            <p class="form-control-static" id="info_tgl_masuk">Info Tanggal Masuk</p>
 						</div>
 						<!-- Status karyawan -->
                         <div class="form-group m-b-5">
 							<label>Status Karyawan:</label>
-                            <p class="form-control-static" id="status">Info Status Karyawan</p>
+                            <p class="form-control-static" id="info_status">Info Status Karyawan</p>
 						</div>
                     </section>
                 </div>

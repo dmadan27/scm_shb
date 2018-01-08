@@ -263,6 +263,7 @@ function resetForm(){
 	$('#form_user').trigger('reset');
 	$('#form_user').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
 	$('#form_user').find("span.pesan").text(""); // hapus semua span help-block
+	$("#jenis").trigger('change');
 	$("#pengguna").val("").trigger('change');
 	$('#id_user').val("");
 }

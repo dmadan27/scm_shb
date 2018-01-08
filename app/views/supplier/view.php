@@ -34,37 +34,37 @@
 		                    	<!-- nik -->
 		                        <div class="form-group m-b-5">
 									<label>NIK:</label>
-		                            <p class="form-control-static" id="nik">Info NIK</p>
+		                            <p class="form-control-static" id="info_nik">Info NIK</p>
 								</div>
 								<!-- npwp -->
 		                        <div class="form-group m-b-5">
 									<label>NPWP:</label>
-		                            <p class="form-control-static" id="npwp">Info NPWP</p>
+		                            <p class="form-control-static" id="info_npwp">Info NPWP</p>
 								</div>
 								<!-- nama -->
 		                        <div class="form-group m-b-5">
 									<label>Nama:</label>
-		                            <p class="form-control-static" id="nama">Info Nama</p>
+		                            <p class="form-control-static" id="info_nama">Info Nama</p>
 								</div>
 								<!-- alamat -->
 		                        <div class="form-group m-b-5">
 									<label>Alamat:</label>
-		                            <p class="form-control-static" id="alamat">Info Alamat</p>
+		                            <p class="form-control-static" id="info_alamat">Info Alamat</p>
 								</div>
 								<!-- telp -->
 		                        <div class="form-group m-b-5">
 									<label>No. Telepon:</label>
-		                            <p class="form-control-static" id="telp">Info No. Telepon</p>
+		                            <p class="form-control-static" id="info_telp">Info No. Telepon</p>
 								</div>
 								<!-- email -->
 		                        <div class="form-group m-b-5">
 									<label>Email:</label>
-		                            <p class="form-control-static" id="email">Info Email</p>
+		                            <p class="form-control-static" id="info_email">Info Email</p>
 								</div>
 								<!-- Status -->
 		                        <div class="form-group m-b-5">
 									<label>Status Supplier:</label>
-		                            <p class="form-control-static" id="status">Info Status Supplier</p>
+		                            <p class="form-control-static" id="info_status">Info Status Supplier</p>
 								</div>
 								<div class="form-group m-b-5 text-right">
 									<button id="editSupplier" type="button" class="btn btn-info btn-outline waves-effect waves-light">Edit Data</button>
