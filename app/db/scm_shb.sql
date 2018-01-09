@@ -315,7 +315,7 @@
 
 			CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
 			CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id),
-			CONSTRAINT fk_pemesanan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
+			CONSTRAINT fk_pemesanan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
 		);
 
 		-- Tabel pengiriman (belum beres)
@@ -376,11 +376,26 @@
 		CREATE TABLE peramalan(
 			id int NOT NULL AUTO_INCREMENT,
 			tgl date,
-			bulan char(1),
+			bulan varchar(15),
 			tahun year,
 			id_produk int, -- fk
 			hasil_peramalan double(12,2),
+			-- jumlah_bahan_baku double(12,2),
+
+			CONSTRAINT pk_peramalan_id PRIMARY KEY(id),
+			CONSTRAINT fk_peramalan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+		);
+
+		-- Tabel detail peramalan
+		CREATE TABLE detail_peramalan(
+			id int NOT NULL AUTO_INCREMENT,
+			id_peramalan int,
+			id_bahan_baku int, -- fk bahan baku
 			jumlah_bahan_baku double(12,2),
+
+			CONSTRAINT pk_detail_peramalan_id PRIMARY KEY(id),
+			CONSTRAINT fk_detail_peramalan_id_peramalan FOREIGN KEY(id_peramalan) REFERENCES peramalan(id),
+			CONSTRAINT fk_detail_peramalan_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
 		);
 
 		-- Tabel produksi
@@ -597,13 +612,6 @@
 # =========================================== #
 
 # ================== VIEW =================== #
-# =========================================== #
-
-
-# ======================================================================== #
-
-# VIEW #
-
 	# view supplier
 	CREATE OR REPLACE VIEW v_supplier AS
 		SELECT
@@ -689,7 +697,8 @@
 		FROM produk p
 		JOIN komposisi k ON k.id_produk=p.id
 		JOIN bahan_baku b ON b.id=k.id_bahan_baku
-		GROUP BY p.id ASC;
+		GROUP BY p.id 
+		ORDER BY p.id ASC;
 
 	-- ====================================== --
 
@@ -702,5 +711,24 @@
 		FROM harga_basis
 		ORDER BY tgl DESC;
 
--- ====================================== --
+	-- ====================================== --
+
+	# view peramalan
+	CREATE OR REPLACE VIEW v_peramalan AS
+		SELECT
+			p.id id_peramalan, p.tgl, p.tahun, concat_ws(' ', p.bulan, p.tahun) periode,
+			pr.id id_produk, pr.kd_produk kd_produk, pr.nama nama_produk, pr.satuan satuan_produk,
+			p.hasil_peramalan,
+			GROUP_CONCAT(concat_ws(' ', concat_ws(' - ', bb.nama, dp.jumlah_bahan_baku), bb.satuan)) jumlah_bahan_baku
+		FROM peramalan p
+		JOIN detail_peramalan dp ON dp.id_peramalan = p.id
+		JOIN produk pr ON pr.id = p.id_produk
+		JOIN bahan_baku bb ON bb.id = dp.id_bahan_baku
+		GROUP BY p.id
+		ORDER BY p.id ASC;
+
+# =========================================== #
+
+
+# ======================================================================== #
 

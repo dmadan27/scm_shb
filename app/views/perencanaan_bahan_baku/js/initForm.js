@@ -21,7 +21,7 @@ $(document).ready(function(){
     });
 
     $("#btnHitung_peramalan").click(function(){
-
+    	hitung_peramalan();
     });
 
     $("#form_peramalan").submit(function(e){
@@ -80,6 +80,29 @@ function getDataForm(){
 	data.append('action', $("#btnSubmit_hargaBasis").val().trim()); // action
 
 	return data;
+}
+
+// hitung peramalan
+function hitung_peramalan(){
+	$.ajax({
+		url: base_url+'app/controllers/Peramalan.php',
+		type: 'POST',
+		dataType: 'json',
+		data: {'action': 'hitung_peramalan'},
+		beforeSend: function(){
+			setLoading();
+		},
+		success: function(output){
+			setLoading(false);
+			console.log(output);
+			$('#hasil_peramalan').val(output.hasil_peramalan);
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            setLoading(false);
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
 }
 
 // function submit
@@ -231,18 +254,18 @@ function setValue(value){
 function setSelect_bulan(){
 	var arrBulan = [
 		{value: "", text: "-- Pilih Bulan --"},
-		{value: "1", text: "JANUARI"},
-		{value: "2", text: "FEBRUARI"},
-		{value: "3", text: "MARET"},
-		{value: "4", text: "APRIL"},
-		{value: "5", text: "MEI"},
-		{value: "6", text: "JUNI"},
-		{value: "7", text: "JULI"},
-		{value: "8", text: "AGUSTUS"},
-		{value: "9", text: "SEPTEMBER"},
-		{value: "10", text: "OKTOBER"},
-		{value: "11", text: "NOVEMBER"},
-		{value: "12", text: "DESEMBER"},
+		{value: "JANUARI", text: "JANUARI"},
+		{value: "FEBRUARI", text: "FEBRUARI"},
+		{value: "MARET", text: "MARET"},
+		{value: "APRIL", text: "APRIL"},
+		{value: "MEI", text: "MEI"},
+		{value: "JUNI", text: "JUNI"},
+		{value: "JULI", text: "JULI"},
+		{value: "AGUSTUS", text: "AGUSTUS"},
+		{value: "SEPTEMBER", text: "SEPTEMBER"},
+		{value: "OKTOBER", text: "OKTOBER"},
+		{value: "NOVEMBER", text: "NOVEMBER"},
+		{value: "DESEMBER", text: "DESEMBER"},
 	];
 
 	$.each(arrBulan, function(index, item){
