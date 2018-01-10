@@ -84,6 +84,7 @@
 		id int NOT NULL AUTO_INCREMENT,
 		id_produk int,
 		id_bahan_baku int,
+		penyusutan double(5,2),
 
 		CONSTRAINT pk_komposisi_id PRIMARY KEY(id),
 		CONSTRAINT fk_komposisi_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
@@ -584,7 +585,8 @@
 		-- Tambah komposisi => insert komposisi
 		CREATE PROCEDURE tambah_komposisi(
 			in kd_produk_param varchar(25),
-			in id_bahan_baku_param int
+			in id_bahan_baku_param int,
+			in penyusutan_param double(5,2)
 		)
 		BEGIN
 			DECLARE id_produk_param int;
@@ -592,7 +594,7 @@
 			SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
 
 			-- insert komposisi
-			INSERT INTO komposisi(id_produk, id_bahan_baku) VALUES(id_produk_param, id_bahan_baku_param);
+			INSERT INTO komposisi(id_produk, id_bahan_baku, penyusutan) VALUES(id_produk_param, id_bahan_baku_param, penyusutan_param);
 		END;
 
 		-- Edit Komposisi
@@ -727,8 +729,49 @@
 		GROUP BY p.id
 		ORDER BY p.id ASC;
 
+	-- ====================================== --
+
+	# view pemesanan
+	CREATE OR REPLACE VIEW v_pemesanan AS
+		SELECT
+			p.id id_pemesanan, p.tgl, p.no_kontrak,
+		    p.id_buyer, b.nama nama_buyer,
+		    p.id_produk, pr.nama nama_produk, pr.satuan satuan_produk,
+		    p.jumlah_karung, p.ket_karung, p.kemasan, p.jumlah,
+		    p.waktu_pengiriman, p.batas_waktu_pengiriman, p.ket, p.lampiran,
+		    (CASE 
+		     	WHEN (p.status = 'S') THEN 'SUKSES' 
+		     	WHEN (p.status = 'P') THEN 'PENDING'
+		     	ELSE 'REJECT' 
+		     END) status
+		FROM pemesanan p
+		JOIN buyer b ON b.id = p.id_buyer
+		JOIN produk pr ON pr.id = p.id_produk
+		ORDER BY p.tgl DESC; 
+
 # =========================================== #
 
 
 # ======================================================================== #
+
+SELECT
+	concat_ws('-', MONTH(tgl), YEAR(tgl)) periode, SUM(jumlah) jumlah_periode
+FROM `v_pemesanan`
+GROUP BY YEAR(tgl), MONTH(tgl)
+ORDER BY YEAR(tgl) ASC, MONTH(tgl) ASC
+
+SELECT
+	DATE_FORMAT(tgl, '%Y-%m') periode, SUM(jumlah) jumlah_periode
+FROM `v_pemesanan`
+GROUP BY YEAR(tgl), MONTH(tgl)
+ORDER BY YEAR(tgl) ASC, MONTH(tgl) ASC
+
+SELECT
+	DATE_FORMAT(tgl, '%Y-%m') periode, SUM(jumlah) jumlah_periode
+FROM `v_pemesanan`
+WHERE DATE_FORMAT(tgl, '%Y-%m') BETWEEN "2014-02" AND "2017-01"
+GROUP BY YEAR(tgl), MONTH(tgl)
+ORDER BY YEAR(tgl) ASC, MONTH(tgl) ASC
+
+SELECT * FROM v_pemesanan WHERE YEAR(tgl) = YEAR('2017-01-01' - INTERVAL 1 MONTH) AND MONTH(tgl) = MONTH('2017-01-01' - INTERVAL 1 MONTH)
 

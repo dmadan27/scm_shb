@@ -102,12 +102,14 @@ $(document).ready(function(){
 		var kode_bahan_baku = $("#bahan_baku option:selected").text().split(' - ')[0];
 		var bahan_baku_text = $("#bahan_baku option:selected").text().split(' - ')[1];
 		var bahan_baku_value = $("#bahan_baku").val().trim();
+		var penyusutan = parseFloat($("#penyusutan").val().trim());
 		var dataKomposisi = {
 			aksi: "tambah", status: "", 
 			index: index, id_komposisi: "",
 			id_bahan_baku: bahan_baku_value,
 			kd_bahan_baku: kode_bahan_baku,
-			nama_bahan_baku: bahan_baku_text, 
+			nama_bahan_baku: bahan_baku_text,
+			penyusutan: penyusutan, 
 		};
 
 		// validasi komposisi
@@ -143,6 +145,7 @@ $(document).ready(function(){
 						"<td></td>"+ // nomor
 						"<td>"+kode_bahan_baku+"</td>"+ // kode
 						"<td>"+bahan_baku_text+"</td>"+ // bahan baku
+						"<td>"+fieldPenyusutan(penyusutan, index)+"</td>"+ // penyusutan
 						"<td>"+btnAksi(index)+"</td>"+ // aksi
 					"</tr>"
 				);
@@ -159,6 +162,23 @@ $(document).ready(function(){
 		$('#tabel_komposisi tbody tr').each(function (index) {
 	        $(this).children("td:eq(0)").html(index + 1);
 	    });
+	}
+
+	function fieldPenyusutan(penyusutan, index){
+		var field = '<input type="number" min="0" step="0.01" onchange="onChange_penyusutan('+index+',this)" style="width: 5em" class="form-control" value="'+penyusutan+'">';
+		return field;
+	}
+
+	function onChange_penyusutan(index, val){
+		// ubah nilai qty di array
+		$.each(listKomposisi, function(i, item){
+			if(item.index == index){
+				item.penyusutan = val.value;
+			} 
+		});
+		numberingList();
+
+		console.log(listKomposisi);
 	}
 
 	function btnAksi(index){
@@ -304,7 +324,8 @@ function getEdit(id){
 						index: index, id_komposisi: item.id_komposisi,
 						id_bahan_baku: item.id_bahan_baku,
 						kd_bahan_baku: item.kd_bahan_baku,
-						nama_bahan_baku: item.nama_bahan_baku, 
+						nama_bahan_baku: item.nama_bahan_baku,
+						penyusutan: item.penyusutan, 
 					};
 					listKomposisi.push(dataKomposisi);
 					$("#tabel_komposisi > tbody:last-child").append(
@@ -312,6 +333,7 @@ function getEdit(id){
 							"<td></td>"+ // nomor
 							"<td>"+item.kd_bahan_baku+"</td>"+ // kode
 							"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+							"<td>"+fieldPenyusutan(parseFloat(item.penyusutan), dataKomposisi.index)+"</td>"+ // penyusutan
 							"<td>"+btnAksi(dataKomposisi.index)+"</td>"+ // aksi
 						"</tr>"
 					);

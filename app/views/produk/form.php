@@ -90,19 +90,37 @@
 			    	 			<div class="col-md-6">
 			    	 				<fieldset>
 			    	 					<legend>Data Komposisi Produk</legend>
-			    	 					<!-- bahan baku -->
-										<div class="form-group field-bahan-baku has-feedback m-b-5">
-											<label class="col-md-12" for="bahan_baku">Bahan Baku*</label>
-					                        <div class="col-md-12">
-					                            <div class="input-group">
-					                            	<select id="bahan_baku" class="form-control select2"></select>
-					                            	<span class="input-group-btn">
-					                            		<button type="button" id="btnTambah_komposisi" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Data"><i class="fa fa-plus"></i></button>
-					                            	</span>
-					                            </div>
-					                            <span class="help-block small pesan"></span>
-					                        </div>
-										</div>
+			    	 					<div class="row">
+			    	 						<div class="col-md-6">
+			    	 							<!-- bahan baku -->
+												<div class="form-group field-bahan-baku has-feedback m-b-5">
+													<label class="col-md-12" for="bahan_baku">Bahan Baku*</label>
+							                        <div class="col-md-12">
+						                            	<select id="bahan_baku" class="form-control select2"></select> 
+							                            <span class="help-block small pesan"></span>
+							                        </div>
+												</div>
+			    	 						</div>
+			    	 						<div class="col-md-6">
+			    	 							<!-- penyusutan -->
+												<div class="form-group field-penyusutan has-feedback m-b-5">
+													<label class="col-md-12" for="penyusutan">Penyusutan*</label>
+							                        <div class="col-md-12">
+							                            <div class="input-group">
+							                            	<input id="penyusutan" type="number" min="0" step="0.01" class="form-control" placeholder="Masukkan Penyusutan">
+							                            	<span class="input-group-addon">
+							                            		%
+							                            	</span>
+							                            	<span class="input-group-btn">
+							                            		<button type="button" id="btnTambah_komposisi" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Data"><i class="fa fa-plus"></i></button>
+							                            	</span>
+							                            </div>
+							                            <span class="help-block small pesan"></span>
+							                        </div>
+												</div>
+			    	 						</div>
+			    	 					</div>
+					    	 					
 										<!-- Tabel komposisi -->
 										<div class="table-responsive">
 											<table id="tabel_komposisi" class="table table-bordered table-hover">
@@ -111,6 +129,7 @@
 														<th style="width: 15px">No</th>
 														<th>Kode</th>
 														<th>Bahan Baku</th>
+														<th>Penyusutan</th>
 														<th>Aksi</th>
 													</tr>
 												</thead>

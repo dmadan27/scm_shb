@@ -37,28 +37,13 @@
 					                        </div>
 										</div>
 
-										<!-- bulan dan tahun -->
-										<div class="row">
-											<div class="col-md-6">
-												<!-- Bulan -->
-												<div class="form-group field-bulan has-feedback m-b-5">
-													<label class="col-md-12" for="bulan">Bulan*</label>
-							                        <div class="col-md-12">
-							                            <select id="bulan" class="form-control"></select>
-							                            <span class="help-block small pesan"></span>
-							                        </div>
-												</div>
-											</div>
-											<div class="col-md-6">
-												<!-- Tahun -->
-												<div class="form-group field-tahun has-feedback m-b-5">
-													<label class="col-md-12" for="tahun">Tahun*</label>
-							                        <div class="col-md-12">
-							                            <input id="tahun" type="text" class="form-control" placeholder="Masukkan Tahun">
-							                            <span class="help-block small pesan"></span>
-							                        </div>
-												</div>
-											</div>
+										<!-- Periode -->
+										<div class="form-group field-periode has-feedback m-b-5">
+											<label class="col-md-12" for="periode">Periode*</label>
+					                        <div class="col-md-12">
+					                            <input id="periode" type="text" class="form-control" placeholder="Masukkan Periode (Tahun dan Bulan)">
+					                            <span class="help-block small pesan"></span>
+					                        </div>
 										</div>
 
 										<!-- Produk -->

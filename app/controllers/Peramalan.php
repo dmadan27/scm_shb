@@ -1,10 +1,13 @@
 <?php
+	date_default_timezone_set('Asia/Jakarta');
 	include_once("../function/helper.php");
 	include_once("../function/koneksi.php");
 	include_once("../function/validasi_form.php");
 	include_once("../library/datatable.php");
 
 	include_once("../models/Peramalan_model.php");
+	include_once("../models/Pemesanan_model.php");
+	include_once("../models/Produk_model.php");
 
 	$action = isset($_POST['action']) ? $_POST['action'] : false;
 	$id = isset($_POST['id']) ? $_POST['id'] : false;
@@ -33,7 +36,7 @@
 				break;
 
 			case 'hitung_peramalan':
-				hitung_peramalan();
+				hitung_peramalan($koneksi);
 				break;
 
 			default:
@@ -90,59 +93,46 @@
 		echo json_encode($output);
 	}
 
-	function hitung_peramalan(){
+	function hitung_peramalan($koneksi){
+		$dataForm = isset($_POST) ? $_POST : false;
 		// inisialisasi awal
 		$peramalan = array(0);
 		$a = 0.9;
 
-		// get data pemesanan / penjualan
-		$data_pemesanan = array(
-			259.86,
-			255.73,
-			185.88,
-			476.45,
-			1814.27,
-			2046.57,
-			1842.25,
-			732.69,
-			775.22,
-			220.93,
-			50.26,
-			50.12,
-			120.58,
-			60.77,
-			100.85,
-			463.69,
-			1842,
-			3407.83,
-			3081.81,
-			2650.12,
-			1142.17,
-			425.04,
-			152.53,
-			45,
-			100.17,
-			200.94,
-			100.85,
-			50.13,
-			581.54,
-			130.48,
-			4134.67,
-			2251.93,
-			4870.26,
-			3482.96,
-			1000.12,
-			60.32,
-			// 150.5,
-		);
+		// validasi
+			// get bulan sebelumnya dari peramalan
+			$bulanSebelumnya = date('Y-m', strtotime('-1 months', strtotime($dataForm['periode']))); 
+
+			// get bulan pertama untuk peramalan
+			$bulanPertama = date('Y-m', strtotime('-36 months', strtotime($dataForm['periode'])));
+
+			$get_dataPemesanan = getPemesanan_sukses($koneksi, $bulanPertama, $bulanSebelumnya, $dataForm['produk']);
+
+			// get list bulan
+			$start    = new DateTime($bulanPertama); // bulan pertama (data ke 1)
+			$start->modify('first day of this month');
+			$end      = new DateTime($bulanSebelumnya); // bulan terakhir (data ke 36) - bulan sebelum peramalan yg diinginkan
+			$end->modify('first day of next month');
+			$interval = DateInterval::createFromDateString('1 month');
+			$period   = new DatePeriod($start, $interval, $end);
+
+			$listBulan = array();
+			foreach ($period as $dt) {
+			    $listBulan[] = $dt->format("Y-m");
+			}
+
+			// proses penyesuaian nilai data pemesanan dgn list bulan
+			$data_pemesanan = array();
+
+		// ======================================= //
 
 		// proses hitung single exponential smoothing
-		for($i=0; $i<count($data_pemesanan); $i++){
+		for($i=0; $i<count($get_dataPemesanan); $i++){
 			if($i==0){ // hitung peramalan pertama, f-2
-				$hitungPeramalan = $a * $data_pemesanan[$i] + (1 - $a) * $data_pemesanan[$i];
+				$hitungPeramalan = $a * $get_dataPemesanan[$i]['jumlah_periode'] + (1 - $a) * $get_dataPemesanan[$i]['jumlah_periode'];
 			}
 			else{ // hitung peramalan sampai yg diinnginkan, f-37
-				$hitungPeramalan = $a * $data_pemesanan[$i] + (1 - $a) * $peramalan[$i];	
+				$hitungPeramalan = $a * $get_dataPemesanan[$i]['jumlah_periode'] + (1 - $a) * $peramalan[$i];	
 			}
 
 			// simpan hasil peramalan
@@ -153,45 +143,19 @@
 		// proses hitung jumlah bahan baku
 
 		// get komposisi produk
+		$get_bahanBaku = getKomposisi_by_id($koneksi, $dataForm['produk']);
 
-		$arrBahanBaku = array();
+		$jumlah_bahanBaku = $get_bahanBaku;
 
-		$jumlah_bahan_baku = $hitungPeramalan + ($hitungPeramalan*0.05);
+		for($i=0; $i<count($jumlah_bahanBaku); $i++){
+			$jumlah_bahanBaku[$i]['jumlah_bahanBaku'] = $hitungPeramalan + ($hitungPeramalan*$jumlah_bahanBaku[$i]['penyusutan']);
+		}
 
 		$output = array(
-			'hasil_peramalan' => number_format($hitungPeramalan, 2, ',', '.'),
-			'jumlah_bahan_baku' => number_format($jumlah_bahan_baku, 2, ',', '.'),
+			'hasil_peramalan' =>$hitungPeramalan,
+			'jumlah_bahan_baku' => $jumlah_bahanBaku,
 		);
 
 		echo json_encode($output);
 	}
-
-	
-
-	
-
-	// // var_dump(count($data_penjualan));
-
-
-	// // tentukan jumlah data yang akan digunakan
-	// $jumlah_data = count($data_penjualan);
-
-	// for($i=0; $i<count($data_penjualan); $i++){
-	// 	if($i==0){ // hitung peramalan pertama, f-2
-	// 		$hitungPeramalan = $a * $data_penjualan[$i] + (1 - $a) * $data_penjualan[$i];
-	// 	}
-	// 	else{ // hitung peramalan sampai yg diinnginkan, f-37
-	// 		$hitungPeramalan = $a * $data_penjualan[$i] + (1 - $a) * $peramalan[$i];	
-	// 	}
-
-	// 	// simpan hasil peramalan
-	// 	$peramalan[$i+1] = $hitungPeramalan;
-	// 	// $peramalan[$i+1] = number_format($hitungPeramalan,2);
-	// }
-
-	// // var_dump($peramalan);
-	// foreach($peramalan as $value){
-	// 	echo number_format($value, 2, ',', '.').' <br>';
-	// }
-
 	

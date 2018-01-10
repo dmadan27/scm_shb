@@ -35,7 +35,7 @@
 	// get data komposisi by id
 	function getKomposisi_by_id($koneksi, $id){
 		$query = "SELECT k.id id_komposisi, p.id id_produk, p.kd_produk, p.nama nama_produk, ";
-		$query .= "b.id id_bahan_baku, b.nama nama_bahan_baku, b.kd_bahan_baku ";
+		$query .= "b.id id_bahan_baku, b.nama nama_bahan_baku, b.kd_bahan_baku, k.penyusutan ";
 		$query .= "FROM komposisi k JOIN produk p ON p.id = k.id_produk ";
 		$query .= "JOIN bahan_baku b ON b.id = k.id_bahan_baku WHERE k.id_produk=:id";
 
@@ -67,11 +67,12 @@
 
 	// function insert komposisi
 	function insertKomposisi($koneksi, $data){
-		$query = "CALL tambah_komposisi (:kd_produk, :id_bahan_baku) ";
+		$query = "CALL tambah_komposisi (:kd_produk, :id_bahan_baku, :penyusutan) ";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':kd_produk', $data['kd_produk']);
 		$statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
+		$statement->bindParam(':penyusutan', $data['penyusutan']);
 		$result = $statement->execute();
 
 		return $result;
@@ -94,12 +95,13 @@
 
 	// function update komposisi
 	function updateKomposisi($koneksi, $data){
-		$query = "UPDATE komposisi SET id_produk=:id_produk, id_bahan_baku=:id_bahan_baku WHERE id=:id";
+		$query = "UPDATE komposisi SET id_produk=:id_produk, id_bahan_baku=:id_bahan_baku, penyusutan=:penyusutan WHERE id=:id";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $data['id_komposisi']);
 		$statement->bindParam(':id_produk', $data['id_produk']);
 		$statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
+		$statement->bindParam(':penyusutan', $data['penyusutan']);
 		$result = $statement->execute();
 
 		return $result;

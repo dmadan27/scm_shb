@@ -12,11 +12,11 @@ $(document).ready(function(){
         todayHighlight: true,
     });
 
-    $('#tahun').datepicker({
+    $('#periode').datepicker({
         autoclose: true,
-        format: "yyyy",
-        viewMode: "years", 
-    	minViewMode: "years",
+        format: "yyyy-mm",
+	    startView: "months", 
+	    minViewMode: "months",
         todayHighlight: true,
     });
 
@@ -39,19 +39,11 @@ $(document).ready(function(){
     		}
     	});
 
-    	// bulan
-    	$("#bulan").change(function(){
+    	// periode
+    	$("#periode").change(function(){
     		if(this.value !== ""){
-    			$('.field-bulan').removeClass('has-error').addClass('has-success');
-				$(".field-bulan span.help-block").text('');	
-    		}
-    	});
-
-    	// tahun
-    	$("#tahun").change(function(){
-    		if(this.value !== ""){
-    			$('.field-tahun').removeClass('has-error').addClass('has-success');
-				$(".field-tahun span.help-block").text('');	
+    			$('.field-periode').removeClass('has-error').addClass('has-success');
+				$(".field-periode span.help-block").text('');	
     		}
     	});
 
@@ -88,14 +80,31 @@ function hitung_peramalan(){
 		url: base_url+'app/controllers/Peramalan.php',
 		type: 'POST',
 		dataType: 'json',
-		data: {'action': 'hitung_peramalan'},
+		data: {
+			'action': 'hitung_peramalan',
+			'periode': $("#periode").val().trim(),
+			'produk': $("#produk").val().trim(),
+		},
 		beforeSend: function(){
 			setLoading();
 		},
 		success: function(output){
 			setLoading(false);
 			console.log(output);
-			$('#hasil_peramalan').val(output.hasil_peramalan);
+			$('#hasil_peramalan').val(output.hasil_peramalan.toFixed(2));
+
+			// tabel jumlah bahan baku
+			$.each(output.jumlah_bahan_baku, function(index, item){
+				$("#tabel_jumlah_bahanBaku > tbody:last-child").append(
+					"<tr>"+
+						"<td></td>"+ // nomor
+						"<td>"+item.kd_bahan_baku+"</td>"+ // kode
+						"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+						"<td>"+item.jumlah_bahanBaku.toFixed(2)+"</td>"+ // jumlah
+					"</tr>"
+				);
+				numberingList();
+			});
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             setLoading(false);
@@ -103,6 +112,12 @@ function hitung_peramalan(){
             console.log(jqXHR, textStatus, errorThrown);
         }
 	})
+}
+
+function numberingList(){
+	$('#tabel_jumlah_bahanBaku tbody tr').each(function (index) {
+        $(this).children("td:eq(0)").html(index + 1);
+    });
 }
 
 // function submit
@@ -254,18 +269,18 @@ function setValue(value){
 function setSelect_bulan(){
 	var arrBulan = [
 		{value: "", text: "-- Pilih Bulan --"},
-		{value: "JANUARI", text: "JANUARI"},
-		{value: "FEBRUARI", text: "FEBRUARI"},
-		{value: "MARET", text: "MARET"},
-		{value: "APRIL", text: "APRIL"},
-		{value: "MEI", text: "MEI"},
-		{value: "JUNI", text: "JUNI"},
-		{value: "JULI", text: "JULI"},
-		{value: "AGUSTUS", text: "AGUSTUS"},
-		{value: "SEPTEMBER", text: "SEPTEMBER"},
-		{value: "OKTOBER", text: "OKTOBER"},
-		{value: "NOVEMBER", text: "NOVEMBER"},
-		{value: "DESEMBER", text: "DESEMBER"},
+		{value: "01", text: "JANUARI"},
+		{value: "02", text: "FEBRUARI"},
+		{value: "03", text: "MARET"},
+		{value: "04", text: "APRIL"},
+		{value: "05", text: "MEI"},
+		{value: "06", text: "JUNI"},
+		{value: "07", text: "JULI"},
+		{value: "08", text: "AGUSTUS"},
+		{value: "09", text: "SEPTEMBER"},
+		{value: "10", text: "OKTOBER"},
+		{value: "11", text: "NOVEMBER"},
+		{value: "12", text: "DESEMBER"},
 	];
 
 	$.each(arrBulan, function(index, item){

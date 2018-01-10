@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05 Jan 2018 pada 03.31
+-- Generation Time: 10 Jan 2018 pada 23.00
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -50,12 +50,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_bahan_baku` (IN `kd_bahan_ba
 			
 		END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_komposisi` (IN `kd_produk_param` VARCHAR(25), IN `id_bahan_baku_param` INT)  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_komposisi` (IN `kd_produk_param` VARCHAR(25), IN `id_bahan_baku_param` INT, IN `penyusutan_param` DOUBLE(5,2))  BEGIN
 			DECLARE id_produk_param int;
 
 			SELECT id INTO id_produk_param FROM produk WHERE kd_produk = kd_produk_param;
 
-						INSERT INTO komposisi(id_produk, id_bahan_baku) VALUES(id_produk_param, id_bahan_baku_param);
+						INSERT INTO komposisi(id_produk, id_bahan_baku, penyusutan) VALUES(id_produk_param, id_bahan_baku_param, penyusutan_param);
 		END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_produk` (IN `kd_produk_param` VARCHAR(25), IN `nama_param` VARCHAR(50), IN `satuan_param` VARCHAR(10), IN `ket_param` TEXT, IN `foto_param` TEXT, IN `tgl_param` DATE, IN `stok_param` DOUBLE(12,2))  BEGIN
@@ -171,6 +171,19 @@ INSERT INTO `buyer` (`id`, `npwp`, `nama`, `alamat`, `telp`, `email`, `foto`, `s
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `detail_peramalan`
+--
+
+CREATE TABLE `detail_peramalan` (
+  `id` int(11) NOT NULL,
+  `id_peramalan` int(11) DEFAULT NULL,
+  `id_bahan_baku` int(11) DEFAULT NULL,
+  `jumlah_bahan_baku` double(12,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `harga_basis`
 --
 
@@ -238,7 +251,17 @@ INSERT INTO `karyawan` (`id`, `no_induk`, `nik`, `npwp`, `nama`, `tempat_lahir`,
 (18, '8000000001', NULL, NULL, 'H. ALEK', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
 (19, '8000000002', NULL, NULL, 'MUHAMAD RIFA\'I', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
 (20, '8000000003', NULL, NULL, 'YATNO', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
-(21, '8000000004', NULL, NULL, 'SAYUTI', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1');
+(21, '8000000004', NULL, NULL, 'SAYUTI', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(22, '8000000005', NULL, NULL, 'ISKANDAR', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(23, '8000000006', NULL, NULL, 'RIDHO', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(24, '8000000007', NULL, NULL, 'HAIKAL', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(25, '8000000008', NULL, NULL, 'WAWAN', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(26, '8000000009', NULL, NULL, 'DADANG', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(27, '8000000010', NULL, NULL, 'ANGGA', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(28, '8000000011', NULL, NULL, 'IWAN', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(29, '8000000012', NULL, NULL, 'SUPRI', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(30, '8000000013', NULL, NULL, 'ADIT', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1'),
+(31, '8000000014', NULL, NULL, 'DARMAWAN', NULL, NULL, 'L', NULL, NULL, NULL, NULL, NULL, 17, '1');
 
 -- --------------------------------------------------------
 
@@ -258,6 +281,26 @@ CREATE TABLE `kendaraan` (
   `status` char(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `kendaraan`
+--
+
+INSERT INTO `kendaraan` (`id`, `no_polis`, `id_supir`, `pendamping`, `tahun`, `jenis`, `muatan`, `foto`, `status`) VALUES
+(1, 'BE 9396 JC', 18, NULL, 2001, 'F', 20000.00, NULL, '1'),
+(2, 'BE 9873 JC', 19, NULL, 2003, 'F', 20000.00, NULL, '1'),
+(3, 'BE 9072 W', 20, NULL, 2006, 'F', 20000.00, NULL, '1'),
+(4, 'BE 9142 JE', 21, NULL, 2010, 'F', 20000.00, NULL, '1'),
+(5, 'BE 9839 JE', 22, NULL, 2012, 'F', 20000.00, NULL, '1'),
+(6, 'BE 9848 JE', 23, NULL, 2012, 'F', 20000.00, NULL, '1'),
+(7, 'BE 9270 JC', 24, NULL, 2003, 'C', 10000.00, NULL, '1'),
+(8, 'BE 9108 JG', 25, NULL, 2012, 'C', 10000.00, NULL, '1'),
+(9, 'BE 9201 JG', 26, NULL, 2012, 'C', 10000.00, NULL, '1'),
+(10, 'BE 9202 JG', 27, NULL, 2012, 'C', 10000.00, NULL, '1'),
+(11, 'BE 9435 JG', 28, NULL, 2013, 'C', 10000.00, NULL, '1'),
+(12, 'BE 9427 JG', 29, NULL, 2013, 'C', 10000.00, NULL, '1'),
+(13, 'BE 9434 JG', 30, NULL, 2013, 'C', 10000.00, NULL, '1'),
+(14, 'BE 9590 JN', 31, NULL, 2016, 'C', 10000.00, NULL, '1');
+
 -- --------------------------------------------------------
 
 --
@@ -267,15 +310,17 @@ CREATE TABLE `kendaraan` (
 CREATE TABLE `komposisi` (
   `id` int(11) NOT NULL,
   `id_produk` int(11) DEFAULT NULL,
-  `id_bahan_baku` int(11) DEFAULT NULL
+  `id_bahan_baku` int(11) DEFAULT NULL,
+  `penyusutan` double(5,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `komposisi`
 --
 
-INSERT INTO `komposisi` (`id`, `id_produk`, `id_bahan_baku`) VALUES
-(7, 12, 4);
+INSERT INTO `komposisi` (`id`, `id_produk`, `id_bahan_baku`, `penyusutan`) VALUES
+(7, 12, 4, 0.05),
+(8, 13, 4, 0.02);
 
 -- --------------------------------------------------------
 
@@ -319,7 +364,8 @@ CREATE TABLE `mutasi_produk` (
 --
 
 INSERT INTO `mutasi_produk` (`id`, `tgl`, `id_produk`, `brg_masuk`, `brg_keluar`) VALUES
-(12, '2017-12-26', 12, 0.00, 0.00);
+(12, '2017-12-26', 12, 0.00, 0.00),
+(13, '2018-01-10', 13, 0.00, 0.00);
 
 -- --------------------------------------------------------
 
@@ -359,6 +405,86 @@ INSERT INTO `pekerjaan` (`id`, `nama`, `ket`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `pemesanan`
+--
+
+CREATE TABLE `pemesanan` (
+  `id` int(11) NOT NULL,
+  `tgl` date DEFAULT NULL,
+  `no_kontrak` varchar(50) DEFAULT NULL,
+  `id_buyer` int(11) DEFAULT NULL,
+  `id_produk` int(11) DEFAULT NULL,
+  `jumlah_karung` int(11) DEFAULT NULL,
+  `ket_karung` enum('JUMLAH PASTI','PERKIRAAN') DEFAULT NULL,
+  `kemasan` enum('KARUNG GONI','KARUNG PLASTIK') DEFAULT NULL,
+  `jumlah` double(12,2) DEFAULT NULL,
+  `waktu_pengiriman` date DEFAULT NULL,
+  `batas_waktu_pengiriman` date DEFAULT NULL,
+  `ket` text,
+  `lampiran` text,
+  `status` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `pemesanan`
+--
+
+INSERT INTO `pemesanan` (`id`, `tgl`, `no_kontrak`, `id_buyer`, `id_produk`, `jumlah_karung`, `ket_karung`, `kemasan`, `jumlah`, `waktu_pengiriman`, `batas_waktu_pengiriman`, `ket`, `lampiran`, `status`) VALUES
+(1, '2014-01-01', NULL, 1, 12, NULL, NULL, NULL, 259860.00, NULL, NULL, NULL, NULL, 'S'),
+(2, '2014-02-01', NULL, 1, 12, NULL, NULL, NULL, 255727.00, NULL, NULL, NULL, NULL, 'S'),
+(3, '2014-03-01', NULL, 1, 12, NULL, NULL, NULL, 185878.00, NULL, NULL, NULL, NULL, 'S'),
+(4, '2014-04-01', NULL, 1, 12, NULL, NULL, NULL, 476354.00, NULL, NULL, NULL, NULL, 'S'),
+(5, '2014-05-01', NULL, 1, 12, NULL, NULL, NULL, 1814268.00, NULL, NULL, NULL, NULL, 'S'),
+(6, '2014-06-01', NULL, 1, 12, NULL, NULL, NULL, 2046570.00, NULL, NULL, NULL, NULL, 'S'),
+(7, '2014-07-01', NULL, 1, 12, NULL, NULL, NULL, 1842250.00, NULL, NULL, NULL, NULL, 'S'),
+(8, '2014-08-01', NULL, 1, 12, NULL, NULL, NULL, 732694.00, NULL, NULL, NULL, NULL, 'S'),
+(9, '2014-09-01', NULL, 1, 12, NULL, NULL, NULL, 775217.00, NULL, NULL, NULL, NULL, 'S'),
+(10, '2014-10-01', NULL, 1, 12, NULL, NULL, NULL, 220926.00, NULL, NULL, NULL, NULL, 'S'),
+(11, '2014-11-01', NULL, 1, 12, NULL, NULL, NULL, 50255.00, NULL, NULL, NULL, NULL, 'S'),
+(12, '2014-12-01', NULL, 1, 12, NULL, NULL, NULL, 50120.00, NULL, NULL, NULL, NULL, 'S'),
+(13, '2015-01-01', NULL, 1, 12, NULL, NULL, NULL, 120576.00, NULL, NULL, NULL, NULL, 'S'),
+(14, '2015-02-01', NULL, 1, 12, NULL, NULL, NULL, 60768.00, NULL, NULL, NULL, NULL, 'S'),
+(15, '2015-03-01', NULL, 1, 12, NULL, NULL, NULL, 100850.00, NULL, NULL, NULL, NULL, 'S'),
+(16, '2015-04-01', NULL, 1, 12, NULL, NULL, NULL, 463689.00, NULL, NULL, NULL, NULL, 'S'),
+(17, '2015-05-01', NULL, 1, 12, NULL, NULL, NULL, 1842000.00, NULL, NULL, NULL, NULL, 'S'),
+(18, '2015-06-01', NULL, 1, 12, NULL, NULL, NULL, 3407830.00, NULL, NULL, NULL, NULL, 'S'),
+(19, '2015-07-01', NULL, 1, 12, NULL, NULL, NULL, 3081809.00, NULL, NULL, NULL, NULL, 'S'),
+(20, '2015-08-01', NULL, 1, 12, NULL, NULL, NULL, 2650120.00, NULL, NULL, NULL, NULL, 'S'),
+(21, '2015-09-01', NULL, 1, 12, NULL, NULL, NULL, 1142170.00, NULL, NULL, NULL, NULL, 'S'),
+(22, '2015-10-01', NULL, 1, 12, NULL, NULL, NULL, 425040.00, NULL, NULL, NULL, NULL, 'S'),
+(23, '2015-11-01', NULL, 1, 12, NULL, NULL, NULL, 152530.00, NULL, NULL, NULL, NULL, 'S'),
+(24, '2015-12-01', NULL, 1, 12, NULL, NULL, NULL, 75000.00, NULL, NULL, NULL, NULL, 'S'),
+(25, '2016-01-01', NULL, 1, 12, NULL, NULL, NULL, 100170.00, NULL, NULL, NULL, NULL, 'S'),
+(26, '2016-02-01', NULL, 1, 12, NULL, NULL, NULL, 200940.00, NULL, NULL, NULL, NULL, 'S'),
+(27, '2016-03-01', NULL, 1, 12, NULL, NULL, NULL, 100850.00, NULL, NULL, NULL, NULL, 'S'),
+(28, '2016-04-01', NULL, 1, 12, NULL, NULL, NULL, 50130.00, NULL, NULL, NULL, NULL, 'S'),
+(29, '2016-05-01', NULL, 1, 12, NULL, NULL, NULL, 581540.00, NULL, NULL, NULL, NULL, 'S'),
+(30, '2016-06-01', NULL, 1, 12, NULL, NULL, NULL, 130480.00, NULL, NULL, NULL, NULL, 'S'),
+(31, '2016-07-01', NULL, 1, 12, NULL, NULL, NULL, 4134668.20, NULL, NULL, NULL, NULL, 'S'),
+(32, '2016-08-01', NULL, 1, 12, NULL, NULL, NULL, 2251926.00, NULL, NULL, NULL, NULL, 'S'),
+(33, '2016-09-01', NULL, 1, 12, NULL, NULL, NULL, 4870263.00, NULL, NULL, NULL, NULL, 'S'),
+(34, '2016-10-01', NULL, 1, 12, NULL, NULL, NULL, 3482958.00, NULL, NULL, NULL, NULL, 'S'),
+(35, '2016-11-01', NULL, 1, 12, NULL, NULL, NULL, 1000121.00, NULL, NULL, NULL, NULL, 'S'),
+(36, '2016-12-01', NULL, 1, 12, NULL, NULL, NULL, 60320.00, NULL, NULL, NULL, NULL, 'S');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `peramalan`
+--
+
+CREATE TABLE `peramalan` (
+  `id` int(11) NOT NULL,
+  `tgl` date DEFAULT NULL,
+  `bulan` char(2) DEFAULT NULL,
+  `tahun` year(4) DEFAULT NULL,
+  `id_produk` int(11) DEFAULT NULL,
+  `hasil_peramalan` double(12,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `produk`
 --
 
@@ -377,7 +503,8 @@ CREATE TABLE `produk` (
 --
 
 INSERT INTO `produk` (`id`, `kd_produk`, `nama`, `satuan`, `ket`, `foto`, `stok`) VALUES
-(12, 'KP-DEF80', 'KOPI DEF 80', 'KG', 'AGFSDGSD', NULL, 150000.00);
+(12, 'KP-DEF80', 'KOPI DEF 80', 'KG', 'AGFSDGSD', NULL, 150000.00),
+(13, 'KP-DEF120', 'KOPI DEF 120', 'KG', NULL, NULL, 100.00);
 
 -- --------------------------------------------------------
 
@@ -402,7 +529,7 @@ CREATE TABLE `supplier` (
 --
 
 INSERT INTO `supplier` (`id`, `nik`, `npwp`, `nama`, `alamat`, `telp`, `email`, `status`, `supplier_utama`) VALUES
-(1, NULL, '819774985326000', 'EKO PAJAR DIANTO', 'Tiga Serangkai Rt 010/005 Ogan Campang Abung Pekurun', '081379405914', NULL, '1', 1),
+(1, NULL, '819774985326000', 'EKO PAJAR DIANTO', 'TIGA SERANGKAI RT 010/005 OGAN CAMPANG ABUNG PEKURUN', '081379405914', NULL, '1', 1),
 (2, NULL, '461003279326000', 'RAHMAN ADI CANDRA', 'TANJUNG BARU RT 002/005 TANJUNG BARU BUKIT KEMUNING', '081313739222', NULL, '1', 2),
 (3, NULL, '730522612302000', 'PIRMANSYAH', 'PEDATARAN ULU OGAN DUSUN 01 RT 01/01', '085267672627', NULL, '1', 3),
 (4, NULL, '7166761796302000', 'HELWANA', 'PEDATARAN ULU OGAN DUSUN 01 RT 01/01', '085267676227', NULL, '1', 4),
@@ -495,8 +622,13 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`username`, `password`, `jenis`, `hak_akses`, `status`) VALUES
 ('aghany', '$2y$10$Fmb53c5iL7yEQQCgUH21aeoq7b.rFsNogcmMYOFGMlmw2W6sadyJa', 'K', 'BAGIAN GUDANG', '1'),
+('herrys', '$2y$10$joPwrjbNN.KZtEnjjWbX/e/PRryZMYUjcm16ucrHvyPh/CsOzjXi6', 'K', 'BAGIAN ANALISA HARGA', '1'),
 ('indraa', '$2y$10$4El7mXcaBAs0DrJsq1alDeLKeURlGOOcO6h/I.FB5S0N4lRtV4wYO', 'K', 'ADMINISTRATOR', '1'),
+('jajang', '$2y$10$oEmIok67z8r/fSV5nJI.Hu1btiT1tSxk5ADbGyT7UHOqgxu4fawkG', 'K', 'BAGIAN TEKNISI DAN OPERASIONAL', '1'),
 ('liliss', '$2y$10$yntJ1sWqsdcCp8a0K1Zr0u/xQ2Z5oVv.LFu.wF9wCF5qus6tXlDxa', 'K', 'BAGIAN ADMINISTRASI DAN KEUANGAN', '1'),
+('lisori', '$2y$10$NovbEZwyLg8XJIgaFqgDVOs1yXZOM/qoH3wFpGdfy6TAkUIeN/3O.', 'K', 'BAGIAN KIR', '1'),
+('ptolam', '$2y$10$576IDsEeqftpV.WRlk/8CO3eTV2QNmmcxVgwpXe1/hSYy6qUIxuC2', 'B', 'BUYER', '1'),
+('ratnasari', '$2y$10$eLN/koyTMbpvNwp0N8JsluBe7qu0CR1WppY/UGAhcNvx3pus7XZJS', 'K', 'BAGIAN ADMINISTRASI DAN KEUANGAN', '1'),
 ('sarifhifni', '$2y$10$4v8SU4WKmqyBmRP97lz.1uXxkxX1Y./qu6wZFgsIQcGkUqAQ7bMYO', 'K', 'DIREKTUR', '1');
 
 -- --------------------------------------------------------
@@ -509,6 +641,13 @@ CREATE TABLE `user_buyer` (
   `username` varchar(10) DEFAULT NULL,
   `id_buyer` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `user_buyer`
+--
+
+INSERT INTO `user_buyer` (`username`, `id_buyer`) VALUES
+('ptolam', 1);
 
 -- --------------------------------------------------------
 
@@ -529,7 +668,11 @@ INSERT INTO `user_karyawan` (`username`, `id_karyawan`) VALUES
 ('sarifhifni', 1),
 ('liliss', 6),
 ('aghany', 7),
-('indraa', 11);
+('indraa', 11),
+('ratnasari', 4),
+('herrys', 2),
+('jajang', 9),
+('lisori', 8);
 
 -- --------------------------------------------------------
 
@@ -602,6 +745,51 @@ CREATE TABLE `v_kendaraan` (
 ,`muatan` double(8,2)
 ,`foto` text
 ,`status` varchar(14)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_pemesanan`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_pemesanan` (
+`id_pemesanan` int(11)
+,`tgl` date
+,`no_kontrak` varchar(50)
+,`id_buyer` int(11)
+,`nama_buyer` varchar(255)
+,`id_produk` int(11)
+,`nama_produk` varchar(50)
+,`satuan_produk` enum('KG','PCS')
+,`jumlah_karung` int(11)
+,`ket_karung` enum('JUMLAH PASTI','PERKIRAAN')
+,`kemasan` enum('KARUNG GONI','KARUNG PLASTIK')
+,`jumlah` double(12,2)
+,`waktu_pengiriman` date
+,`batas_waktu_pengiriman` date
+,`ket` text
+,`lampiran` text
+,`status` varchar(7)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_peramalan`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_peramalan` (
+`id_peramalan` int(11)
+,`tgl` date
+,`tahun` year(4)
+,`periode` varchar(7)
+,`id_produk` int(11)
+,`kd_produk` varchar(25)
+,`nama_produk` varchar(50)
+,`satuan_produk` enum('KG','PCS')
+,`hasil_peramalan` double(12,2)
+,`jumlah_bahan_baku` text
 );
 
 -- --------------------------------------------------------
@@ -693,11 +881,29 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Struktur untuk view `v_pemesanan`
+--
+DROP TABLE IF EXISTS `v_pemesanan`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pemesanan`  AS  select `p`.`id` AS `id_pemesanan`,`p`.`tgl` AS `tgl`,`p`.`no_kontrak` AS `no_kontrak`,`p`.`id_buyer` AS `id_buyer`,`b`.`nama` AS `nama_buyer`,`p`.`id_produk` AS `id_produk`,`pr`.`nama` AS `nama_produk`,`pr`.`satuan` AS `satuan_produk`,`p`.`jumlah_karung` AS `jumlah_karung`,`p`.`ket_karung` AS `ket_karung`,`p`.`kemasan` AS `kemasan`,`p`.`jumlah` AS `jumlah`,`p`.`waktu_pengiriman` AS `waktu_pengiriman`,`p`.`batas_waktu_pengiriman` AS `batas_waktu_pengiriman`,`p`.`ket` AS `ket`,`p`.`lampiran` AS `lampiran`,(case when (`p`.`status` = 'S') then 'SUKSES' when (`p`.`status` = 'P') then 'PENDING' else 'REJECT' end) AS `status` from ((`pemesanan` `p` join `buyer` `b` on((`b`.`id` = `p`.`id_buyer`))) join `produk` `pr` on((`pr`.`id` = `p`.`id_produk`))) order by `p`.`tgl` desc ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur untuk view `v_peramalan`
+--
+DROP TABLE IF EXISTS `v_peramalan`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_peramalan`  AS  select `p`.`id` AS `id_peramalan`,`p`.`tgl` AS `tgl`,`p`.`tahun` AS `tahun`,concat_ws(' ',`p`.`bulan`,`p`.`tahun`) AS `periode`,`pr`.`id` AS `id_produk`,`pr`.`kd_produk` AS `kd_produk`,`pr`.`nama` AS `nama_produk`,`pr`.`satuan` AS `satuan_produk`,`p`.`hasil_peramalan` AS `hasil_peramalan`,group_concat(concat_ws(' ',concat_ws(' - ',`bb`.`nama`,`dp`.`jumlah_bahan_baku`),`bb`.`satuan`) separator ',') AS `jumlah_bahan_baku` from (((`peramalan` `p` join `detail_peramalan` `dp` on((`dp`.`id_peramalan` = `p`.`id`))) join `produk` `pr` on((`pr`.`id` = `p`.`id_produk`))) join `bahan_baku` `bb` on((`bb`.`id` = `dp`.`id_bahan_baku`))) group by `p`.`id` order by `p`.`id` ;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur untuk view `v_produk`
 --
 DROP TABLE IF EXISTS `v_produk`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_produk`  AS  select `p`.`id` AS `id`,`p`.`kd_produk` AS `kd_produk`,`p`.`nama` AS `nama`,`p`.`satuan` AS `satuan`,`p`.`ket` AS `ket`,`p`.`foto` AS `foto`,group_concat(concat_ws(' - ',`b`.`kd_bahan_baku`,`b`.`nama`) separator ',') AS `komposisi`,`p`.`stok` AS `stok` from ((`produk` `p` join `komposisi` `k` on((`k`.`id_produk` = `p`.`id`))) join `bahan_baku` `b` on((`b`.`id` = `k`.`id_bahan_baku`))) group by `p`.`id` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_produk`  AS  select `p`.`id` AS `id`,`p`.`kd_produk` AS `kd_produk`,`p`.`nama` AS `nama`,`p`.`satuan` AS `satuan`,`p`.`ket` AS `ket`,`p`.`foto` AS `foto`,group_concat(concat_ws(' - ',`b`.`kd_bahan_baku`,`b`.`nama`) separator ',') AS `komposisi`,`p`.`stok` AS `stok` from ((`produk` `p` join `komposisi` `k` on((`k`.`id_produk` = `p`.`id`))) join `bahan_baku` `b` on((`b`.`id` = `k`.`id_bahan_baku`))) group by `p`.`id` order by `p`.`id` ;
 
 -- --------------------------------------------------------
 
@@ -732,6 +938,14 @@ ALTER TABLE `bahan_baku`
 --
 ALTER TABLE `buyer`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `detail_peramalan`
+--
+ALTER TABLE `detail_peramalan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_detail_peramalan_id_peramalan` (`id_peramalan`),
+  ADD KEY `fk_detail_peramalan_id_bahan_baku` (`id_bahan_baku`);
 
 --
 -- Indexes for table `harga_basis`
@@ -782,6 +996,21 @@ ALTER TABLE `pekerjaan`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pemesanan`
+--
+ALTER TABLE `pemesanan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_pemesanan_id_buyer` (`id_buyer`),
+  ADD KEY `fk_pemesanan_id_produk` (`id_produk`);
+
+--
+-- Indexes for table `peramalan`
+--
+ALTER TABLE `peramalan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_peramalan_id_produk` (`id_produk`);
+
+--
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
@@ -828,6 +1057,11 @@ ALTER TABLE `bahan_baku`
 ALTER TABLE `buyer`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
+-- AUTO_INCREMENT for table `detail_peramalan`
+--
+ALTER TABLE `detail_peramalan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `harga_basis`
 --
 ALTER TABLE `harga_basis`
@@ -836,17 +1070,17 @@ ALTER TABLE `harga_basis`
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 --
 -- AUTO_INCREMENT for table `kendaraan`
 --
 ALTER TABLE `kendaraan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `komposisi`
 --
 ALTER TABLE `komposisi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `mutasi_bahan_baku`
 --
@@ -856,17 +1090,27 @@ ALTER TABLE `mutasi_bahan_baku`
 -- AUTO_INCREMENT for table `mutasi_produk`
 --
 ALTER TABLE `mutasi_produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `pekerjaan`
 --
 ALTER TABLE `pekerjaan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
+-- AUTO_INCREMENT for table `pemesanan`
+--
+ALTER TABLE `pemesanan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+--
+-- AUTO_INCREMENT for table `peramalan`
+--
+ALTER TABLE `peramalan`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `produk`
 --
 ALTER TABLE `produk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `supplier`
 --
@@ -875,6 +1119,13 @@ ALTER TABLE `supplier`
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
 --
+
+--
+-- Ketidakleluasaan untuk tabel `detail_peramalan`
+--
+ALTER TABLE `detail_peramalan`
+  ADD CONSTRAINT `fk_detail_peramalan_id_bahan_baku` FOREIGN KEY (`id_bahan_baku`) REFERENCES `bahan_baku` (`id`),
+  ADD CONSTRAINT `fk_detail_peramalan_id_peramalan` FOREIGN KEY (`id_peramalan`) REFERENCES `peramalan` (`id`);
 
 --
 -- Ketidakleluasaan untuk tabel `karyawan`
@@ -906,6 +1157,19 @@ ALTER TABLE `mutasi_bahan_baku`
 --
 ALTER TABLE `mutasi_produk`
   ADD CONSTRAINT `fk_mutasi_produk_id_produk` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `pemesanan`
+--
+ALTER TABLE `pemesanan`
+  ADD CONSTRAINT `fk_pemesanan_id_buyer` FOREIGN KEY (`id_buyer`) REFERENCES `buyer` (`id`),
+  ADD CONSTRAINT `fk_pemesanan_id_produk` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id`);
+
+--
+-- Ketidakleluasaan untuk tabel `peramalan`
+--
+ALTER TABLE `peramalan`
+  ADD CONSTRAINT `fk_peramalan_id_produk` FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id`);
 
 --
 -- Ketidakleluasaan untuk tabel `user_buyer`
