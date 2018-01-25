@@ -95,17 +95,23 @@
 									<span class="hide-menu">Data Pengiriman</span> 
 								</a> 
 							</li>',
-			'perencanaan_bahan_baku' => '<li class="menu-data-peramalan"> 
+			'perencanaan_bahan_baku' => '<li class="menu-data-perencanaan-bahan-baku"> 
 											<a href="'.base_url.'index.php?m=perencanaan_bahan_baku&p=list"> 
 												<i class="mdi mdi-chart-line fa-fw" data-icon="v"></i> 
 												<span class="hide-menu">Data Perencanaan Pengadaan Bahan Baku</span> 
 											</a> 
 										</li>',
 			// monitoring persediaan //
-				'safety_stock' => '<li class="menu-data-safety-stock"> 
-										<a href="'.base_url.'index.php?m=safety_stock&p=list"> 
+				'stok_bahan_baku' => '<li class="menu-data-stok-bahan-baku"> 
+										<a href="'.base_url.'index.php?m=stok_bahan_baku&p=list"> 
 											<i class="mdi mdi-cube-send fa-fw" data-icon="v"></i> 
-											<span class="hide-menu">Data Safety Stock</span> 
+											<span class="hide-menu">Data Stok Bahan Baku</span> 
+										</a> 
+									</li>',
+				'stok_produk' => '<li class="menu-data-stok-produk"> 
+										<a href="'.base_url.'index.php?m=stok_produk&p=list"> 
+											<i class="mdi mdi-cube-send fa-fw" data-icon="v"></i> 
+											<span class="hide-menu">Data Stok Produk</span> 
 										</a> 
 									</li>',
 				'mutasi_bahan_baku' => '<li class="menu-data-mutasi-bahan-baku"> 
@@ -153,7 +159,8 @@
 					'pengiriman' => base_hak_akses['pengiriman'],
 					'perencanaan_bahan_baku' => base_hak_akses['perencanaan_bahan_baku'],
 					'monitoring_persediaan' => array(
-						'safety_stock' => base_hak_akses['safety_stock'],
+						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
+						'stok_produk' => base_hak_akses['stok_produk'],
 						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
 						'mutasi_produk' => base_hak_akses['mutasi_produk'],
 					),
@@ -178,6 +185,8 @@
 					'pemesanan' => base_hak_akses['pemesanan'],
 					'pengiriman' => base_hak_akses['pengiriman'],
 					'monitoring_persediaan' => array(
+						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
+						'stok_produk' => base_hak_akses['stok_produk'],
 						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
 						'mutasi_produk' => base_hak_akses['mutasi_produk'],
 					),
@@ -195,7 +204,8 @@
 					'pemesanan' => base_hak_akses['pemesanan'],
 					'perencanaan_bahan_baku' => base_hak_akses['perencanaan_bahan_baku'],
 					'monitoring_persediaan' => array(
-						'safety_stock' => base_hak_akses['safety_stock'],
+						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
+						'stok_produk' => base_hak_akses['stok_produk'],
 						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
 						'mutasi_produk' => base_hak_akses['mutasi_produk'],
 					),
@@ -235,7 +245,8 @@
 					),
 					'produksi' => base_hak_akses['produksi'],
 					'monitoring_persediaan' => array(
-						'safety_stock' => base_hak_akses['safety_stock'],
+						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
+						'stok_produk' => base_hak_akses['stok_produk'],
 						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
 						'mutasi_produk' => base_hak_akses['mutasi_produk'],
 					),

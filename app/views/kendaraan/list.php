@@ -4,13 +4,13 @@
 <!-- Breadcrumb -->
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h4 class="page-title">Data Transportasi</h4>
+        <h4 class="page-title">Data Kendaraan</h4>
     </div>
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="<?= base_url; ?>">Beranda</a></li>
             <li>Data Master</li>
-            <li class="active">Data Transportasi</li>
+            <li class="active">Data Kendaraan</li>
         </ol>
     </div>
 </div>
@@ -19,7 +19,7 @@
 <div class="row">
 	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-        	<div class="panel-heading">List Data Transportasi</div>
+        	<div class="panel-heading">List Data Kendaraan</div>
     	 	<div class="panel-wrapper collapse in">
     	 		<div class="panel-wrapper collapse in">
     	 			<div class="panel-body">

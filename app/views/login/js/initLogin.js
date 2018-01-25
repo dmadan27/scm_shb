@@ -129,6 +129,15 @@ function setError_login(error){
 	if(!jQuery.isEmptyObject(error.usernameError)){
 		$('.field-username').removeClass('has-success').addClass('has-error');
 		$(".field-username span.help-block").text(error.usernameError);
+		$.toast({
+			heading: 'Pesan Error',
+			text: error.usernameError,
+			position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'error',
+            hideAfter: 3000,
+            stack: 6
+		});
 	}
 	else{
 		$('.field-username').removeClass('has-error').addClass('has-success');

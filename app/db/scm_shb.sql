@@ -35,6 +35,7 @@
 
 			CONSTRAINT pk_karyawan_id PRIMARY KEY(id),
 			CONSTRAINT fk_karyawan_id_pekerjaan FOREIGN KEY(id_pekerjaan) REFERENCES pekerjaan(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 	-- Tabel Kendaraan
@@ -51,6 +52,7 @@
 
 		CONSTRAINT pk_kendaraan_id PRIMARY KEY(id),
 		CONSTRAINT fk_kendaraan_id_supir FOREIGN KEY(id_supir) REFERENCES karyawan(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
 	-- Tabel Bahan baku
@@ -87,8 +89,20 @@
 		penyusutan double(5,2),
 
 		CONSTRAINT pk_komposisi_id PRIMARY KEY(id),
-		CONSTRAINT fk_komposisi_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id),
+		CONSTRAINT fk_komposisi_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
 		CONSTRAINT fk_komposisi_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
+
+	-- Tabel Basis (optional)
+	CREATE TABLE harga_basis(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		jenis char(1), -- k: basis kopi, l: basis lada hitam
+		harga_basis double(12,2),
+
+		CONSTRAINT pk_harga_basis_id PRIMARY KEY(id)
 	);
 
 	-- Data Supplier
@@ -107,17 +121,6 @@
 			CONSTRAINT pk_supplier_id PRIMARY KEY(id)
 		);
 
-		-- -- Tabel detail supplier
-		-- CREATE TABLE detail_supplier(
-		-- 	id int NOT NULL AUTO_INCREMENT,
-		-- 	id_supplier int, -- fk
-		-- 	id_supplier_utama int, -- fk
-
-		-- 	CONSTRAINT pk_detail_supplier_id PRIMARY KEY(id),
-		-- 	CONSTRAINT fk_detail_supplier_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id),
-		-- 	CONSTRAINT fk_detail_supplier_id_supplier_utama FOREIGN KEY(id_supplier_utama) REFERENCES supplier(id)
-		-- );
-
 	-- Tabel Buyer
 	CREATE TABLE buyer(
 		id int NOT NULL AUTO_INCREMENT,
@@ -133,65 +136,55 @@
 	);
 
 	-- Data User
-		-- Tabel Hak Akses
-		-- CREATE TABLE hak_akses(
-		-- 	id int NOT NULL AUTO_INCREMENT,
-		-- 	hak_akses varchar(255),
-		-- 	menu varchar(255),
+		-- Tabel user v1
+		-- CREATE TABLE user(
+		-- 	username varchar(10) NOT NULL,
+		-- 	password text NOT NULL,
+		-- 	jenis char(1), -- k: karyawan, b: buyer
+		-- 	hak_akses varchar(50),
+		-- 	status char(1), -- 1: aktif, 0: non-aktif
 
-		-- 	CONSTRAINT pk_hak_akses_id PRIMARY KEY(id)
+		-- 	CONSTRAINT pk_user_username PRIMARY KEY(username)
 		-- );
 
-		-- Tabel user
+		-- Tabel user v2
 		CREATE TABLE user(
 			username varchar(10) NOT NULL,
 			password text NOT NULL,
-			jenis char(1), -- k: karyawan, b: buyer
+			-- jenis char(1), -- k: karyawan, b: buyer
+			id_karyawan int,
 			hak_akses varchar(50),
 			status char(1), -- 1: aktif, 0: non-aktif
 
-			CONSTRAINT pk_user_username PRIMARY KEY(username)
+			CONSTRAINT pk_user_username PRIMARY KEY(username),
+			CONSTRAINT fk_user_id_karyawan FOREIGN KEY(id_karyawan) REFERENCES karyawan(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
-		-- Tabel Detail hak akses user
-		-- CREATE TABLE hak_akses(
+		-- -- Tabel user karyawan
+		-- CREATE TABLE user_karyawan(
 		-- 	-- id int NOT NULL AUTO_INCREMENT,
 		-- 	username varchar(10), -- fk
-		-- 	hak_akses varchar(50),
+		-- 	id_karyawan int, -- fk
 
-		-- 	CONSTRAINT fk_hak_akses_username FOREIGN KEY(username) REFERENCES user(username)
+		-- 	-- CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username)
+		-- 		ON DELETE RESTRICT ON UPDATE CASCADE,
+		-- 	CONSTRAINT fk_user_karyawan_id_karyawan FOREIGN KEY(id_karyawan) REFERENCES karyawan(id)
+		-- 		ON DELETE RESTRICT ON UPDATE CASCADE
 		-- );
 		
-		-- Tabel user karyawan
-		CREATE TABLE user_karyawan(
-			-- id int NOT NULL AUTO_INCREMENT,
-			username varchar(10), -- fk
-			id_karyawan int, -- fk
-
-			-- CONSTRAINT pk_user_karyawan_id PRIMARY KEY(id),
-			CONSTRAINT fk_user_karyawan_username FOREIGN KEY(username) REFERENCES user(username),
-			CONSTRAINT fk_user_karyawan_id_karyawan FOREIGN KEY(id_karyawan) REFERENCES karyawan(id)
-		);
-		
-		-- Tabel user buyer
-		CREATE TABLE user_buyer(
-			-- id int NOT NULL AUTO_INCREMENT,
-			username varchar(10), -- fk
-			id_buyer int, -- fk
-
-			-- CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
-			CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username),
-			CONSTRAINT fk_user_karyawan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
-		);
-
-		-- Tabel user supplier
-		-- CREATE TABLE user_supplier(
-		-- 	-- id int NOT NULL AUTO_INCREMENT, 
+		-- -- Tabel user buyer
+		-- CREATE TABLE user_buyer(
+		-- 	-- id int NOT NULL AUTO_INCREMENT,
 		-- 	username varchar(10), -- fk
-		-- 	id_supplier int, -- fk
+		-- 	id_buyer int, -- fk
 
-		-- 	-- CONSTRAINT pk_user_supplier_id PRIMARY KEY(id),
-		-- 	CONSTRAINT fk_user_supplier_username FOREIGN KEY(username) REFERENCES user(username)
+		-- 	-- CONSTRAINT pk_user_buyer_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_user_buyer_username FOREIGN KEY(username) REFERENCES user(username)
+		-- 		ON DELETE RESTRICT ON UPDATE CASCADE,
+		-- 	CONSTRAINT fk_user_karyawan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
+		-- 		ON DELETE RESTRICT ON UPDATE CASCADE
 		-- );
 
 	-- Data KIR
@@ -206,11 +199,12 @@
 
 			CONSTRAINT pk_kir_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		-- Tabel KIR Kopi
 		CREATE TABLE kir_kopi(
-			-- id int NOT NULL AUTO_INCREMENT, 
+			id int NOT NULL AUTO_INCREMENT, 
 			id_kir int, -- fk
 			trase double(5,2),
 			gelondong double(5,2),
@@ -219,31 +213,23 @@
 			kulit double(5,2),
 			rendemen double(5,2),
 
-			-- CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
+			CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_kopi_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		-- Tabel KIR Lada
 		CREATE TABLE kir_lada(
-			-- id int NOT NULL AUTO_INCREMENT,
+			id int NOT NULL AUTO_INCREMENT,
 			id_kir int, -- fk
 			air double(5,2),
 			berat int,
 			abu double(5,2),
 
-			-- CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
+			CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
 			CONSTRAINT fk_kir_lada_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
-
-	-- Tabel Basis (optional)
-	CREATE TABLE harga_basis(
-		id int NOT NULL AUTO_INCREMENT,
-		tgl date,
-		jenis char(1), -- k: basis kopi, l: basis lada hitam
-		harga_basis double(12,2),
-
-		CONSTRAINT pk_harga_basis_id PRIMARY KEY(id)
-	);
 
 	-- Tabel Analisa Harga
 	CREATE TABLE analisa_harga(
@@ -256,6 +242,7 @@
 
 		CONSTRAINT pk_analisa_harga_id PRIMARY KEY(id),
 		CONSTRAINT fk_analisa_harga_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
 	);
 
 	-- Data Pembelian Bahan Baku
@@ -274,6 +261,7 @@
 
 			CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
 			CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		-- Tabel Detail Pembelian
@@ -288,9 +276,12 @@
 			subtotal double(12,2),
 
 			CONSTRAINT pk_detail_pembelian PRIMARY KEY(id),
-			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id),
-			CONSTRAINT fk_detail_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id),
+			CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE,
+			CONSTRAINT fk_detail_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE,
 			CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 	-- Data Penjualan
@@ -315,8 +306,10 @@
 			-- user varchar(10),
 
 			CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
-			CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id),
+			CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE,
 			CONSTRAINT fk_pemesanan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		-- Tabel pengiriman (belum beres)
@@ -327,23 +320,15 @@
 			id_kendaraan int, -- fk
 			colly int,
 			jumlah double(12,2),
-			status char(1), -- status pengiriman. perjalanan/on delivery, terkirim
+			status char(1), -- status pengiriman. perjalanan/on delivery, terkirim, sedang di proses
 
 			CONSTRAINT pk_pengiriman_id PRIMARY KEY(id),
-			CONSTRAINT fk_pengiriman_id_pemesanan FOREIGN KEY(id_pemesanan) REFERENCES pemesanan(id),
+			CONSTRAINT fk_pengiriman_id_pemesanan FOREIGN KEY(id_pemesanan) REFERENCES pemesanan(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE,
 			CONSTRAINT fk_pengiriman_id_kendaraan FOREIGN KEY(id_kendaraan) REFERENCES kendaraan(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
-		-- Tabel detail pengiriman (belum beres)
-		-- CREATE TABLE detail_pengiriman(
-		-- 	id int NOT NULL AUTO_INCREMENT,
-		-- 	tgl date,
-		-- 	id_pengiriman int, -- fk
-		-- 	id_kendaraan int, -- fk
-		-- 	colly int,
-		-- 	netto double(12,2),
-		-- 	status char(1), 
-		-- );
 
 	-- Data Persediaan
 		-- Tabel Mutasi Bahan Baku
@@ -358,6 +343,7 @@
 
 			CONSTRAINT pk_mutasi_bahan_baku_id PRIMARY KEY(id),
 			CONSTRAINT fk_mutasi_bahan_baku_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		CREATE TABLE mutasi_produk(
@@ -371,6 +357,7 @@
 
 			CONSTRAINT pk_mutasi_produk_id PRIMARY KEY(id),
 			CONSTRAINT fk_mutasi_produk_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
 		-- Tabel peramalan (belum beres)
@@ -385,19 +372,34 @@
 
 			CONSTRAINT pk_peramalan_id PRIMARY KEY(id),
 			CONSTRAINT fk_peramalan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
 
-		-- Tabel detail peramalan
-		CREATE TABLE detail_peramalan(
+		-- Tabel perencanaan pengadaan bahan baku
+		CREATE TABLE perencanaan_bahan_baku(
 			id int NOT NULL AUTO_INCREMENT,
-			id_peramalan int,
-			id_bahan_baku int, -- fk bahan baku
-			jumlah_bahan_baku double(12,2),
+			tgl date,
+			periode varchar(15),
+			id_produk int, -- fk
+			jumlah_perencanaan double(12,2),
+			safety_stok_produk double(12,2),
 
-			CONSTRAINT pk_detail_peramalan_id PRIMARY KEY(id),
-			CONSTRAINT fk_detail_peramalan_id_peramalan FOREIGN KEY(id_peramalan) REFERENCES peramalan(id),
-			CONSTRAINT fk_detail_peramalan_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+			CONSTRAINT pk_perencanaan_bahan_baku_id PRIMARY KEY(id),
+			CONSTRAINT fk_perencanaan_bahan_baku_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+				ON DELETE RESTRICT ON UPDATE CASCADE
 		);
+
+		-- -- Tabel detail peramalan
+		-- CREATE TABLE detail_peramalan(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	id_peramalan int,
+		-- 	id_bahan_baku int, -- fk bahan baku
+		-- 	jumlah_bahan_baku double(12,2),
+
+		-- 	CONSTRAINT pk_detail_peramalan_id PRIMARY KEY(id),
+		-- 	CONSTRAINT fk_detail_peramalan_id_peramalan FOREIGN KEY(id_peramalan) REFERENCES peramalan(id),
+		-- 	CONSTRAINT fk_detail_peramalan_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+		-- );
 
 		-- Tabel produksi
 		CREATE TABLE produksi(
@@ -412,13 +414,20 @@
 			CONSTRAINT fk_produksi_id_barang_bahan_baku FOREIGN KEY(id_barang_bahan_baku) REFERENCES barang(id)
 		);
 
-		CREATE TABLE safety_stok(
+		-- Tabel produksi
+		CREATE TABLE produksi(
 			id int NOT NULL AUTO_INCREMENT,
-			id_peramalan int,
-			safety_stok_produk double(12,2),
-			safety_stok_bahan_baku double(12,2),
-
+			tgl date,
+			id_produk int, -- fk
 		);
+
+		-- CREATE TABLE safety_stok(
+		-- 	id int NOT NULL AUTO_INCREMENT,
+		-- 	id_peramalan int,
+		-- 	safety_stok_produk double(12,2),
+		-- 	safety_stok_bahan_baku double(12,2),
+
+		-- );
 
 # =========================================== #
 
