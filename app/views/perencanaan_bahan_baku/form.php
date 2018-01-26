@@ -15,22 +15,22 @@
         </ol>
     </div>
 </div>
-<div class="form-peramalan">
-	<form id="form_peramalan" class="form-material" role="form" enctype="multipart/form-data">
+<div class="form-perencanaan">
+	<form id="form_perencanaan" class="form-material" role="form" enctype="multipart/form-data">
 		<!-- panel form -->
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
 		        <div class="panel panel-default">
 		    	 	<div class="panel-wrapper collapse in">
 			 			<div class="panel-body">
-							<input type="hidden" name="id_peramalan" id="id_peramalan">
+							<input type="hidden" name="id_perencanaan" id="id_perencanaan">
 			    	 		<div class="row">
-			    	 			<div class="col-md-6">
-			    	 				<fieldset>
-			    	 					<legend>Data Peramalan</legend>
+			    	 			<fieldset>
+				    	 			<div class="col-md-6">
+				    	 				<legend>Data Perencanaan Pengadaan Bahan Baku</legend>
 			    	 					<!-- Tanggal -->
 										<div class="form-group field-tgl has-feedback m-b-5">
-											<label class="col-md-12" for="tgl">Tanggal Peramalan Dilakukan*</label>
+											<label class="col-md-12" for="tgl">Tanggal Perencanaan Dilakukan*</label>
 					                        <div class="col-md-12">
 					                            <input id="tgl" type="text" class="form-control datepicker" placeholder="Masukkan Tanggal">
 					                            <span class="help-block small pesan"></span>
@@ -58,20 +58,18 @@
 										<!-- button proses peramalan -->
 										<div class="form-group field-produk has-feedback m-b-5">
 					                        <div class="col-md-12 text-right">
-					                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung">Hitung Peramalan</button>
+					                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung">Gunakan Peramalan</button>
 					                        </div>
-										</div>
-			    	 				</fieldset>		
-			    	 			</div>
-			    	 			<div class="col-md-6">
-			    	 				<fieldset>
-			    	 					<legend>Hasil Peramalan</legend>
+										</div>	
+				    	 			</div>
+				    	 			<div class="col-md-6">
+				    	 				<legend>Hasil Perencanaan</legend>
 			    	 					<!-- Hasil Peramalan -->
 										<div class="form-group field-hasil-peramalan has-feedback m-b-5">
-											<label class="col-md-12" for="hasil_peramalan">Hasil Peramalan*</label>
+											<label class="col-md-12" for="hasil_perencanaan">Hasil Perencanaan*</label>
 					                        <div class="col-md-12">
 					                        	<div class="input-group">
-					                        		<input id="hasil_peramalan" type="text" class="form-control" placeholder="Hasil Peramalan">
+					                        		<input id="hasil_perencanaan" type="text" class="form-control" placeholder="Hasil Perencanaan">
 					                        		<span class="input-group-addon satuan-produk"></span>
 					                        	</div>
 					                            <span class="help-block small pesan"></span>
@@ -91,8 +89,8 @@
 												<tbody></tbody>
 											</table>
 										</div>											
-			    	 				</fieldset>
-			    	 			</div>
+				    	 			</div>
+				    	 		</fieldset>
 			    	 		</div>
 			 			</div>
 		    	 	</div>
@@ -110,7 +108,7 @@
 							</div>
 						</div>	
 		        		<div class="text-right">
-		        			<button id="btnSubmit_peramalan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
+		        			<button id="btnSubmit_perencanaan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
 		        			<a href="<?=base_url."index.php?m=perencanaan_bahan_baku&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
 		        		</div>
 		        	</div>

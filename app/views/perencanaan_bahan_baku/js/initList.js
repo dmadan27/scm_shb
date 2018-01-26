@@ -23,7 +23,7 @@ $(document).ready(function(){
     };
 
 	// setting datatable
-    var tabel_peramalan = $("#tabel_peramalan").DataTable({
+    var tabel_perencanaan_bahan_baku = $("#tabel_perencanaan_bahan_baku").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",
@@ -45,7 +45,7 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url: base_url+"app/controllers/Peramalan.php",
+            url: base_url+"app/controllers/Perencanaan_bahan_baku.php",
             type: 'POST',
             data: {
                 "action" : "list",
@@ -59,7 +59,7 @@ $(document).ready(function(){
         ],
     });
 
-    $("#tambah_peramalan").click(function(){
+    $("#tambah_perencanaan").click(function(){
         window.location.href = base_url+"index.php?m=perencanaan_bahan_baku&p=form";
     });
 

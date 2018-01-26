@@ -1,7 +1,10 @@
+var listKomposisi = [];
+var indexKomposisi = 0;
+
 $(document).ready(function(){
+
 	$("#produk").select2();
 	
-	setSelect_bulan();
 	setSelect_produk();
 
 	$('#tgl').datepicker({
@@ -24,7 +27,7 @@ $(document).ready(function(){
     	hitung_peramalan();
     });
 
-    $("#form_peramalan").submit(function(e){
+    $("#form_perencanaan").submit(function(e){
     	e.preventDefault();
     	submit();
     	return false;
@@ -54,7 +57,15 @@ $(document).ready(function(){
 				$(".field-produk span.help-block").text('');
 
 				// get satuan produk
-				get_satuanProduk(this.value);	
+				get_satuanProduk(this.value);
+
+				// get bahan baku
+				listKomposisi = [];
+				indexKomposisi = 0;
+				$('#tabel_jumlah_bahanBaku tbody tr').each(function (index) {
+				    $(this).remove(); // hapus data ditabel
+				});
+				get_bahanBaku(this.value);	
     		}
     	});
     // ==================================
@@ -65,11 +76,11 @@ $(document).ready(function(){
 function getDataForm(){
 	var data = new FormData();
 	
-	data.append('id_harga_basis', $("#id_harga_basis").val().trim()); // id
+	data.append('id_perencanaan', $("#id_perencanaan").val().trim()); // id
 	data.append('tgl', $("#tgl").val().trim()); // tgl
-	data.append('jenis', $("#jenis").val().trim()); // jenis
-	data.append('harga_basis', $("#harga_basis").val().trim()); // harga basis
-	data.append('action', $("#btnSubmit_hargaBasis").val().trim()); // action
+	data.append('periode', $("#jenis").val().trim()); // periode
+	data.append('produk', $("#produk").val().trim()); // harga basis
+	data.append('action', $("#btnSubmit_perencanaan").val().trim()); // action
 
 	return data;
 }
@@ -77,7 +88,7 @@ function getDataForm(){
 // hitung peramalan
 function hitung_peramalan(){
 	$.ajax({
-		url: base_url+'app/controllers/Peramalan.php',
+		url: base_url+'app/controllers/Perencanaan_bahan_baku.php',
 		type: 'POST',
 		dataType: 'json',
 		data: {
@@ -91,7 +102,7 @@ function hitung_peramalan(){
 		success: function(output){
 			setLoading(false);
 			console.log(output);
-			$('#hasil_peramalan').val(output.hasil_peramalan.toFixed(2));
+			$('#hasil_perencanaan').val(output.hasil_peramalan.toFixed(2));
 
 			// tabel jumlah bahan baku
 			$.each(output.jumlah_bahan_baku, function(index, item){
@@ -265,29 +276,29 @@ function setValue(value){
 	$("#id_harga_basis").val(value.id).trigger('change');;
 }
 
-// function set select bulan
-function setSelect_bulan(){
-	var arrBulan = [
-		{value: "", text: "-- Pilih Bulan --"},
-		{value: "01", text: "JANUARI"},
-		{value: "02", text: "FEBRUARI"},
-		{value: "03", text: "MARET"},
-		{value: "04", text: "APRIL"},
-		{value: "05", text: "MEI"},
-		{value: "06", text: "JUNI"},
-		{value: "07", text: "JULI"},
-		{value: "08", text: "AGUSTUS"},
-		{value: "09", text: "SEPTEMBER"},
-		{value: "10", text: "OKTOBER"},
-		{value: "11", text: "NOVEMBER"},
-		{value: "12", text: "DESEMBER"},
-	];
+// // function set select bulan
+// function setSelect_bulan(){
+// 	var arrBulan = [
+// 		{value: "", text: "-- Pilih Bulan --"},
+// 		{value: "01", text: "JANUARI"},
+// 		{value: "02", text: "FEBRUARI"},
+// 		{value: "03", text: "MARET"},
+// 		{value: "04", text: "APRIL"},
+// 		{value: "05", text: "MEI"},
+// 		{value: "06", text: "JUNI"},
+// 		{value: "07", text: "JULI"},
+// 		{value: "08", text: "AGUSTUS"},
+// 		{value: "09", text: "SEPTEMBER"},
+// 		{value: "10", text: "OKTOBER"},
+// 		{value: "11", text: "NOVEMBER"},
+// 		{value: "12", text: "DESEMBER"},
+// 	];
 
-	$.each(arrBulan, function(index, item){
-		var option = new Option(item.text, item.value);
-		$("#bulan").append(option);
-	});
-}
+// 	$.each(arrBulan, function(index, item){
+// 		var option = new Option(item.text, item.value);
+// 		$("#bulan").append(option);
+// 	});
+// }
 
 // function set select produk
 function setSelect_produk(){
@@ -327,15 +338,80 @@ function get_satuanProduk(id){
 	})
 }
 
+// function get bahan baku
+function get_bahanBaku(id_produk){
+	var index = indexKomposisi++;
+
+	$.ajax({
+		url: base_url+"app/controllers/Produk.php",
+		type: "post",
+		dataType: "json",
+		data: {"action": "get_komposisi_produk", "id": id_produk},
+		success: function(data){
+			console.log(data);
+
+			// masukkan data ke var baru
+			$.each(data, function(index, item){
+				var dataKomposisi = {
+					index: index,
+					id_komposisi: item.id_komposisi,
+					id_bahan_baku: item.id_bahan_baku,
+					kd_bahan_baku: item.kd_bahan_baku,
+					nama_bahan_baku: item.nama_bahan_baku,
+					satuan_bahan_baku: item.satuan_bahan_baku,
+					penyusutan: item.penyusutan,
+					jumlah_bahanBaku: 0,
+				};
+				listKomposisi.push(dataKomposisi);
+			});
+
+			$.each(listKomposisi, function(index, item){
+				$("#tabel_jumlah_bahanBaku > tbody:last-child").append(
+					"<tr>"+
+						"<td></td>"+ // nomor
+						"<td>"+item.kd_bahan_baku+"</td>"+ // kode
+						"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+						"<td>"+field_jumlah_bahanBaku(item.jumlah_bahanBaku, item.satuan_bahan_baku, item.index)+"</td>"+ // jumlah
+					"</tr>"
+				);
+				numberingList();
+			});
+
+			console.log(listKomposisi);
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
+}
+
+function field_jumlah_bahanBaku(jumlah, satuan, index){
+	var field = '<div class="input-group"><input type="number" min="0" step="1" onchange="onChange_jumlah_bahanBaku('+index+',this)" class="form-control" value="'+jumlah+'"><span class="input-group-addon">'+satuan+'</span></div>';
+	return field;
+}
+
+function onChange_jumlah_bahanBaku(index, val){
+	// ubah nilai qty di array
+	$.each(listKomposisi, function(i, item){
+		if(item.index == index){
+			item.jumlah_bahanBaku = val.value;
+		} 
+	});
+	numberingList();
+
+	console.log(listKomposisi);
+}
+
 // function loading modal
 function setLoading(block=true){
 	if(block === true){
-		$('.form-peramalan').block({
+		$('.form-perencanaan').block({
     		message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
             css: {
                 border: '1px solid #fff'
             }
     	});
 	}
-	else $('.form-peramalan').unblock();
+	else $('.form-perencanaan').unblock();
 }

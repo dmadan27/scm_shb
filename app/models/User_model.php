@@ -21,15 +21,14 @@
 	}
 
 	function insertUser($koneksi, $data){
-		$query = "CALL tambah_user(:username, :password, :jenis, :status, :pengguna, :hak_akses)";
+		$query = "INSERT INTO user (username, password, id_karyawan, hak_akses, status) VALUES (:username, :password, :id_karyawan, :hak_akses, :status)";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':username', $data['username']);
 		$statement->bindParam(':password', $data['password']);
-		$statement->bindParam(':jenis', $data['jenis']);
-		$statement->bindParam(':status', $data['status']);
-		$statement->bindParam(':pengguna', $data['pengguna']);
+		$statement->bindParam(':id_karyawan', $data['pengguna']);
 		$statement->bindParam(':hak_akses', $data['hak_akses']);
+		$statement->bindParam(':status', $data['status']);
 		$result = $statement->execute();
 
 		return $result;

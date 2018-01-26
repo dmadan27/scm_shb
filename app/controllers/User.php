@@ -41,8 +41,7 @@
 				break;
 
 			case 'getpdf':
-				$jenis = isset($_POST['jenis']) ? $_POST['jenis'] : false;
-				getPdf($koneksi, $jenis, $id);
+
 				break;
 
 			default:
@@ -54,8 +53,8 @@
 	function listUser($koneksi){
 		$config_db = array(
 			'tabel' => 'v_user',
-			'kolomOrder' => array(null, 'username', 'nama', 'jenis', null, 'status', null),
-			'kolomCari' => array('username', 'nama', 'jenis', 'status'),
+			'kolomOrder' => array(null, 'username', 'nama', 'jabatan', null, 'status', null),
+			'kolomCari' => array('username', 'nama', 'jabatan', 'status'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
@@ -81,7 +80,7 @@
 			$dataRow[] = $no_urut;
 			$dataRow[] = $row['username'];
 			$dataRow[] = $row['nama'];
-			$dataRow[] = $row['jenis'];
+			$dataRow[] = $row['jabatan'];
 			$dataRow[] = $row['hak_akses'];
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
@@ -125,7 +124,7 @@
 				'username' => validInputan($dataForm['username'], false, true),
 				'password' => password_hash($dataForm['password'], PASSWORD_BCRYPT),
 				'konf_password' => validInputan($dataForm['konf_password'], false, true),
-				'jenis' => validInputan($dataForm['jenis'], false, false),
+				// 'jenis' => validInputan($dataForm['jenis'], false, false),
 				'pengguna' => validInputan($dataForm['pengguna'], false, false),
 				'hak_akses' => validInputan($dataForm['hak_akses'], false, false),
 				'status' => validInputan($dataForm['status'], false, false),
@@ -162,10 +161,10 @@
 				'value' => 'status', 'rule' => 'angka | 1 | 1 | required',
 			),
 			// jenis
-			array(
-				'field' => $data['jenis'], 'label' => 'Jenis User', 'error' => 'jenisError',
-				'value' => 'jenis', 'rule' => 'huruf | 1 | 1 | required',
-			),
+			// array(
+			// 	'field' => $data['jenis'], 'label' => 'Jenis User', 'error' => 'jenisError',
+			// 	'value' => 'jenis', 'rule' => 'huruf | 1 | 1 | required',
+			// ),
 			// pengguna
 			array(
 				'field' => $data['pengguna'], 'label' => 'Pengguna', 'error' => 'penggunaError',

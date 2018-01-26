@@ -39,7 +39,7 @@
     	 							<th style="width: 15px">No</th>
     	 							<th>Username</th>
     	 							<th>Nama</th>
-                                    <th>Jenis</th>
+                                    <th>Jabatan</th>
                                     <th>Hak Akses</th>
     	 							<th>Status</th>
     	 							<th>Aksi</th>

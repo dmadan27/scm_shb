@@ -46,8 +46,8 @@
 	function listBahanBaku($koneksi){
 		$config_db = array(
 			'tabel' => 'bahan_baku',
-			'kolomOrder' => array(null, 'kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok', null),
-			'kolomCari' => array('kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok'),
+			'kolomOrder' => array(null, 'kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok_akhir', null),
+			'kolomCari' => array('kd_bahan_baku', 'nama', 'satuan', 'ket', 'stok_akhir'),
 			'orderBy' => array('id' => 'asc'),
 			'kondisi' => false,
 		);
@@ -74,7 +74,7 @@
 			$dataRow[] = $row['nama'];
 			$dataRow[] = $row['satuan'];
 			$dataRow[] = gantiKosong($row['ket']);
-			$dataRow[] = $row['stok']." ".$row['satuan'];
+			$dataRow[] = $row['stok_akhir']." ".$row['satuan'];
 			$dataRow[] = $aksi;
 
 			$data[] = $dataRow;

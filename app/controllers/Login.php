@@ -57,7 +57,7 @@
 			// cek status aktif
 			if($data_login['status'] === "1"){
 				// dapatkan info user
-				$get_data_login = strtolower($data_login['jenis']) == 'k' ? get_data_login_karyawan($koneksi, $username) : get_data_login_buyer($koneksi, $username);
+				$get_data_login = get_data_login($koneksi, $username);
 
 				// set hak akses
 				$hak_akses = set_hak_akses($data_login['hak_akses']);
@@ -71,7 +71,7 @@
 				$_SESSION['sess_email'] = $get_data_login['email'];
 				$_SESSION['sess_foto'] = $foto;
 				$_SESSION['sess_status'] = $data_login['status'];
-				$_SESSION['sess_pengguna'] = strtolower($data_login['jenis']) == 'k' ? $get_data_login['jabatan'] : "BUYER";
+				// $_SESSION['sess_pengguna'] = strtolower($data_login['jenis']) == 'k' ? $get_data_login['jabatan'] : "BUYER";
 				$_SESSION['sess_hak_akses'] = $data_login['hak_akses']; // hak akses
 				$_SESSION['sess_akses_menu'] = $hak_akses; // hak akses menu
 				$_SESSION['sess_lockscreen'] = false;

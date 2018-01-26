@@ -165,7 +165,7 @@ $(document).ready(function(){
 	}
 
 	function fieldPenyusutan(penyusutan, index){
-		var field = '<input type="number" min="0" step="0.01" onchange="onChange_penyusutan('+index+',this)" style="width: 5em" class="form-control" value="'+penyusutan+'">';
+		var field = '<div class="input-group"><input type="number" min="0" step="0.01" onchange="onChange_penyusutan('+index+',this)" class="form-control" value="'+penyusutan+'"><span class="input-group-addon">%</span></div>';
 		return field;
 	}
 

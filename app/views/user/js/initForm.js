@@ -3,6 +3,7 @@ $(document).ready(function(){
 
 	setSelect_status();
 	setSelect_jenis();
+	setSelect_pengguna();
 	setSelect_hak_akses();
 
 	$("#tambah_user").click(function(){
@@ -54,24 +55,24 @@ $(document).ready(function(){
     		}
     	});
 
-    	//jenis
-    	$("#jenis").change(function(){
-    		if(this.value !== ""){
-    			$('.field-jenis').removeClass('has-error').addClass('has-success');
-				$(".field-jenis span.help-block").text('');
+    // 	//jenis
+    // 	$("#jenis").change(function(){
+    // 		if(this.value !== ""){
+    // 			$('.field-jenis').removeClass('has-error').addClass('has-success');
+				// $(".field-jenis span.help-block").text('');
 
-				setSelect_pengguna();
-    		}
-    		else{
-    			$("#pengguna").find('option')
-				        .remove()
-				        .end()
-				        .append($('<option>',{
-				            value: "", 
-				            text: "-- Pilih Pengguna --"
-				        })).trigger('change');
-    		}   		
-    	});
+				// setSelect_pengguna();
+    // 		}
+    // 		else{
+    // 			$("#pengguna").find('option')
+				//         .remove()
+				//         .end()
+				//         .append($('<option>',{
+				//             value: "", 
+				//             text: "-- Pilih Pengguna --"
+				//         })).trigger('change');
+    // 		}   		
+    // 	});
 
     	// pengguna
     	$("#pengguna").change(function(){
@@ -100,7 +101,7 @@ function getDataForm(){
 	data.append('password', $('#password').val().trim()); // password
 	data.append('konf_password', $('#konf_password').val().trim()); // konf password
 	data.append('status', $('#status').val().trim()); // status
-	data.append('jenis', $('#jenis').val().trim()); // jenis
+	// data.append('jenis', $('#jenis').val().trim()); // jenis
 	data.append('pengguna', $('#pengguna').val().trim()); // pengguna
 	data.append('hak_akses', $('#hak_akses').val().trim()); // hak akses
 	data.append('action', $("#btnSubmit_user").val().trim()); // action
@@ -217,15 +218,15 @@ function setError(error){
 		$(".field-status span.help-block").text('');	
 	}
 
-	// jenis
-	if(!jQuery.isEmptyObject(error.jenisError)){
-		$('.field-jenis').removeClass('has-success').addClass('has-error');
-		$(".field-jenis span.help-block").text(error.jenisError);
-	}
-	else{
-		$('.field-jenis').removeClass('has-error').addClass('has-success');
-		$(".field-jenis span.help-block").text('');	
-	}
+	// // jenis
+	// if(!jQuery.isEmptyObject(error.jenisError)){
+	// 	$('.field-jenis').removeClass('has-success').addClass('has-error');
+	// 	$(".field-jenis span.help-block").text(error.jenisError);
+	// }
+	// else{
+	// 	$('.field-jenis').removeClass('has-error').addClass('has-success');
+	// 	$(".field-jenis span.help-block").text('');	
+	// }
 
 	// pengguna
 	if(!jQuery.isEmptyObject(error.penggunaError)){
@@ -253,7 +254,7 @@ function setValue(value){
 	$("#password").val(value.password).trigger('change'); // password
 	$("#konf_password").val(value.konf_password).trigger('change'); // konfirmasi password
 	$("#status").val(value.status).trigger('change'); // status
-	$("#jenis").val(value.jenis).trigger('change'); // jenis
+	// $("#jenis").val(value.jenis).trigger('change'); // jenis
 	$("#pengguna").val(value.pengguna).trigger('change'); // pengguna
 	$("#hak_akses").val(value.hak_akses).trigger('change'); // hak akses
 	$("#id_user").val(value.username);
@@ -263,7 +264,7 @@ function resetForm(){
 	$('#form_user').trigger('reset');
 	$('#form_user').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
 	$('#form_user').find("span.pesan").text(""); // hapus semua span help-block
-	$("#jenis").trigger('change');
+	// $("#jenis").trigger('change');
 	$("#pengguna").val("").trigger('change');
 	$('#id_user').val("");
 }
@@ -301,24 +302,24 @@ function setSelect_jenis(){
 
 // function set select pengguna
 function setSelect_pengguna(){
-	var url = action = "";
+	// var url = action = "";
 
-	if($("#jenis").val() == "K"){
-		url = base_url+"app/controllers/Karyawan.php";
-		action = "get_select_karyawan";
-	}
-	else if($("#jenis").val() == "B"){
-		url = base_url+"app/controllers/Buyer.php";
-		action = "get_select_buyer";
-	}
+	// if($("#jenis").val() == "K"){
+	// 	url = base_url+"app/controllers/Karyawan.php";
+	// 	action = "get_select_karyawan";
+	// }
+	// else if($("#jenis").val() == "B"){
+	// 	url = base_url+"app/controllers/Buyer.php";
+	// 	action = "get_select_buyer";
+	// }
 
-	$("#pengguna").find('option').remove().end();
+	// $("#pengguna").find('option').remove().end();
 
 	$.ajax({
-		url: url,
+		url: base_url+"app/controllers/Karyawan.php",
 		type: "post",
 		dataType: "json",
-		data: {"action": action},
+		data: {"action": "get_select_karyawan"},
 		success: function(data){
 			console.log(data);
 			$.each(data, function(index, item){

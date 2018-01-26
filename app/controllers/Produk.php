@@ -40,6 +40,10 @@
 				get_satuan_produk($koneksi, $id);
 				break;
 
+			case 'get_komposisi_produk':
+				get_komposisi_produk($koneksi, $id);
+				break;
+
 			default:
 				# code...
 				break;
@@ -50,8 +54,8 @@
 	function listProduk($koneksi){
 		$config_db = array(
 			'tabel' => 'v_produk',
-			'kolomOrder' => array(null, 'kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok', null),
-			'kolomCari' => array('kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok'),
+			'kolomOrder' => array(null, 'kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok_akhir', null),
+			'kolomCari' => array('kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok_akhir'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
@@ -79,7 +83,7 @@
 			$dataRow[] = $row['satuan'];
 			$dataRow[] = gantiKosong($row['ket']);
 			$dataRow[] = cetakListItem($row['komposisi']);
-			$dataRow[] = $row['stok']." ".$row['satuan'];
+			$dataRow[] = $row['stok_akhir']." ".$row['satuan'];
 			$dataRow[] = $aksi;
 
 			$data[] = $dataRow;
@@ -326,6 +330,13 @@
 		$data_satuan = getProduk_by_id($koneksi, $id);
 
 		echo json_encode($data_satuan['satuan']);
+	}
+
+	// function get komposisi produk
+	function get_komposisi_produk($koneksi, $id){
+		$data_komposisi = getKomposisi_by_id($koneksi, $id);
+
+		echo json_encode($data_komposisi);
 	}
 
 	// function set rule

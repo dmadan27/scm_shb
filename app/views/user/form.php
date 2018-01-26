@@ -50,20 +50,19 @@
 						</div>
 						<div class="col-md-6">
 							<!-- Jenis -->
-							<div class="form-group field-jenis has-feedback m-b-5">
+							<!-- <div class="form-group field-jenis has-feedback m-b-5">
 								<label class="col-md-12" for="jenis">Jenis User*</label>
 		                        <div class="col-md-12">
 		                            <select id="jenis" class="form-control"></select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>
-							</div>
+							</div> -->
 
-							<!-- pengguna -->
+							<!-- pengguna / id_karyawan -->
 							<div class="form-group field-pengguna has-feedback m-b-5">
 								<label class="col-md-12" for="pengguna">Pengguna*</label>
 		                        <div class="col-md-12">
 		                            <select id="pengguna" class="select2 form-control">
-		                            	<option value="">-- Pilih Pengguna --</option>
 		                            </select>
 		                            <span class="help-block small pesan"></span>
 		                        </div>

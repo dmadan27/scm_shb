@@ -5,7 +5,7 @@
 	include_once("../function/validasi_form.php");
 	include_once("../library/datatable.php");
 
-	include_once("../models/Peramalan_model.php");
+	include_once("../models/Perencanaan_bahan_baku_model.php");
 	include_once("../models/Pemesanan_model.php");
 	include_once("../models/Produk_model.php");
 
@@ -16,7 +16,7 @@
 	else{
 		switch (strtolower($action)) {
 			case 'list':
-				listPeramalan($koneksi);
+				listPerencanaan_bahan_baku($koneksi);
 				break;
 			
 			case 'tambah':
@@ -45,17 +45,17 @@
 		}
 	}
 
-	// fungsi list peramalan
-	function listPeramalan($koneksi){
+	// fungsi list perencanaan
+	function listPerencanaan_bahan_baku($koneksi){
 		$config_db = array(
-			'tabel' => 'v_peramalan',
+			'tabel' => 'v_perencanaan_bahan_baku',
 			'kolomOrder' => array(null, 'tgl', 'periode', 'nama_produk', 'hasil_peramalan',null, null),
 			'kolomCari' => array('tgl', 'periode', 'nama_produk', 'kd_produk', 'hasil_peramalan', 'jumlah_bahan_baku'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
 
-		$data_peramalan = get_datatable_peramalan($koneksi, $config_db);
+		$data_perencanaan = get_datatable_perencanaan_bahan_baku($koneksi, $config_db);
 
 		$data = array();
 		$no_urut = $_POST['start'];

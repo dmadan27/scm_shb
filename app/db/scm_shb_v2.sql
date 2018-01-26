@@ -159,6 +159,28 @@
 	-- Tabel detail pembelian
 
 	-- Tabel pemesanan
+	CREATE TABLE pemesanan(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		no_kontrak varchar(50),
+		id_buyer int, -- fk
+		id_produk int, -- fk dari barang (produk)
+		jumlah_karung int,
+		ket_karung enum('JUMLAH PASTI', 'PERKIRAAN'),
+		kemasan enum('KARUNG GONI', 'KARUNG PLASTIK'),
+		jumlah double(12,2), -- jumlah barang (kg)
+		waktu_pengiriman date, -- tgl pengiriman
+		batas_waktu_pengiriman date,
+		ket text, -- keterangan kontrak
+		lampiran text, -- lampiran file kontrak
+		status char(1), -- status kontrak/pemesanan, s: sukses, p: pending, r: reject
+
+		CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
+		CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_pemesanan_id_produk FOREIGN KEY(id_produk) REFERENCES produk(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel pengiriman
 
@@ -264,7 +286,7 @@
 		
 		-- Insert bahan baku
 		INSERT INTO bahan_baku(
-			kd_bahan_baku, nama, satuan, ket, foto, stok) 
+			kd_bahan_baku, nama, satuan, ket, foto, stok_akhir) 
 		VALUES(
 			kd_bahan_baku_param, nama_param, satuan_param, ket_param, foto_param, stok_param);
 
@@ -272,7 +294,6 @@
 		INSERT INTO mutasi_bahan_baku(
 			tgl, id_bahan_baku, brg_masuk, brg_keluar) 
 		VALUES(tgl_param, id_param, 0, 0);
-		
 	END;
 
 	-- Tambah produk
@@ -295,7 +316,7 @@
 
 	    -- Insert produk
 		INSERT INTO produk(
-			kd_produk, nama, satuan, ket, foto, stok) 
+			kd_produk, nama, satuan, ket, foto, stok_akhir) 
 		VALUES(
 			kd_produk_param, nama_param, satuan_param, ket_param, foto_param, stok_param);
 
@@ -303,7 +324,6 @@
 		INSERT INTO mutasi_produk(
 			tgl, id_produk, brg_masuk, brg_keluar) 
 		VALUES(tgl_param, id_param, 0, 0);
-
 	END;
 
 	-- Tambah komposisi
@@ -360,7 +380,7 @@
 		SELECT 
 			p.id, p.kd_produk, p.nama, p.satuan, p.ket, p.foto, 
 			GROUP_CONCAT(concat_ws(' - ', b.kd_bahan_baku, b.nama)) komposisi,
-			p.stok
+			p.stok_akhir
 		FROM produk p
 		JOIN komposisi k ON k.id_produk=p.id
 		JOIN bahan_baku b ON b.id=k.id_bahan_baku
@@ -388,10 +408,34 @@
 		ORDER BY id ASC, status ASC;
 
 	-- View User
+	CREATE OR REPLACE VIEW v_user AS
+		SELECT
+			u.username, k.nama, p.nama jabatan, u.hak_akses,
+			(CASE WHEN (u.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
+		FROM user u
+		JOIN karyawan k ON k.id = u.id_karyawan
+		JOIN pekerjaan p ON p.id = k.id_pekerjaan
+		ORDER BY u.id_karyawan ASC;
 
 	-- View pembelian
 
 	-- View pemesanan
+	CREATE OR REPLACE VIEW v_pemesanan AS
+		SELECT
+			p.id id_pemesanan, p.tgl, p.no_kontrak,
+		    p.id_buyer, b.nama nama_buyer,
+		    p.id_produk, pr.nama nama_produk, pr.satuan satuan_produk,
+		    p.jumlah_karung, p.ket_karung, p.kemasan, p.jumlah,
+		    p.waktu_pengiriman, p.batas_waktu_pengiriman, p.ket, p.lampiran,
+		    (CASE 
+		     	WHEN (p.status = 'S') THEN 'SUKSES' 
+		     	WHEN (p.status = 'P') THEN 'PENDING'
+		     	ELSE 'REJECT' 
+		     END) status
+		FROM pemesanan p
+		JOIN buyer b ON b.id = p.id_buyer
+		JOIN produk pr ON pr.id = p.id_produk
+		ORDER BY p.tgl DESC; 
 
 	-- View pengiriman
 
