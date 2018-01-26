@@ -41,7 +41,7 @@
 		            <a href="javascript:void(0)" class="p-20 di"><img src="<?= base_url."assets/plugins/images/shb-logo.png"; ?>"></a>
         	      	<div class="lg-content">
                       	<h2>SISTEM INFORMASI SUPPLY CHAIN MANAGEMENT<br> PT. SARHIF BROTHERS</h2>
-                      	<p class="text-muted">PT. SARHIF BROTHERS <br>Jl. Lintas Sumatera No. </p>
+                      	<p class="text-muted">PT. SARHIF BROTHERS <br>Jl. Lintas Sumatera No. 148 Bernah Kotabumi Lampung Utara</p>
                   	</div>
               	</div>
       		</div>

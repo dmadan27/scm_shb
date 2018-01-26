@@ -137,7 +137,6 @@
 
 			// simpan hasil peramalan
 			$peramalan[$i+1] = $hitungPeramalan;
-			// $peramalan[$i+1] = number_format($hitungPeramalan,2);
 		}
 
 		// proses hitung jumlah bahan baku
@@ -151,11 +150,29 @@
 			$jumlah_bahanBaku[$i]['jumlah_bahanBaku'] = $hitungPeramalan + ($hitungPeramalan*$jumlah_bahanBaku[$i]['penyusutan']);
 		}
 
+		// // hitung safety produk
+		// $safety_stock = hitung_safetyStock($hitungPeramalan,)
+
 		$output = array(
 			'hasil_peramalan' =>$hitungPeramalan,
 			'jumlah_bahan_baku' => $jumlah_bahanBaku,
+			// 'safety_stock' => $safety_stock,
 		);
 
 		echo json_encode($output);
+	}
+
+	function hitung_safetyStock($hasil_peramalan, $nilai_z){
+		$l = 1;
+		$Sl2 = pow(($l/10), 2);
+
+		$d = $hasil_peramalan / 24;
+		$d2 = pow($d, 2);
+		$Sd2 = pow(($d/10), 2);
+
+		$sdl = sqrt($d2*$Sl2+$l*$Sd2);
+		$ss = $nilai_z * $sdl;
+
+		return $ss;
 	}
 	

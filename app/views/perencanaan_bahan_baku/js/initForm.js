@@ -1,11 +1,16 @@
 var listKomposisi = [];
+var listSafetyStock = [];
 var indexKomposisi = 0;
+var indexSafetyStock = 0;
 
 $(document).ready(function(){
 
 	$("#produk").select2();
 	
 	setSelect_produk();
+	setSelect_nilaiZ();
+
+	$("#nilai_l").val(1);
 
 	$('#tgl').datepicker({
         autoclose: true,
@@ -61,12 +66,43 @@ $(document).ready(function(){
 
 				// get bahan baku
 				listKomposisi = [];
+				listSafetyStock = [];
 				indexKomposisi = 0;
+				indexSafetyStock = 0;
+
 				$('#tabel_jumlah_bahanBaku tbody tr').each(function (index) {
 				    $(this).remove(); // hapus data ditabel
 				});
+
+				$('#tabel_safety_stock_bahanBaku tbody tr').each(function (index) {
+				    $(this).remove(); // hapus data ditabel
+				});
+
+				$('#hasil_perencanaan').val('');
 				get_bahanBaku(this.value);	
     		}
+    	});
+
+    	// hasil perencanaan
+    	$("#hasil_perencanaan").change(function(){
+    		if(this.value !== ""){
+    			var temp_nilai_d = parseFloat(this.value) / 24;
+    			$('#nilai_d').val(temp_nilai_d);
+    		}
+    		else{
+    			$('#nilai_d').val("");	
+    		}
+    	});
+
+    	// nilai z
+    	$("#nilai_z").change(function(){
+    		if(this.value !== "") $("#label_nilai_z").val(this.value);
+    		else $("#label_nilai_z").val("");
+    	});
+
+    	// safety stock produk
+    	$("#safety_stock_produk").change(function(){
+
     	});
     // ==================================
 
@@ -102,20 +138,79 @@ function hitung_peramalan(){
 		success: function(output){
 			setLoading(false);
 			console.log(output);
-			$('#hasil_perencanaan').val(output.hasil_peramalan.toFixed(2));
+			
+			listKomposisi = [];
+			listSafetyStock = [];
+			indexKomposisi = 0;
+			indexSafetyStock = 0;
+
+			var index = indexKomposisi++;
+			var index_ = indexSafetyStock++;
+
+			$('#tabel_jumlah_bahanBaku tbody tr').each(function (index) {
+			    $(this).remove(); // hapus data ditabel
+			});
+
+			$('#tabel_safety_stock_bahanBaku tbody tr').each(function (index) {
+			    $(this).remove(); // hapus data ditabel
+			});
+
+			$.each(output.jumlah_bahan_baku, function(index, item){
+				var dataKomposisi = {
+					index: index,
+					id_komposisi: item.id_komposisi,
+					id_bahan_baku: item.id_bahan_baku,
+					kd_bahan_baku: item.kd_bahan_baku,
+					nama_bahan_baku: item.nama_bahan_baku,
+					satuan_bahan_baku: item.satuan_bahan_baku,
+					penyusutan: item.penyusutan,
+					jumlah_bahanBaku: item.jumlah_bahanBaku,
+				};
+				var dataSafetyStock = {
+					index: index_,
+					id_komposisi: item.id_komposisi,
+					id_bahan_baku: item.id_bahan_baku,
+					kd_bahan_baku: item.kd_bahan_baku,
+					nama_bahan_baku: item.nama_bahan_baku,
+					satuan_bahan_baku: item.satuan_bahan_baku,
+					penyusutan: item.penyusutan,
+					safety_stock: 0,
+				}
+				listKomposisi.push(dataKomposisi);
+				listSafetyStock.push(dataSafetyStock);
+			});
+
+			$('#hasil_perencanaan').val(output.hasil_peramalan.toFixed(2)).trigger('change');
 
 			// tabel jumlah bahan baku
-			$.each(output.jumlah_bahan_baku, function(index, item){
+			$.each(listKomposisi, function(index, item){
 				$("#tabel_jumlah_bahanBaku > tbody:last-child").append(
 					"<tr>"+
 						"<td></td>"+ // nomor
 						"<td>"+item.kd_bahan_baku+"</td>"+ // kode
 						"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
-						"<td>"+item.jumlah_bahanBaku.toFixed(2)+"</td>"+ // jumlah
+						"<td>"+field_jumlah_bahanBaku(item.jumlah_bahanBaku.toFixed(2), item.satuan_bahan_baku, item.index)+"</td>"+ // jumlah
 					"</tr>"
 				);
-				numberingList();
+				numberingList_jumlah_bahanBaku();
 			});
+
+			$("#safety_stock_produk").val(hitung_safetyStock_produk(output.hasil_peramalan.toFixed(2))).trigger('change');
+
+			$.each(listSafetyStock, function(index, item){
+				$("#tabel_safety_stock_bahanBaku > tbody:last-child").append(
+					"<tr>"+
+						"<td></td>"+ // nomor
+						"<td>"+item.kd_bahan_baku+"</td>"+ // kode
+						"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+						"<td>"+field_jumlah_safety_stock(item.safety_stock, item.satuan_bahan_baku, item.index)+"</td>"+ // jumlah
+					"</tr>"
+				);
+
+				numberingList_safety_stock();
+			});
+
+			console.log(listKomposisi);
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             setLoading(false);
@@ -125,8 +220,29 @@ function hitung_peramalan(){
 	})
 }
 
-function numberingList(){
+function hitung_safetyStock_produk(nilai_perencanaan){
+	var l = 1;
+	var Sl2 = Math.pow((l/10), 2);
+
+	var d = nilai_perencanaan / 24;
+	var d2 = Math.pow(d, 2);
+	var Sd2 = Math.pow((d/10), 2);
+
+	var sdl = Math.sqrt(d2*Sl2+l*Sd2);
+	var ss = parseFloat($('#nilai_z').val()) * sdl;
+
+	console.log(ss.toFixed(2));
+	return ss.toFixed(2);
+}
+
+function numberingList_jumlah_bahanBaku(){
 	$('#tabel_jumlah_bahanBaku tbody tr').each(function (index) {
+        $(this).children("td:eq(0)").html(index + 1);
+    });
+}
+
+function numberingList_safety_stock(){
+	$('#tabel_safety_stock_bahanBaku tbody tr').each(function (index) {
         $(this).children("td:eq(0)").html(index + 1);
     });
 }
@@ -276,30 +392,6 @@ function setValue(value){
 	$("#id_harga_basis").val(value.id).trigger('change');;
 }
 
-// // function set select bulan
-// function setSelect_bulan(){
-// 	var arrBulan = [
-// 		{value: "", text: "-- Pilih Bulan --"},
-// 		{value: "01", text: "JANUARI"},
-// 		{value: "02", text: "FEBRUARI"},
-// 		{value: "03", text: "MARET"},
-// 		{value: "04", text: "APRIL"},
-// 		{value: "05", text: "MEI"},
-// 		{value: "06", text: "JUNI"},
-// 		{value: "07", text: "JULI"},
-// 		{value: "08", text: "AGUSTUS"},
-// 		{value: "09", text: "SEPTEMBER"},
-// 		{value: "10", text: "OKTOBER"},
-// 		{value: "11", text: "NOVEMBER"},
-// 		{value: "12", text: "DESEMBER"},
-// 	];
-
-// 	$.each(arrBulan, function(index, item){
-// 		var option = new Option(item.text, item.value);
-// 		$("#bulan").append(option);
-// 	});
-// }
-
 // function set select produk
 function setSelect_produk(){
 	$.ajax({
@@ -330,6 +422,7 @@ function get_satuanProduk(id){
 		data: {"action": "get_satuan_produk", "id": id},
 		success: function(data){
 			$('.satuan-produk').text(data);
+			$('.satuan-ss-produk').text(data);
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
@@ -341,6 +434,7 @@ function get_satuanProduk(id){
 // function get bahan baku
 function get_bahanBaku(id_produk){
 	var index = indexKomposisi++;
+	var index_ = indexSafetyStock++;
 
 	$.ajax({
 		url: base_url+"app/controllers/Produk.php",
@@ -362,7 +456,18 @@ function get_bahanBaku(id_produk){
 					penyusutan: item.penyusutan,
 					jumlah_bahanBaku: 0,
 				};
+				var dataSafetyStock = {
+					index: index_,
+					id_komposisi: item.id_komposisi,
+					id_bahan_baku: item.id_bahan_baku,
+					kd_bahan_baku: item.kd_bahan_baku,
+					nama_bahan_baku: item.nama_bahan_baku,
+					satuan_bahan_baku: item.satuan_bahan_baku,
+					penyusutan: item.penyusutan,
+					safety_stock: 0,
+				}
 				listKomposisi.push(dataKomposisi);
+				listSafetyStock.push(dataSafetyStock);
 			});
 
 			$.each(listKomposisi, function(index, item){
@@ -374,10 +479,25 @@ function get_bahanBaku(id_produk){
 						"<td>"+field_jumlah_bahanBaku(item.jumlah_bahanBaku, item.satuan_bahan_baku, item.index)+"</td>"+ // jumlah
 					"</tr>"
 				);
-				numberingList();
+
+				numberingList_jumlah_bahanBaku();
+			});
+
+			$.each(listSafetyStock, function(index, item){
+				$("#tabel_safety_stock_bahanBaku > tbody:last-child").append(
+					"<tr>"+
+						"<td></td>"+ // nomor
+						"<td>"+item.kd_bahan_baku+"</td>"+ // kode
+						"<td>"+item.nama_bahan_baku+"</td>"+ // bahan baku
+						"<td>"+field_jumlah_safety_stock(item.safety_stock, item.satuan_bahan_baku, item.index)+"</td>"+ // jumlah
+					"</tr>"
+				);
+
+				numberingList_safety_stock();
 			});
 
 			console.log(listKomposisi);
+			console.log(listSafetyStock);
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
@@ -386,11 +506,13 @@ function get_bahanBaku(id_produk){
 	})
 }
 
+// field jumlah bahan baku
 function field_jumlah_bahanBaku(jumlah, satuan, index){
 	var field = '<div class="input-group"><input type="number" min="0" step="1" onchange="onChange_jumlah_bahanBaku('+index+',this)" class="form-control" value="'+jumlah+'"><span class="input-group-addon">'+satuan+'</span></div>';
 	return field;
 }
 
+// onchange jumlah bahan baku
 function onChange_jumlah_bahanBaku(index, val){
 	// ubah nilai qty di array
 	$.each(listKomposisi, function(i, item){
@@ -398,9 +520,57 @@ function onChange_jumlah_bahanBaku(index, val){
 			item.jumlah_bahanBaku = val.value;
 		} 
 	});
-	numberingList();
+	numberingList_jumlah_bahanBaku();
 
 	console.log(listKomposisi);
+}
+
+// field safety stock bahan baku
+function field_jumlah_safety_stock(safety_stock, satuan, index){
+	var field = '<div class="input-group"><input type="number" min="0" step="1" onchange="onChange_safety_stock_bahanBaku('+index+',this)" class="form-control" value="'+safety_stock+'"><span class="input-group-addon">'+satuan+'</span></div>';
+	return field;
+}
+
+// onchange safety stock bahan baku
+function onChange_safety_stock_bahanBaku(index, val){
+	// ubah nilai qty di array
+	$.each(listSafetyStock, function(i, item){
+		if(item.index == index){
+			item.safety_stock = val.value;
+		} 
+	});
+	numberingList_safety_stock();
+
+	console.log(listSafetyStock);
+}
+
+// function set service level
+function setSelect_nilaiZ(){
+	var arrNilaiZ = [
+		{value: "", text: "-- Pilih Service Level --"},
+		{value: 2.33, text: "99 %"},
+		{value: 2.05, text: "98 %"},
+		{value: 1.88, text: "97 %"},
+		{value: 1.75, text: "96 %"},
+		{value: 1.64, text: "95 %"},
+		{value: 1.55, text: "94 %"},
+		{value: 1.48, text: "93 %"},
+		{value: 1.41, text: "92 %"},
+		{value: 1.34, text: "91 %"},
+		{value: 1.28, text: "90 %"},
+		{value: 1.04, text: "85 %"},
+		{value: 0.84, text: "80 %"},
+		{value: 0.38, text: "65 %"},
+		{value: 0.06, text: "52 %"},
+	];
+
+	$.each(arrNilaiZ, function(index, item){
+		var option = new Option(item.text, item.value);
+		$("#nilai_z").append(option);
+	});
+
+	$("#nilai_z").val(1.75);
+	$("#label_nilai_z").val(1.75);
 }
 
 // function loading modal

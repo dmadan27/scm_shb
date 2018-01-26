@@ -151,6 +151,7 @@ $(document).ready(function(){
 				);
 				numberingList();
 				$('#bahan_baku').select2().val('').trigger('change');
+				$('#penyusutan').val('');
 			}
 		}
 
