@@ -72,6 +72,7 @@
 				$_SESSION['sess_foto'] = $foto;
 				$_SESSION['sess_status'] = $data_login['status'];
 				// $_SESSION['sess_pengguna'] = strtolower($data_login['jenis']) == 'k' ? $get_data_login['jabatan'] : "BUYER";
+				$_SESSION['sess_pengguna'] = $get_data_login['jabatan'];
 				$_SESSION['sess_hak_akses'] = $data_login['hak_akses']; // hak akses
 				$_SESSION['sess_akses_menu'] = $hak_akses; // hak akses menu
 				$_SESSION['sess_lockscreen'] = false;

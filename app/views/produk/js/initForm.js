@@ -242,7 +242,7 @@ function submit(){
 			if(!output.status){ // jika gagal
 				resetForm();
 				if(output.errorDB){ // jika db error
-					setLoading();
+					// setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
 				}
 				else{

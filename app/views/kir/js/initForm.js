@@ -7,193 +7,194 @@ $(document).ready(function(){
 		cekEdit = true;
 	}
 
-	$("#bahan_baku").select2();
+	$("#kd_kir").prop("readonly", true);
+	$("#supplier").select2();
 
-	setSelect_satuan();
-	setSelect_bahanBaku();
+	setSelect_supplier();
+	setSelect_jenis();
+	setSelect_status();
+
+	$('#tgl').datepicker({
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        todayHighlight: true,
+        todayBtn: true,
+        todayHighlight: true,
+    });
+	$('#tgl').datepicker('update',getTanggal());
 
 	if(cekEdit) getEdit(urlParams.id);
 
-	$("#btnTambah_komposisi").click(function(){
-		add_komposisi();
-	});
-
-    $("#form_produk").submit(function(e){
+    $("#form_kir").submit(function(e){
     	e.preventDefault();
     	submit();
     	return false;
     });
 
     // onchange field
-    	// kode produk
-    	$("#kd_produk").change(function(){
+    	// jenis bahan baku
+    	$("#jenis").change(function(){
     		if(this.value !== ""){
-    			$('.field-kd-produk').removeClass('has-error').addClass('has-success');
-				$(".field-kd-produk span.help-block").text('');
+    			$('.field-jenis').removeClass('has-error').addClass('has-success');
+				$(".field-jenis span.help-block").text('');
+				var jenis_kd = (this.value == "K") ? "KP" : "LD";
+
+				setKd_kir(jenis_kd);
+				setField_kir(this.value);
+    		}
+    		else{
+    			$("#kd_kir").val("");
     		}
     	});
 
-    	// nama
-    	$("#nama").change(function(){
+    	// kode kir
+    	$("#kd_kir").change(function(){
     		if(this.value !== ""){
-    			$('.field-nama').removeClass('has-error').addClass('has-success');
-				$(".field-nama span.help-block").text('');
+    			$('.field-kd-kir').removeClass('has-error').addClass('has-success');
+				$(".field-kd-kir span.help-block").text('');
     		}
     	});
 
-    	// satuan
-    	$("#satuan").change(function(){
+    	// tgl
+    	$("#tgl").change(function(){
     		if(this.value !== ""){
-    			$('.field-satuan').removeClass('has-error').addClass('has-success');
-				$(".field-satuan span.help-block").text('');
-				$('.satuan-stok').text(this.value);
+    			$('.field-tgl').removeClass('has-error').addClass('has-success');
+				$(".field-tgl span.help-block").text('');
     		}
     	});
 
-    	// ket
-    	$("#ket").change(function(){
+    	// supplier
+    	$("#supplier").change(function(){
     		if(this.value !== ""){
-    			$('.field-ket').removeClass('has-error').addClass('has-success');
-				$(".field-ket span.help-block").text('');
+    			$('.field-supplier').removeClass('has-error').addClass('has-success');
+				$(".field-supplier span.help-block").text('');
     		}
     	});
 
-    	// foto
-    	$("#foto").change(function(){
+    	// status
+    	$("#status").change(function(){
     		if(this.value !== ""){
-    			$('.field-foto').removeClass('has-error').addClass('has-success');
-				$(".field-foto span.help-block").text('');
+    			$('.field-status').removeClass('has-error').addClass('has-success');
+				$(".field-status span.help-block").text('');
+    		}
+    	});
+    // ========================================= //
+
+    // onchange kir-kopi
+    	// trase
+    	$("#trase").change(function(){
+    		if(this.value !== ""){
+    			$('.field-trase').removeClass('has-error').addClass('has-success');
+				$(".field-trase span.help-block").text('');
     		}
     	});
 
-    	// stok awal
-    	$("#stok").change(function(){
+    	// gelondong
+    	$("#gelondong").change(function(){
     		if(this.value !== ""){
-    			$('.field-stok').removeClass('has-error').addClass('has-success');
-				$(".field-stok span.help-block").text('');
+    			$('.field-gelondong').removeClass('has-error').addClass('has-success');
+				$(".field-gelondong span.help-block").text('');
     		}
     	});
 
-    	// bahan baku
-		$("#bahan_baku").change(function(){
+    	// air kopi
+    	$("#air_kopi").change(function(){
     		if(this.value !== ""){
-    			$('.field-bahan-baku').removeClass('has-error').addClass('has-success');
-				$(".field-bahan-baku span.help-block").text('');
+    			$('.field-air-kopi').removeClass('has-error').addClass('has-success');
+				$(".field-air-kopi span.help-block").text('');
     		}
-    	});    	
+    	});
+
+    	// ayakan
+    	$("#ayakan").change(function(){
+    		if(this.value !== ""){
+    			$('.field-ayakan').removeClass('has-error').addClass('has-success');
+				$(".field-ayakan span.help-block").text('');
+    		}
+    	});
+
+    	// kulit
+    	$("#kulit").change(function(){
+    		if(this.value !== ""){
+    			$('.field-kulit').removeClass('has-error').addClass('has-success');
+				$(".field-kulit span.help-block").text('');
+    		}
+    	});
+
+    	// rendemen
+    	$("#rendemen").change(function(){
+    		if(this.value !== ""){
+    			$('.field-rendemen').removeClass('has-error').addClass('has-success');
+				$(".field-rendemen span.help-block").text('');
+
+				if(parseFloat(this.value) >= 80) $("#status").val("1").trigger('change');
+				else $("#status").val("0").trigger('change');
+    		}
+    	});
+    // ========================================= //
+
+    // onchange kir-lada
+    	// air lada
+    	$("#air_lada").change(function(){
+    		if(this.value !== ""){
+    			$('.field-air-lada').removeClass('has-error').addClass('has-success');
+				$(".field-air-lada span.help-block").text('');
+    		}
+    	});
+
+    	// berat
+    	$("#berat").change(function(){
+    		if(this.value !== ""){
+    			$('.field-berat').removeClass('has-error').addClass('has-success');
+				$(".field-berat span.help-block").text('');
+    		}
+    	});
+
+    	// abu
+    	$("#abu").change(function(){
+    		if(this.value !== ""){
+    			$('.field-abu').removeClass('has-error').addClass('has-success');
+				$(".field-abu span.help-block").text('');
+    		}
+    	});
     // ========================================= //
 });
 
-// funcgsi untuk list komposisi
-	// function cek bahan baku dilist
-	function validBahanBaku(bahan_baku){
-		var ada = false;
-
-	    $.each(listKomposisi, function(i, item){
-	    	if(bahan_baku==item.id_bahan_baku && item.status != "hapus") ada = true;
-	    });
-
-	    return ada;
-	}
-
-	// function add komposisi
-	function add_komposisi(){
-		var index = indexKomposisi++;
-		var kode_bahan_baku = $("#bahan_baku option:selected").text().split(' - ')[0];
-		var bahan_baku_text = $("#bahan_baku option:selected").text().split(' - ')[1];
-		var bahan_baku_value = $("#bahan_baku").val().trim();
-		var dataKomposisi = {
-			aksi: "tambah", status: "", 
-			index: index, id_komposisi: "",
-			id_bahan_baku: bahan_baku_value,
-			kd_bahan_baku: kode_bahan_baku,
-			nama_bahan_baku: bahan_baku_text, 
-		};
-
-		// validasi komposisi
-		if(validBahanBaku(bahan_baku_value)){
-			$.toast({
-	            heading: 'Pesan Error',
-	            text: bahan_baku_text+' Sudah Ada Di List !',
-	            position: 'top-right',
-	            loaderBg: '#ff6849',
-	            icon: 'error',
-	            hideAfter: 3000,
-	            stack: 6
-	        });
-			indexKomposisi -= 1;
-		}
-		else{
-			if(bahan_baku_value === ""){
-				$.toast({
-		            heading: 'Pesan Error',
-		            text: 'Bahan Baku Tidak Boleh Kosong !',
-		            position: 'top-right',
-		            loaderBg: '#ff6849',
-		            icon: 'error',
-		            hideAfter: 3000,
-		            stack: 6
-		        });
-				indexKomposisi -= 1;
-			}
-			else{
-				listKomposisi.push(dataKomposisi);
-				$("#tabel_komposisi > tbody:last-child").append(
-					"<tr>"+
-						"<td></td>"+ // nomor
-						"<td>"+kode_bahan_baku+"</td>"+ // kode
-						"<td>"+bahan_baku_text+"</td>"+ // bahan baku
-						"<td>"+btnAksi(index)+"</td>"+ // aksi
-					"</tr>"
-				);
-				numberingList();
-				$('#bahan_baku').select2().val('').trigger('change');
-			}
-		}
-
-		console.log(dataKomposisi);
-		console.log(listKomposisi);
-	}
-
-	function numberingList(){
-		$('#tabel_komposisi tbody tr').each(function (index) {
-	        $(this).children("td:eq(0)").html(index + 1);
-	    });
-	}
-
-	function btnAksi(index){
-		var btn = '<button type="button" class="btn btn-danger btn-sm bnt-flat" onclick="delList('+index+',this)" title="Hapus dari list">'+
-	              '<i class="fa fa-trash"></button>';
-	    return btn;
-	}
-
-	function delList(index, val){
-		$(val).parent().parent().remove(); // hapus data ditabel
-		$.each(listKomposisi, function(i, item){
-			if(item.index == index) item.status = "hapus";
-		});
-		numberingList(); // reset ulang nomer
-		console.log(listKomposisi);
-	}
-// ====================================== //
 
 // function get form
 function getDataForm(){
 	var data = new FormData();
 
-	var dataProduk = {
-		id_produk: $("#id_produk").val().trim(),
-		kd_produk: $("#kd_produk").val().trim(),
-		nama: $("#nama").val().trim(),
-		satuan: $("#satuan").val().trim(),
-		ket: $("#ket").val().trim(),
-		stok: $("#stok").val().trim(),
+	var dataKir = {
+		id_kir: $('#id_kir').val().trim(),
+		kd_kir: $('#kd_kir').val().trim(),
+		tgl: $('#tgl').val().trim(),
+		id_supplier: $('#supplier').val().trim(),
+		jenis_bahan_baku: $("#jenis").val().trim(),
+		status: $("#status").val().trim(),
 	};
 
-	data.append('dataProduk', JSON.stringify(dataProduk)); // dataProduk
-	data.append('dataKomposisi', JSON.stringify(listKomposisi)); // dataKomposisi
-	data.append('foto', $("#foto")[0].files[0]); // foto
-	data.append('action', $("#btnSubmit_produk").val().trim()); // stok
+	var dataKir_kopi = {
+		kd_kir: $('#kd_kir').val().trim(),
+		trase: parseFloat($("#trase").val().trim()),
+		gelondong: parseFloat($("#gelondong").val().trim()),
+		air: parseFloat($("#air_kopi").val().trim()),
+		ayakan: parseFloat($("#ayakan").val().trim()),
+		kulit: parseFloat($("#kulit").val().trim()),
+		rendemen: parseFloat($("#rendemen").val().trim()),
+	};
+
+	var dataKir_lada = {
+		kd_kir: $('#kd_kir').val().trim(),
+		air: parseFloat($("#air_lada").val().trim()),
+		berat: parseFloat($("#berat").val().trim()),
+		abu: parseFloat($("#abu").val().trim()),
+	};
+
+	data.append('dataKir', JSON.stringify(dataKir)); // data kir
+	data.append('dataKir_kopi', JSON.stringify(dataKir_kopi)); // data kir lada
+	data.append('dataKir_lada', JSON.stringify(dataKir_lada)); // data kir kopi
+	data.append('action', $("#btnSubmit_kir").val().trim()); // action
 
 	return data;
 }
@@ -202,10 +203,8 @@ function getDataForm(){
 function submit(){
 	var data = getDataForm();
 
-	console.log(data);
-
 	$.ajax({
-		url: base_url+'app/controllers/Produk.php',
+		url: base_url+'app/controllers/Kir.php',
 		type: 'POST',
 		dataType: 'json',
 		data: data,
@@ -219,56 +218,29 @@ function submit(){
 			setLoading(false);
 			console.log(output);
 			if(!output.status){ // jika gagal
-				resetForm();
 				if(output.errorDB){ // jika db error
-					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
 				}
 				else{
-					if(!output.cekList){
-						$.toast({
-							heading: 'Pesan Error',
-							text: 'Komposisi Tidak Boleh Kosong',
-							position: 'top-right',
-				            loaderBg: '#ff6849',
-				            icon: 'error',
-				            hideAfter: 3000,
-				            stack: 6
-						});
-					}
-					else{
-						$.toast({
-							heading: 'Pesan Error',
-							text: 'Harap Cek Kembali Form Isian!',
-							position: 'top-right',
-				            loaderBg: '#ff6849',
-				            icon: 'error',
-				            hideAfter: 3000,
-				            stack: 6
-						});
-					}
-					setValue(output.setValue);
-					setError(output.setError);
+					$.toast({
+						heading: 'Pesan Error',
+						text: 'Harap Cek Kembali Form Isian!',
+						position: 'top-right',
+			            loaderBg: '#ff6849',
+			            icon: 'error',
+			            hideAfter: 3000,
+			            stack: 6
+					});
 				}
+				setError_kir(output.setError);
+
+				if(output.setError_kir_kopi !== "") setError_kir_kopi(output.setError_kir_kopi);
+				if(output.setError_kir_lada !== "") setError_kir_lada(output.setError_kir_lada);
 			}
-			else{
-				resetForm();
-				var toastText = ($("#btnSubmit_produk").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
-				$.toast({
-					heading: 'Pesan Berhasil',
-					text: toastText,
-					position: 'top-right',
-		            loaderBg: '#ff6849',
-		            icon: 'success',
-		            hideAfter: 3000,
-		            stack: 6
-				});
-				window.location.href = base_url+"index.php?m=produk&p=list";
-			}
+			else window.location.href = base_url+"index.php?m=kir&p=list";
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
 			setLoading(false);
-            resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             console.log(jqXHR, textStatus, errorThrown);
         }
@@ -332,101 +304,179 @@ function getEdit(id){
 	})
 }
 
-// function set error
-function setError(error){
-	// kd_produk
-	if(!jQuery.isEmptyObject(error.kd_produkError)){
-		$('.field-kd-produk').removeClass('has-success').addClass('has-error');
-		$(".field-kd-produk span.help-block").text(error.kd_produkError);
+// function set error kir
+function setError_kir(error){
+	// jenis bahan baku
+	if(!jQuery.isEmptyObject(error.jenisError)){
+		$('.field-jenis').removeClass('has-success').addClass('has-error');
+		$(".field-jenis span.help-block").text(error.jenisError);
 	}
 	else{
-		$('.field-kd-bahan-baku').removeClass('has-error').addClass('has-success');
-		$(".field-kd-bahan-baku span.help-block").text('');
+		$('.field-jenis').removeClass('has-error').addClass('has-success');
+		$(".field-jenis span.help-block").text('');
 	}
 
-	// nama
-	if(!jQuery.isEmptyObject(error.namaError)){
-		$('.field-nama').removeClass('has-success').addClass('has-error');
-		$(".field-nama span.help-block").text(error.namaError);
+	// kode kir
+	if(!jQuery.isEmptyObject(error.kd_kirError)){
+		$('.field-kd-kir').removeClass('has-success').addClass('has-error');
+		$(".field-kd-kir span.help-block").text(error.kd_kirError);
 	}
 	else{
-		$('.field-nama').removeClass('has-error').addClass('has-success');
-		$(".field-nama span.help-block").text('');
+		$('.field-kd-kir').removeClass('has-error').addClass('has-success');
+		$(".field-kd-kir span.help-block").text('');
 	}
 
-	// satuan
-	if(!jQuery.isEmptyObject(error.satuanError)){
-		$('.field-satuan').removeClass('has-success').addClass('has-error');
-		$(".field-satuan span.help-block").text(error.satuanError);
+	// tgl
+	if(!jQuery.isEmptyObject(error.tglError)){
+		$('.field-tgl').removeClass('has-success').addClass('has-error');
+		$(".field-tgl span.help-block").text(error.tglError);
 	}
 	else{
-		$('.field-satuan').removeClass('has-error').addClass('has-success');
-		$(".field-satuan span.help-block").text('');
+		$('.field-tgl').removeClass('has-error').addClass('has-success');
+		$(".field-tgl span.help-block").text('');
 	}
 
-	// ket
-	if(!jQuery.isEmptyObject(error.ketError)){
-		$('.field-ket').removeClass('has-success').addClass('has-error');
-		$(".field-ket span.help-block").text(error.ketError);
+	// supplier
+	if(!jQuery.isEmptyObject(error.supplierError)){
+		$('.field-supplier').removeClass('has-success').addClass('has-error');
+		$(".field-supplier span.help-block").text(error.supplierError);
 	}
 	else{
-		$('.field-ket').removeClass('has-error').addClass('has-success');
-		$(".field-ket span.help-block").text('');
+		$('.field-supplier').removeClass('has-error').addClass('has-success');
+		$(".field-supplier span.help-block").text('');
 	}
 
-	// foto
-	if(!jQuery.isEmptyObject(error.fotoError)){
-		$('.field-foto').removeClass('has-success').addClass('has-error');
-		$(".field-foto span.help-block").text(error.fotoError);
+	// status
+	if(!jQuery.isEmptyObject(error.statusError)){
+		$('.field-status').removeClass('has-success').addClass('has-error');
+		$(".field-status span.help-block").text(error.statusError);
 	}
 	else{
-		$('.field-foto').removeClass('has-error').addClass('has-success');
-		$(".field-foto span.help-block").text('');
-	}
-
-	// stok
-	if(!jQuery.isEmptyObject(error.stokError)){
-		$('.field-stok').removeClass('has-success').addClass('has-error');
-		$(".field-stok span.help-block").text(error.stokError);
-	}
-	else{
-		$('.field-stok').removeClass('has-error').addClass('has-success');
-		$(".field-stok span.help-block").text('');
+		$('.field-status').removeClass('has-error').addClass('has-success');
+		$(".field-status span.help-block").text('');
 	}
 }
 
-// function set value
-function setValue(value){
-	var stok = parseFloat(value.stok) ? parseFloat(value.stok) : value.stok;
+// function set error kir kopi
+function setError_kir_kopi(error){
+	// trase
+	if(!jQuery.isEmptyObject(error.traseError)){
+		$('.field-trase').removeClass('has-success').addClass('has-error');
+		$(".field-trase span.help-block").text(error.traseError);
+	}
+	else{
+		$('.field-trase').removeClass('has-error').addClass('has-success');
+		$(".field-trase span.help-block").text('');
+	}
 
-	$('#kd_produk').val(value.kd_produk).trigger('change'); // kode bahan baku
-	$('#nama').val(value.nama).trigger('change'); // nama
-	$('#satuan').val(value.satuan).trigger('change'); // satuan
-	$('#ket').val(value.ket).trigger('change'); // ket
-	$('#stok').val(stok).trigger('change'); // stok
-	$('#id_produk').val(value.id);
+	// gelondong
+	if(!jQuery.isEmptyObject(error.gelondongError)){
+		$('.field-gelondong').removeClass('has-success').addClass('has-error');
+		$(".field-gelondong span.help-block").text(error.gelondongError);
+	}
+	else{
+		$('.field-gelondong').removeClass('has-error').addClass('has-success');
+		$(".field-gelondong span.help-block").text('');
+	}
+
+	// air kopi
+	if(!jQuery.isEmptyObject(error.air_kopiError)){
+		$('.field-air-kopi').removeClass('has-success').addClass('has-error');
+		$(".field-air-kopi span.help-block").text(error.air_kopiError);
+	}
+	else{
+		$('.field-air-kopi').removeClass('has-error').addClass('has-success');
+		$(".field-air-kopi span.help-block").text('');
+	}
+
+	// ayakan
+	if(!jQuery.isEmptyObject(error.ayakanError)){
+		$('.field-ayakan').removeClass('has-success').addClass('has-error');
+		$(".field-ayakan span.help-block").text(error.ayakanError);
+	}
+	else{
+		$('.field-ayakan').removeClass('has-error').addClass('has-success');
+		$(".field-ayakan span.help-block").text('');
+	}
+
+	// kulit
+	if(!jQuery.isEmptyObject(error.kulitError)){
+		$('.field-kulit').removeClass('has-success').addClass('has-error');
+		$(".field-kulit span.help-block").text(error.kulitError);
+	}
+	else{
+		$('.field-kulit').removeClass('has-error').addClass('has-success');
+		$(".field-kulit span.help-block").text('');
+	}
+
+	// rendemen
+	if(!jQuery.isEmptyObject(error.rendemenError)){
+		$('.field-rendemen').removeClass('has-success').addClass('has-error');
+		$(".field-rendemen span.help-block").text(error.rendemenError);
+	}
+	else{
+		$('.field-rendemen').removeClass('has-error').addClass('has-success');
+		$(".field-rendemen span.help-block").text('');
+	}
 }
 
-// function reset form
-function resetForm(){
-	$('#form_produk').trigger('reset');
-	$('#form_produk').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
-	$('#form_produk').find("span.pesan").text(""); // hapus semua span help-block
-	$('#id_produk').val("");
+// function set error kir lada
+function setError_kir_lada(error){
+	// air lada
+	if(!jQuery.isEmptyObject(error.air_ladaError)){
+		$('.field-air-lada').removeClass('has-success').addClass('has-error');
+		$(".field-air-lada span.help-block").text(error.air_ladaError);
+	}
+	else{
+		$('.field-air-lada').removeClass('has-error').addClass('has-success');
+		$(".field-air-lada span.help-block").text('');
+	}
+
+	// berat
+	if(!jQuery.isEmptyObject(error.beratError)){
+		$('.field-berat').removeClass('has-success').addClass('has-error');
+		$(".field-berat span.help-block").text(error.beratError);
+	}
+	else{
+		$('.field-berat').removeClass('has-error').addClass('has-success');
+		$(".field-berat span.help-block").text('');
+	}
+
+	// abu
+	if(!jQuery.isEmptyObject(error.abuError)){
+		$('.field-abu').removeClass('has-success').addClass('has-error');
+		$(".field-abu span.help-block").text(error.abuError);
+	}
+	else{
+		$('.field-abu').removeClass('has-error').addClass('has-success');
+		$(".field-abu span.help-block").text('');
+	}
 }
 
-// function set select bahan baku
-function setSelect_bahanBaku(){
+// // function set value
+// function setValue(value){
+// 	var stok = parseFloat(value.stok) ? parseFloat(value.stok) : value.stok;
+
+// 	$('#kd_produk').val(value.kd_produk).trigger('change'); // kode bahan baku
+// 	$('#nama').val(value.nama).trigger('change'); // nama
+// 	$('#satuan').val(value.satuan).trigger('change'); // satuan
+// 	$('#ket').val(value.ket).trigger('change'); // ket
+// 	$('#stok').val(stok).trigger('change'); // stok
+// 	$('#id_produk').val(value.id);
+// }
+
+// function set select supplier
+function setSelect_supplier(){
 	$.ajax({
-		url: base_url+"app/controllers/Bahan_baku.php",
+		url: base_url+"app/controllers/Supplier.php",
 		type: "post",
 		dataType: "json",
-		data: {"action": "get_select_bahanBaku"},
+		data: {"action": "get_select_supplierUtama"},
 		success: function(data){
 			console.log(data);
 			$.each(data, function(index, item){
 				var option = new Option(item.text, item.value);
-				$('#bahan_baku').append(option).trigger('change');
+				$('#supplier').append(option).trigger('change');
 			});
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
@@ -436,29 +486,111 @@ function setSelect_bahanBaku(){
 	})
 }
 
-// function set select satuan
-function setSelect_satuan(){
-	var arrSatuan = [
-		{value: "", text: "-- Pilih Satuan --"},
-		{value: "KG", text: "KG"},
-		{value: "PCS", text: "PCS"},
+// function set select jenis
+function setSelect_jenis(){
+	var arrJenis = [
+		{value: "", text: "-- Pilih Jenis Bahan Baku --"},
+		{value: "K", text: "KOPI ASALAN"},
+		{value: "L", text: "LADA HITAM ASALAN"},
 	];
 
-	$.each(arrSatuan, function(index, item){
+	$.each(arrJenis, function(index, item){
 		var option = new Option(item.text, item.value);
-		$("#satuan").append(option);
+		$("#jenis").append(option);
 	});
+}
+
+// function set select status
+function setSelect_status(){
+	var arrStatus = [
+		{value: "", text: "-- Pilih Status Kir --"},
+		{value: "1", text: "SESUAI STANDAR"},
+		{value: "0", text: "DIBAWAH STANDAR"},
+	];
+
+	$.each(arrStatus, function(index, item){
+		var option = new Option(item.text, item.value);
+		$("#status").append(option);
+	});
+}
+
+// function set kode kir
+function setKd_kir(jenis){
+	$.ajax({
+		url: base_url+"app/controllers/Kir.php",
+		type: 'post',
+		dataType: 'json',
+		data: {
+			'action': 'get_kd_kir',
+			'jenis': $('#jenis').val().trim(),
+		},
+		success: function(data){
+			console.log(data);
+			var tanggal = getTanggal().replace(/-/g,"");
+
+			// cek kode pada hari ini ada
+			if(!data) $("#kd_kir").val('KIR-'+jenis+'-'+tanggal+'-1');
+			else{
+				iterasi = data['kd_kir'].split("-");
+                count = parseInt(iterasi[3]) + 1;
+                $("#kd_kir").val('KIR-'+jenis+'-'+tanggal+'-'+count.toString()).trigger('change');
+			}
+
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
+}
+
+// function set field hitung kir sesuai jenis
+function setField_kir(jenis){
+	if(jenis == "K"){
+		$('.kir-kopi').slideDown();
+		$('.kir-lada').slideUp();
+
+		// bersihkan form
+		$('.kir-kopi input').val("");
+		$('.kir-kopi').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
+		$('.kir-kopi').find("span.pesan").text(""); // hapus semua span help-block
+	}
+	else{
+		$('.kir-lada').slideDown();
+		$('.kir-kopi').slideUp();
+
+		// bersihkan form
+		$('.kir-lada input').val("");
+		$('.kir-lada').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
+		$('.kir-lada').find("span.pesan").text(""); // hapus semua span help-block
+	}
+
+	$('#status').val("");
+	$('.field-status').removeClass('has-error').removeClass('has-success');
+	$(".field-status span.help-block").text('');
+}
+
+function getTanggal(){
+    var d = new Date();
+    var month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
 // function loading modal
 function setLoading(block=true){
 	if(block === true){
-		$('.form-produk').block({
+		$('.form-kir').block({
     		message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
             css: {
                 border: '1px solid #fff'
             }
     	});
 	}
-	else $('.form-produk').unblock();
+	else $('.form-kir').unblock();
 }

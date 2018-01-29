@@ -22,6 +22,7 @@
 	})();
 </script>
 <!--Style Switcher -->
+<script src="<?= base_url."assets/plugins/bower_components/switchery/dist/switchery.min.js"; ?>"></script>
 <script src="<?= base_url."assets/plugins/bower_components/styleswitcher/jQuery.style.switcher.js"; ?>"></script>
 <!--BlockUI Script -->
 <script src="<?= base_url."assets/plugins/bower_components/blockUI/jquery.blockUI.js"; ?>"></script>

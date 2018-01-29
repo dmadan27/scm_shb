@@ -13,7 +13,7 @@
 	$sess_nama = isset($_SESSION['sess_nama']) ? $_SESSION['sess_nama'] : false;
 	$sess_email = isset($_SESSION['sess_email']) ? $_SESSION['sess_email'] : false;
 	$sess_foto = isset($_SESSION['sess_foto']) ? $_SESSION['sess_foto'] : false;
-	// $sess_pengguna = isset($_SESSION['sess_pengguna']) ? $_SESSION['sess_pengguna'] : false;
+	$sess_pengguna = isset($_SESSION['sess_pengguna']) ? $_SESSION['sess_pengguna'] : false;
 	$sess_hak_akses = isset($_SESSION['sess_hak_akses']) ? $_SESSION['sess_hak_akses'] : false;
 	$sess_akses_menu = isset($_SESSION['sess_akses_menu']) ? $_SESSION['sess_akses_menu'] : false;
 	$sess_lockscreen = isset($_SESSION['sess_lockscreen']) ? $_SESSION['sess_lockscreen'] : false;

@@ -42,6 +42,7 @@
                                     <th>Periode</th>
                                     <th>Produk</th>
                                     <th>Jumlah Perencanaan</th>
+                                    <th>Bahan Baku</th>
                                     <th>Jumlah Bahan Baku</th>
     	 							<th>Aksi</th>
     	 						</tr>

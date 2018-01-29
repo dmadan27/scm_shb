@@ -22,3 +22,5 @@
 <link href="<?= base_url."assets/plugins/bower_components/datatables/Responsive-2.1.1/css/responsive.bootstrap.min.css"; ?>" rel="stylesheet" type="text/css"/>
 
 <link rel="stylesheet" href="<?= base_url."assets/plugins/bower_components/dropify/dist/css/dropify.min.css"; ?>">
+
+<link href="<?= base_url."assets/plugins/bower_components/switchery/dist/switchery.min.css"; ?>" rel="stylesheet" />

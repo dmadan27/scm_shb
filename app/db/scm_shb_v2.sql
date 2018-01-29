@@ -147,16 +147,101 @@
 	);
 
 	-- Tabel kir
+	CREATE TABLE kir(
+		id int NOT NULL AUTO_INCREMENT,
+		kd_kir varchar(25), -- KIR-kopi/lada-tgl-increment
+		tgl date, -- tgl dan jam
+		id_supplier int, -- fk
+		jenis_bahan_baku char(1), -- jenis bahan baku (kopi/lada) k: kopi, l: lada
+		status char(1), -- 1: sesuai standar/dibeli, 0: dibawah standar/tidak dibeli
+
+		CONSTRAINT pk_kir_id PRIMARY KEY(id),
+		CONSTRAINT fk_kir_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel kir_kopi
+	CREATE TABLE kir_kopi(
+		id int NOT NULL AUTO_INCREMENT, 
+		id_kir int, -- fk
+		trase double(5,2),
+		gelondong double(5,2),
+		air double(5,2),
+		ayakan double(5,2),
+		kulit double(5,2),
+		rendemen double(5,2),
+
+		CONSTRAINT pk_kir_kopi_id PRIMARY KEY(id),
+		CONSTRAINT fk_kir_kopi_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel kir_lada
+	CREATE TABLE kir_lada(
+		id int NOT NULL AUTO_INCREMENT,
+		id_kir int, -- fk
+		air double(5,2),
+		berat int,
+		abu double(5,2),
+
+		CONSTRAINT pk_kir_lada_id PRIMARY KEY(id),
+		CONSTRAINT fk_kir_lada_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel analisa harga
+	CREATE TABLE analisa_harga(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		id_kir int, -- fk
+		id_harga_basis int, -- fk
+		harga_basis double(12,2),
+		harga_beli double(12,2),
+		status char(1), -- status analisa harga
+
+		CONSTRAINT pk_analisa_harga_id PRIMARY KEY(id),
+		CONSTRAINT fk_analisa_harga_id_kir FOREIGN KEY(id_kir) REFERENCES kir(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_analisa_harga_id_harga_basis FOREIGN KEY(id_harga_basis) REFERENCES harga_basis(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel pembelian
+	CREATE TABLE pembelian_bahan_baku(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		invoice varchar(25), -- kombinasi kode PB-tgl-increment
+		id_supplier int, -- fk
+		jenis_pembayaran char(1), -- c: cash, t: transfer
+		jenis_pph double(5,2),
+		pph double(12,2),
+		ket text,
+		status char(1), -- l: lunas, t: titipan
+
+		CONSTRAINT pk_pembelian_id PRIMARY KEY(id),
+		CONSTRAINT fk_pembelian_id_supplier FOREIGN KEY(id_supplier) REFERENCES supplier(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel detail pembelian
+	CREATE TABLE detail_pembelian(
+		id int NOT NULL AUTO_INCREMENT,
+		id_pembelian int, -- fk
+		id_bahan_baku int, -- fk
+		id_analisa_harga int, -- fk
+		colly int,
+		jumlah double(12,2),
+		harga double(12,2),
+		subtotal double(12,2),
+
+		CONSTRAINT pk_detail_pembelian PRIMARY KEY(id),
+		CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_detail_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_detail_pembelian_id_analisa_harga FOREIGN KEY(id_analisa_harga) REFERENCES analisa_harga(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel pemesanan
 	CREATE TABLE pemesanan(
@@ -173,7 +258,7 @@
 		batas_waktu_pengiriman date,
 		ket text, -- keterangan kontrak
 		lampiran text, -- lampiran file kontrak
-		status char(1), -- status kontrak/pemesanan, s: sukses, p: pending, r: reject
+		status char(1), -- status kontrak/pemesanan, s: sukses, p: proses, w: pending, r: reject
 
 		CONSTRAINT pk_pemesanan_id PRIMARY KEY(id),
 		CONSTRAINT fk_pemesanan_id_buyer FOREIGN KEY(id_buyer) REFERENCES buyer(id)
@@ -183,6 +268,21 @@
 	);
 
 	-- Tabel pengiriman
+	CREATE TABLE pengiriman(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		id_pemesanan int, -- fk
+		id_kendaraan int, -- fk
+		colly int,
+		jumlah double(12,2),
+		status char(1), -- status pengiriman. perjalanan/on delivery, terkirim, sedang di proses
+
+		CONSTRAINT pk_pengiriman_id PRIMARY KEY(id),
+		CONSTRAINT fk_pengiriman_id_pemesanan FOREIGN KEY(id_pemesanan) REFERENCES pemesanan(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_pengiriman_id_kendaraan FOREIGN KEY(id_kendaraan) REFERENCES kendaraan(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 	-- Tabel perencanaan pengadaan bahan baku
 	CREATE TABLE perencanaan_bahan_baku(
@@ -225,6 +325,30 @@
 	);
 
 	-- Tabel produksi
+	CREATE TABLE produksi(
+		id int NOT NULL AUTO_INCREMENT,
+		tgl date,
+		id_produk int, -- fk
+		hasil_produksi double(12,2),
+
+		CONSTRAINT pk_produksi_id PRIMARY KEY(id),
+		CONSTRAINT fk_produksi_id_produksi FOREIGN KEY(id_produk) REFERENCES produk(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
+
+	-- Tabel detail produksi
+	CREATE TABLE detail_produksi(
+		id int NOT NULL AUTO_INCREMENT,
+		id_produksi int, -- fk
+		id_bahan_baku int, -- fk
+		jumlah double(12,2),
+
+		CONSTRAINT pk_detail_produksi_id PRIMARY KEY(id),
+		CONSTRAINT fk_detail_produksi_id_produksi FOREIGN KEY(id_produksi) REFERENCES produksi(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE,
+		CONSTRAINT fk_detail_produksi_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
+			ON DELETE RESTRICT ON UPDATE CASCADE
+	);
 
 # =========================================== #
 
@@ -341,6 +465,47 @@
 		INSERT INTO komposisi(id_produk, id_bahan_baku, penyusutan) VALUES(id_produk_param, id_bahan_baku_param, penyusutan_param);
 	END;
 
+	-- Tambah kir kopi
+	CREATE PROCEDURE tambah_kir_kopi(
+		in kd_kir_param varchar(25),
+		in trase_param double(5,2),
+		in gelondong_param double(5,2),
+		in air_param double(5,2),
+		in ayakan_param double(5,2),
+		in kulit_param double(5,2),
+		in rendemen_param double(5,2)
+	)
+	BEGIN
+		DECLARE id_kir_param int;
+
+		-- get id kir by kd_kir
+		SELECT id INTO id_kir_param FROM kir WHERE kd_kir = kd_kir_param;
+
+		-- insert kir kopi
+		INSERT INTO kir_kopi (id_kir, trase, gelondong, air, ayakan, kulit, rendemen) 
+		VALUES (id_kir_param, trase_param, gelondong_param, air_param, ayakan_param, kulit_param, rendemen_param);
+	END;
+
+	-- Tambah kir lada
+	CREATE PROCEDURE tambah_kir_lada(
+		in kd_kir_param varchar(25),
+		in air_param double(5,2),
+		in berat_param int,
+		in abu_param double(5,2)
+	)
+	BEGIN
+		DECLARE id_kir_param int;
+
+		-- get id kir by kd_kir
+		SELECT id INTO id_kir_param FROM kir WHERE kd_kir = kd_kir_param;
+
+		-- insert kir kopi
+		INSERT INTO kir_lada (id_kir, air, berat, abu) 
+		VALUES (id_kir_param, air_param, berat_param, abu_param);
+	END;
+
+	-- Tambah Detail Pembelian
+
 # =========================================== #
 
 # ================== VIEW =================== #
@@ -417,6 +582,21 @@
 		JOIN pekerjaan p ON p.id = k.id_pekerjaan
 		ORDER BY u.id_karyawan ASC;
 
+	-- View kir
+	CREATE OR REPLACE VIEW v_kir AS
+		SELECT
+			k.id, k.kd_kir, k.tgl, 
+			k.id_supplier, s.nik, s.npwp, s.nama nama_supplier,
+			(CASE WHEN (k.jenis_bahan_baku = 'K') THEN 'KOPI ASALAN' ELSE 'LADA HITAM ASALAN' END) jenis_bahan_baku,
+			(CASE WHEN (k.status = '1') THEN 'SESUAI STANDAR' ELSE 'DIBAWAH STANDAR' END) status
+		FROM kir k
+		JOIN supplier s ON s.id = k.id_supplier
+		ORDER BY k.tgl DESC;
+
+	-- View kir kopi
+
+	-- View kir lada
+
 	-- View pembelian
 
 	-- View pemesanan
@@ -428,8 +608,9 @@
 		    p.jumlah_karung, p.ket_karung, p.kemasan, p.jumlah,
 		    p.waktu_pengiriman, p.batas_waktu_pengiriman, p.ket, p.lampiran,
 		    (CASE 
-		     	WHEN (p.status = 'S') THEN 'SUKSES' 
-		     	WHEN (p.status = 'P') THEN 'PENDING'
+		     	WHEN (p.status = 'S') THEN 'SUKSES'
+		     	WHEN (p.status = 'P') THEN 'PROSES' 
+		     	WHEN (p.status = 'W') THEN 'PENDING'
 		     	ELSE 'REJECT' 
 		     END) status
 		FROM pemesanan p
@@ -440,18 +621,18 @@
 	-- View pengiriman
 
 	-- View perencanaan pengadaan bahan baku
-	-- CREATE OR REPLACE VIEW v_perencanaan_bahan_baku AS
-	-- 	SELECT
-	-- 		p.id id_perencanaan_bahan_baku, p.tgl, p.periode,
-	-- 		pr.id id_produk, pr.kd_produk kd_produk, pr.nama nama_produk, pr.satuan satuan_produk,
-	-- 		p.jumlah_perencanaan,
-	-- 		GROUP_CONCAT(concat_ws(' ', concat_ws(' - ', bb.nama, dp.jumlah_bahan_baku), bb.satuan)) jumlah_bahan_baku
-	-- 	FROM peramalan p
-	-- 	JOIN detail_peramalan dp ON dp.id_peramalan = p.id
-	-- 	JOIN produk pr ON pr.id = p.id_produk
-	-- 	JOIN bahan_baku bb ON bb.id = dp.id_bahan_baku
-	-- 	GROUP BY p.id
-	-- 	ORDER BY p.id ASC;
+	CREATE OR REPLACE VIEW v_perencanaan_bahan_baku AS
+		SELECT
+			pbb.id, pbb.tgl, pbb.periode, 
+			pr.id id_produk, pr.kd_produk, pr.nama nama_produk, pr.satuan satuan_produk,
+		    pbb.jumlah_perencanaan, pbb.safety_stok_produk,
+		   	GROUP_CONCAT(concat_ws(' - ', bb.kd_bahan_baku, bb.nama)) komposisi
+		FROM perencanaan_bahan_baku pbb
+		JOIN produk pr ON pr.id = pbb.id_produk
+		JOIN komposisi k ON k.id_produk = pr.id
+		JOIN bahan_baku bb ON bb.id = k.id_bahan_baku
+		GROUP BY pbb.id
+		ORDER BY pbb.periode DESC;
 
 # =========================================== #
 

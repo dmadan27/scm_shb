@@ -60,19 +60,19 @@
 									</div>
 
 									<!-- button proses peramalan -->
-									<div class="form-group field-produk has-feedback m-b-5">
+									<div class="form-group field-btn-peramalan has-feedback m-b-5">
 				                        <div class="col-md-12 text-right">
-				                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung">Gunakan Peramalan</button>
+				                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_peramalan">Gunakan Peramalan</button>
 				                        </div>
 									</div>	
 			    	 			</div>
 			    	 			<div class="col-md-6">
 		    	 					<!-- Hasil Peramalan -->
-									<div class="form-group field-hasil-peramalan has-feedback m-b-5">
+									<div class="form-group field-hasil-perencanaan has-feedback m-b-5">
 										<label class="col-md-12" for="hasil_perencanaan">Hasil Perencanaan*</label>
 				                        <div class="col-md-12">
 				                        	<div class="input-group">
-				                        		<input id="hasil_perencanaan" type="text" class="form-control" placeholder="Hasil Perencanaan">
+				                        		<input id="hasil_perencanaan" type="number" min="0" step="any" class="form-control" placeholder="Hasil Perencanaan">
 				                        		<span class="input-group-addon satuan-produk"></span>
 				                        	</div>
 				                            <span class="help-block small pesan"></span>
@@ -122,24 +122,24 @@
 			                        			<div class="col-md-6">
 			                        				<label class="col-md-12" for="nilai_z">Service Level</label>
 							                        <div class="col-md-12">
-							                            <select id="nilai_z" class="form-control" readonly></select>
+							                            <select id="nilai_z" class="form-control" disabled></select>
+							                            <span class="help-block small pesan"></span>
 							                        </div>
 			                        			</div>
 			                        			<div class="col-md-6">
 			                        				<label class="col-md-12" for="label_nilai_z">Nilai Z</label>
 			                        				<div class="col-md-12">
-			                        					<input type="text" id="label_nilai_z" class="form-control" placeholder="Nilai Z" readonly>
+			                        					<input type="number" id="label_nilai_z" class="form-control" placeholder="Nilai Z" disabled>
 			                        				</div>
 												</div>
 					                       </div>
-					                       <span class="help-block small pesan"></span>
 										</div>
 
 										<!-- nilai rata2 permintaan -->
 										<div class="form-group field-nilai-d has-feedback m-b-5">
 											<label class="col-md-12" for="nilai_d">Nilai Rata-rata Permintaan (Nilai Perencanaan)</label>
 					                        <div class="col-md-12">
-					                           	<input type="text" id="nilai_d" class="form-control" placeholder="Nilai Hasil Perencanaan" readonly>
+					                           	<input type="number" id="nilai_d" class="form-control" placeholder="Nilai Hasil Perencanaan" disabled>
 				                            	<span class="help-block small pesan"></span>
 					                        </div>
 										</div>
@@ -148,13 +148,23 @@
 										<div class="form-group field-nilai-l has-feedback m-b-5">
 											<label class="col-md-12" for="nilai_l">Nilai Lead Time (Waktu Tunggu Pengadaan Bahan Baku)</label>
 					                        <div class="col-md-12">
-					                            <input type="text" id="nilai_l" class="form-control" placeholder="Nilai Lead Time" readonly>
+					                            <input type="number" id="nilai_l" class="form-control" placeholder="Nilai Lead Time" disabled>
 					                            <span class="help-block small pesan"></span>
 					                        </div>
 										</div>
 
 										<!-- radio button aktif/non aktif -->
+										<div class="form-group field-switch has-feedback m-b-5">
+											<label for="edit_parameter_ss">Edit Parameter</label>
+											<input id="edit_parameter_ss" type="checkbox" class="js-switch" data-color="#13dafe" />
+										</div>
 
+										<!-- button hitung safety stock -->
+										<div class="form-group field-btn-safety-stock has-feedback m-b-5">
+					                        <div class="col-md-12 text-right">
+					                            <button id="btnHitung_safetyStock" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_safety_stock">Hitung Safety Stock</button>
+					                        </div>
+										</div>	
 			    	 				</fieldset>
 			    	 			</div>
 			    	 			<!-- field safety stock -->
@@ -166,7 +176,7 @@
 											<label class="col-md-12" for="safety_stock_produk">Nilai Safety Stock Produk</label>
 					                        <div class="col-md-12">
 					                        	<div class="input-group">
-					                        		<input type="number" id="safety_stock_produk" min="0" class="form-control" placeholder="Masukkan Nilai Safety Stock Produk">
+					                        		<input type="number" id="safety_stock_produk" min="0" step="any" class="form-control" placeholder="Masukkan Nilai Safety Stock Produk">
 													<span class="input-group-addon satuan-ss-produk"></span>
 					                        	</div>
 					                            <span class="help-block small pesan"></span>

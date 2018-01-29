@@ -80,7 +80,10 @@
 				    	 					<div class="form-group field-trase has-feedback m-b-5">
 												<label class="col-md-12" for="trase">Trase*</label>
 						                        <div class="col-md-12">
-						                            <input id="trase" type="number" class="form-control" placeholder="Masukkan Trase">
+						                        	<div class="input-group">
+						                        		<input id="trase" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Trase">
+						                        		<span class="input-group-addon">Gr</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -88,7 +91,10 @@
 				    	 					<div class="form-group field-gelondong has-feedback m-b-5">
 												<label class="col-md-12" for="gelondong">Gelondong*</label>
 						                        <div class="col-md-12">
-						                            <input id="gelondong" type="number" class="form-control" placeholder="Masukkan Gelondong">
+						                        	<div class="input-group">
+														<input id="gelondong" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Gelondong">
+														<span class="input-group-addon">Gr</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -96,7 +102,10 @@
 				    	 					<div class="form-group field-air-kopi has-feedback m-b-5">
 												<label class="col-md-12" for="air_kopi">Air*</label>
 						                        <div class="col-md-12">
-						                            <input id="air_kopi" type="number" class="form-control" placeholder="Masukkan Air">
+						                        	<div class="input-group">
+														<input id="air_kopi" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Air">
+														<span class="input-group-addon">%</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -104,7 +113,10 @@
 				    	 					<div class="form-group field-ayakan has-feedback m-b-5">
 												<label class="col-md-12" for="ayakan">Ayakan*</label>
 						                        <div class="col-md-12">
-						                            <input id="ayakan" type="number" class="form-control" placeholder="Masukkan Ayakan">
+						                        	<div class="input-group">
+						                        		<input id="ayakan" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Ayakan">
+														<span class="input-group-addon">Gr</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -112,7 +124,10 @@
 				    	 					<div class="form-group field-kulit has-feedback m-b-5">
 												<label class="col-md-12" for="kulit">Kulit*</label>
 						                        <div class="col-md-12">
-						                            <input id="kulit" type="number" class="form-control" placeholder="Masukkan Kulit">
+						                        	<div class="input-group">
+						                        		<input id="kulit" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Kulit">
+														<span class="input-group-addon">Gr</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -120,7 +135,10 @@
 				    	 					<div class="form-group field-rendemen has-feedback m-b-5">
 												<label class="col-md-12" for="rendemen">Rendemen*</label>
 						                        <div class="col-md-12">
-						                            <input id="rendemen" type="number" class="form-control" placeholder="Masukkan Rendemen">
+						                        	<div class="input-group">
+						                        		<input id="rendemen" type="number" min="0" max="100" step="any" class="form-control" placeholder="Masukkan Rendemen">
+														<span class="input-group-addon">%</span>
+						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -133,7 +151,7 @@
 			    	 						<div class="form-group field-air-lada has-feedback m-b-5">
 												<label class="col-md-12" for="air_lada">Air*</label>
 						                        <div class="col-md-12">
-						                            <input id="air_lada" type="number" class="form-control" placeholder="Masukkan Air">
+						                            <input id="air_lada" type="number" step="any" class="form-control" placeholder="Masukkan Air">
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -141,7 +159,7 @@
 				    	 					<div class="form-group field-berat has-feedback m-b-5">
 												<label class="col-md-12" for="berat">Berat*</label>
 						                        <div class="col-md-12">
-						                            <input id="berat" type="number" class="form-control" placeholder="Masukkan Berat">
+						                            <input id="berat" type="number" step="any" class="form-control" placeholder="Masukkan Berat">
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
@@ -149,7 +167,7 @@
 				    	 					<div class="form-group field-abu has-feedback m-b-5">
 												<label class="col-md-12" for="abu">Abu*</label>
 						                        <div class="col-md-12">
-						                            <input id="abu" type="number" class="form-control" placeholder="Masukkan Abu">
+						                            <input id="abu" type="number" step="any" class="form-control" placeholder="Masukkan Abu">
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
