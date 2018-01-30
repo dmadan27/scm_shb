@@ -215,6 +215,7 @@
 		jenis_pembayaran char(1), -- c: cash, t: transfer
 		jenis_pph double(5,2),
 		pph double(12,2),
+		total double(12,2),
 		ket text,
 		status char(1), -- l: lunas, t: titipan
 

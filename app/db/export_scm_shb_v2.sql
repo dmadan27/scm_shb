@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 26 Jan 2018 pada 03.13
+-- Generation Time: 30 Jan 2018 pada 05.41
 -- Versi Server: 10.1.21-MariaDB
 -- PHP Version: 7.1.1
 
@@ -40,6 +40,24 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_bahan_baku` (IN `kd_bahan_ba
 			tgl, id_bahan_baku, brg_masuk, brg_keluar) 
 		VALUES(tgl_param, id_param, 0, 0);
 		
+	END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_kir_kopi` (IN `kd_kir_param` VARCHAR(25), IN `trase_param` DOUBLE(5,2), IN `gelondong_param` DOUBLE(5,2), IN `air_param` DOUBLE(5,2), IN `ayakan_param` DOUBLE(5,2), IN `kulit_param` DOUBLE(5,2), IN `rendemen_param` DOUBLE(5,2))  BEGIN
+		DECLARE id_kir_param int;
+
+				SELECT id INTO id_kir_param FROM kir WHERE kd_kir = kd_kir_param;
+
+				INSERT INTO kir_kopi (id_kir, trase, gelondong, air, ayakan, kulit, rendemen) 
+		VALUES (id_kir_param, trase_param, gelondong_param, air_param, ayakan_param, kulit_param, rendemen_param);
+	END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_kir_lada` (IN `kd_kir_param` VARCHAR(25), IN `air_param` DOUBLE(5,2), IN `berat_param` INT, IN `abu_param` DOUBLE(5,2))  BEGIN
+		DECLARE id_kir_param int;
+
+				SELECT id INTO id_kir_param FROM kir WHERE kd_kir = kd_kir_param;
+
+				INSERT INTO kir_lada (id_kir, air, berat, abu) 
+		VALUES (id_kir_param, air_param, berat_param, abu_param);
 	END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `tambah_komposisi` (IN `kd_produk_param` VARCHAR(25), IN `id_bahan_baku_param` INT, IN `penyusutan_param` DOUBLE(5,2))  BEGIN
@@ -264,6 +282,78 @@ INSERT INTO `kendaraan` (`id`, `no_polis`, `id_supir`, `pendamping`, `tahun`, `j
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `kir`
+--
+
+CREATE TABLE `kir` (
+  `id` int(11) NOT NULL,
+  `kd_kir` varchar(25) DEFAULT NULL,
+  `tgl` date DEFAULT NULL,
+  `id_supplier` int(11) DEFAULT NULL,
+  `jenis_bahan_baku` char(1) DEFAULT NULL,
+  `status` char(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `kir`
+--
+
+INSERT INTO `kir` (`id`, `kd_kir`, `tgl`, `id_supplier`, `jenis_bahan_baku`, `status`) VALUES
+(1, 'KIR-KP-20180128-1', '2018-01-28', 1, 'K', '1'),
+(2, 'KIR-KP-20180128-2', '2018-01-28', 2, 'K', '1'),
+(3, 'KIR-KP-20180128-3', '2018-01-28', 3, 'K', '1'),
+(4, 'KIR-KP-20180129-1', '2018-01-29', 4, 'K', '1'),
+(5, 'KIR-KP-20180129-2', '2018-01-29', 5, 'K', '1'),
+(6, 'KIR-LD-20180127-1', '2018-01-27', 6, 'L', '1'),
+(7, 'KIR-LD-20180127-2', '2018-01-27', 7, 'L', '1'),
+(8, 'KIR-LD-20180128-1', '2018-01-28', 8, 'L', '1'),
+(9, 'KIR-LD-20180128-2', '2018-01-28', 9, 'L', '1'),
+(11, 'KIR-LD-20180129-2', '2018-01-29', 1, 'L', '1'),
+(12, 'KIR-KP-20180129-3', '2018-01-29', 2, 'K', '1'),
+(13, 'KIR-KP-20180129-4', '2018-01-29', 2, 'K', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kir_kopi`
+--
+
+CREATE TABLE `kir_kopi` (
+  `id` int(11) NOT NULL,
+  `id_kir` int(11) DEFAULT NULL,
+  `trase` double(5,2) DEFAULT NULL,
+  `gelondong` double(5,2) DEFAULT NULL,
+  `air` double(5,2) DEFAULT NULL,
+  `ayakan` double(5,2) DEFAULT NULL,
+  `kulit` double(5,2) DEFAULT NULL,
+  `rendemen` double(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `kir_kopi`
+--
+
+INSERT INTO `kir_kopi` (`id`, `id_kir`, `trase`, `gelondong`, `air`, `ayakan`, `kulit`, `rendemen`) VALUES
+(1, 12, 50.00, 50.00, 50.00, 50.00, 50.00, 85.00),
+(2, 13, 50.00, 50.00, 50.00, 50.00, 50.00, 89.00);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kir_lada`
+--
+
+CREATE TABLE `kir_lada` (
+  `id` int(11) NOT NULL,
+  `id_kir` int(11) DEFAULT NULL,
+  `air` double(5,2) DEFAULT NULL,
+  `berat` int(11) DEFAULT NULL,
+  `abu` double(5,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `komposisi`
 --
 
@@ -455,6 +545,16 @@ CREATE TABLE `perencanaan_bahan_baku` (
   `safety_stok_produk` double(12,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data untuk tabel `perencanaan_bahan_baku`
+--
+
+INSERT INTO `perencanaan_bahan_baku` (`id`, `tgl`, `periode`, `id_produk`, `jumlah_perencanaan`, `safety_stok_produk`) VALUES
+(1, '2018-01-29', '2017-01', 1, 50000.00, 515.60),
+(2, '2018-01-29', '2017-01', 1, 50010.00, 515.60),
+(3, '2018-01-29', '2017-01', 1, 78569.56, 810.21),
+(4, '2018-01-29', '2016-12', 1, 1532987.19, 15808.12);
+
 -- --------------------------------------------------------
 
 --
@@ -517,7 +617,7 @@ INSERT INTO `supplier` (`id`, `nik`, `npwp`, `nama`, `alamat`, `telp`, `email`, 
 (7, NULL, '544568470326000', 'MUHAMMAD SAAD', 'PEMANGKU 02 SUKANANTI WAY TENONG', '081369215546', NULL, '1', 7),
 (8, NULL, '698866241326000', 'SURIYATI', 'PEMANGKU 02 SUKANANTI WAYTENONG', '081369215546', NULL, '1', 8),
 (9, NULL, '818542110326000', 'MERI YANTI', 'JL. LINTAS LIWA PURA LAKSANA RT 005/003 PURALAKSANA WAY TENONG', '081279950914', NULL, '1', 9),
-(10, NULL, NULL, 'SIKAMAN', 'JL. LINTAS LIWA PURA LAKSANA RT 005/003 PURA LAKSANA WAY TENONG', '081279950914', NULL, '1', 10),
+(10, NULL, NULL, 'SIKAMAN', 'JL. LINTAS LIWA PURA LAKSANA RT 005/003 PURA LAKSANA WAY TENONG', '081279950914', NULL, '0', 7),
 (11, NULL, '642948038326000', 'SAIDI ANWAR', 'SIDO KAYO RT 002/002 ABUNG TINGGI LAMPUNG UTARA', '082183483335', NULL, '1', 11),
 (12, NULL, '819438110302000', 'KHAIRUL FUADI', 'DUSUN 1 PEDATARAN ULU OGAN', '081271129377', NULL, '1', 12),
 (13, NULL, '084888205321000', 'MARKIS', 'GIHAM SUKAMAJU RT 001/001 SEKINCAU', '081539930559', NULL, '1', 13),
@@ -836,6 +936,24 @@ CREATE TABLE `v_kendaraan` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `v_kir`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_kir` (
+`id` int(11)
+,`kd_kir` varchar(25)
+,`tgl` date
+,`id_supplier` int(11)
+,`nik` varchar(16)
+,`npwp` varchar(16)
+,`nama_supplier` varchar(255)
+,`jenis_bahan_baku` varchar(17)
+,`status` varchar(15)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Stand-in structure for view `v_pemesanan`
 -- (Lihat di bawah untuk tampilan aktual)
 --
@@ -857,6 +975,25 @@ CREATE TABLE `v_pemesanan` (
 ,`ket` text
 ,`lampiran` text
 ,`status` varchar(7)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `v_perencanaan_bahan_baku`
+-- (Lihat di bawah untuk tampilan aktual)
+--
+CREATE TABLE `v_perencanaan_bahan_baku` (
+`id` int(11)
+,`tgl` date
+,`periode` varchar(15)
+,`id_produk` int(11)
+,`kd_produk` varchar(25)
+,`nama_produk` varchar(50)
+,`satuan_produk` enum('KG','PCS')
+,`jumlah_perencanaan` double(12,2)
+,`safety_stok_produk` double(12,2)
+,`komposisi` text
 );
 
 -- --------------------------------------------------------
@@ -948,11 +1085,29 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 -- --------------------------------------------------------
 
 --
+-- Struktur untuk view `v_kir`
+--
+DROP TABLE IF EXISTS `v_kir`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_kir`  AS  select `k`.`id` AS `id`,`k`.`kd_kir` AS `kd_kir`,`k`.`tgl` AS `tgl`,`k`.`id_supplier` AS `id_supplier`,`s`.`nik` AS `nik`,`s`.`npwp` AS `npwp`,`s`.`nama` AS `nama_supplier`,(case when (`k`.`jenis_bahan_baku` = 'K') then 'KOPI ASALAN' else 'LADA HITAM ASALAN' end) AS `jenis_bahan_baku`,(case when (`k`.`status` = '1') then 'SESUAI STANDAR' else 'DIBAWAH STANDAR' end) AS `status` from (`kir` `k` join `supplier` `s` on((`s`.`id` = `k`.`id_supplier`))) order by `k`.`tgl` desc ;
+
+-- --------------------------------------------------------
+
+--
 -- Struktur untuk view `v_pemesanan`
 --
 DROP TABLE IF EXISTS `v_pemesanan`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pemesanan`  AS  select `p`.`id` AS `id_pemesanan`,`p`.`tgl` AS `tgl`,`p`.`no_kontrak` AS `no_kontrak`,`p`.`id_buyer` AS `id_buyer`,`b`.`nama` AS `nama_buyer`,`p`.`id_produk` AS `id_produk`,`pr`.`nama` AS `nama_produk`,`pr`.`satuan` AS `satuan_produk`,`p`.`jumlah_karung` AS `jumlah_karung`,`p`.`ket_karung` AS `ket_karung`,`p`.`kemasan` AS `kemasan`,`p`.`jumlah` AS `jumlah`,`p`.`waktu_pengiriman` AS `waktu_pengiriman`,`p`.`batas_waktu_pengiriman` AS `batas_waktu_pengiriman`,`p`.`ket` AS `ket`,`p`.`lampiran` AS `lampiran`,(case when (`p`.`status` = 'S') then 'SUKSES' when (`p`.`status` = 'P') then 'PENDING' else 'REJECT' end) AS `status` from ((`pemesanan` `p` join `buyer` `b` on((`b`.`id` = `p`.`id_buyer`))) join `produk` `pr` on((`pr`.`id` = `p`.`id_produk`))) order by `p`.`tgl` desc ;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur untuk view `v_perencanaan_bahan_baku`
+--
+DROP TABLE IF EXISTS `v_perencanaan_bahan_baku`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_perencanaan_bahan_baku`  AS  select `pbb`.`id` AS `id`,`pbb`.`tgl` AS `tgl`,`pbb`.`periode` AS `periode`,`pr`.`id` AS `id_produk`,`pr`.`kd_produk` AS `kd_produk`,`pr`.`nama` AS `nama_produk`,`pr`.`satuan` AS `satuan_produk`,`pbb`.`jumlah_perencanaan` AS `jumlah_perencanaan`,`pbb`.`safety_stok_produk` AS `safety_stok_produk`,group_concat(concat_ws(' - ',`bb`.`kd_bahan_baku`,`bb`.`nama`) separator ',') AS `komposisi` from (((`perencanaan_bahan_baku` `pbb` join `produk` `pr` on((`pr`.`id` = `pbb`.`id_produk`))) join `komposisi` `k` on((`k`.`id_produk` = `pr`.`id`))) join `bahan_baku` `bb` on((`bb`.`id` = `k`.`id_bahan_baku`))) group by `pbb`.`id` order by `pbb`.`periode` desc ;
 
 -- --------------------------------------------------------
 
@@ -1016,6 +1171,27 @@ ALTER TABLE `karyawan`
 ALTER TABLE `kendaraan`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_kendaraan_id_supir` (`id_supir`);
+
+--
+-- Indexes for table `kir`
+--
+ALTER TABLE `kir`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_kir_id_supplier` (`id_supplier`);
+
+--
+-- Indexes for table `kir_kopi`
+--
+ALTER TABLE `kir_kopi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_kir_kopi_id_kir` (`id_kir`);
+
+--
+-- Indexes for table `kir_lada`
+--
+ALTER TABLE `kir_lada`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_kir_lada_id_kir` (`id_kir`);
 
 --
 -- Indexes for table `komposisi`
@@ -1109,6 +1285,21 @@ ALTER TABLE `karyawan`
 ALTER TABLE `kendaraan`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
+-- AUTO_INCREMENT for table `kir`
+--
+ALTER TABLE `kir`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `kir_kopi`
+--
+ALTER TABLE `kir_kopi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `kir_lada`
+--
+ALTER TABLE `kir_lada`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
 -- AUTO_INCREMENT for table `komposisi`
 --
 ALTER TABLE `komposisi`
@@ -1137,7 +1328,7 @@ ALTER TABLE `pemesanan`
 -- AUTO_INCREMENT for table `perencanaan_bahan_baku`
 --
 ALTER TABLE `perencanaan_bahan_baku`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `produk`
 --
@@ -1163,6 +1354,24 @@ ALTER TABLE `karyawan`
 --
 ALTER TABLE `kendaraan`
   ADD CONSTRAINT `fk_kendaraan_id_supir` FOREIGN KEY (`id_supir`) REFERENCES `karyawan` (`id`) ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `kir`
+--
+ALTER TABLE `kir`
+  ADD CONSTRAINT `fk_kir_id_supplier` FOREIGN KEY (`id_supplier`) REFERENCES `supplier` (`id`) ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `kir_kopi`
+--
+ALTER TABLE `kir_kopi`
+  ADD CONSTRAINT `fk_kir_kopi_id_kir` FOREIGN KEY (`id_kir`) REFERENCES `kir` (`id`) ON UPDATE CASCADE;
+
+--
+-- Ketidakleluasaan untuk tabel `kir_lada`
+--
+ALTER TABLE `kir_lada`
+  ADD CONSTRAINT `fk_kir_lada_id_kir` FOREIGN KEY (`id_kir`) REFERENCES `kir` (`id`) ON UPDATE CASCADE;
 
 --
 -- Ketidakleluasaan untuk tabel `komposisi`
