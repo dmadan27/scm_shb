@@ -16,8 +16,8 @@
         </ol>
     </div>
 </div>
-<div class="form-produk">
-	<form id="form_produk" class="form-material" role="form" enctype="multipart/form-data">
+<div class="form-analisa-harga">
+	<form id="form_analisa_harga" class="form-material" role="form" enctype="multipart/form-data">
 		<!-- panel form data Produk -->
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -148,11 +148,11 @@
 													</div>
 			    	 							</div>
 			    	 						</div>
-			    	 						<div class="form-group field-harga-beli-kopi has-feedback m-b-5">
+			    	 						<!-- <div class="form-group field-harga-beli-kopi has-feedback m-b-5">
 						                        <div class="col-md-12 text-right">
 						                            <button id="btnHitung_kopi" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_kopi">Hitung Harga Beli</button>
 						                        </div>
-											</div>		
+											</div> -->		
 			    	 					</div>
 			    	 					<div class="kir-lada" style="display: none;">
 			    	 						<div class="form-group field-info-air-lada has-feedback m-b-5">
@@ -176,12 +176,17 @@
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
-											<div class="form-group field-harga-beli-lada has-feedback m-b-5">
+											<!-- <div class="form-group field-harga-beli-lada has-feedback m-b-5">
 						                        <div class="col-md-12 text-right">
 						                            <button id="btnHitung_lada" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_lada">Hitung Harga Beli</button>
 						                        </div>
-											</div>
-			    	 					</div>		
+											</div> -->
+			    	 					</div>
+			    	 					<div class="form-group field-hitung-harga has-feedback m-b-5">
+					                        <div class="col-md-12 text-right">
+					                            <button id="btnHitung_harga" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_harga">Hitung Harga Beli</button>
+					                        </div>
+										</div>	
 			    	 				</fieldset>
 			    	 			</div>
 			    	 		</div>
@@ -201,9 +206,9 @@
 		        	</div>
 		    	 	<div class="panel-wrapper collapse in">
 			 			<div class="panel-body">
-							<div class="analisa-kopi" style="display: none;">
-								<div class="row">
-				 					<div class="col-md-6">
+			 				<div class="row">
+			 					<div class="col-md-6">
+			 						<div class="analisa-kopi" style="display: none;">
 				 						<div class="form-group field-kalkulasi-rendemen has-feedback m-b-5">
 											<label class="col-md-12" for="kalkulasi_rendemen">Kalkulasi Rendemen:</label>
 					                        <div class="col-md-12">
@@ -211,21 +216,8 @@
 					                            <span class="help-block small pesan"></span>
 					                        </div>
 										</div>
-				 					</div>
-				 					<div class="col-md-6">
-				 						<div class="form-group field-harga-kopi has-feedback m-b-5">
-											<label class="col-md-12" for="harga_kopi">Harga Beli Kopi: *</label>
-					                        <div class="col-md-12">
-					                            <input id="harga_kopi" type="number" class="form-control" placeholder="Masukkan Harga Beli">
-					                            <span class="help-block small pesan"></span>
-					                        </div>
-										</div>
-				 					</div>
-				 				</div>		
-							</div>
-							<div class="analisa-lada" style="display: none;">
-								<div class="row">
-				 					<div class="col-md-6">
+						 			</div>		
+									<div class="analisa-lada" style="display: none;">
 				 						<div class="row">
 				 							<div class="col-md-6">
 				 								<div class="form-group field-kalkulasi-air-abu has-feedback m-b-5">
@@ -247,22 +239,23 @@
 				 							</div>
 				 						</div>	
 				 					</div>
-				 					<div class="col-md-6">
-				 						<div class="form-group field-harga-lada has-feedback m-b-5">
-											<label class="col-md-12" for="harga_lada">Harga Beli Lada: *</label>
-					                        <div class="col-md-12">
-					                            <input id="harga_lada" type="number" class="form-control" placeholder="Masukkan Harga Beli">
-					                            <span class="help-block small pesan"></span>
-					                        </div>
-										</div>
-				 					</div>
-				 				</div>		
-							</div>
-			 			</div>
-		    	 	</div>
-		        </div>
-		    </div>
-		</div>
+			 					</div>
+			 					<!-- harga beli -->
+			 					<div class="col-md-6">
+			 						<div class="form-group field-harga-beli has-feedback m-b-5">
+										<label class="col-md-12" for="harga_beli">Harga Beli:</label>
+				                        <div class="col-md-12">
+				                            <input id="harga_beli" type="number" class="form-control" placeholder="Masukkan Harga Beli">
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+			 					</div>
+			 				</div>
+						</div>		
+					</div>
+	 			</div>
+    	 	</div>
+        </div>
 		<!-- panel button -->
 		<div class="row">
 			<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -274,8 +267,8 @@
 							</div>
 						</div>	
 		        		<div class="text-right">
-		        			<button id="btnSubmit_produk" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
-		        			<a href="<?=base_url."index.php?m=produk&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
+		        			<button id="btnSubmit_analisa_harga" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
+		        			<a href="<?=base_url."index.php?m=analisa_harga&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
 		        		</div>
 		        	</div>
 		        </div>
@@ -284,9 +277,5 @@
 	</form>
 </div>
 
-<script type="text/javascript">
-    var listKomposisi = [];
-    var indexKomposisi = 0;
-</script>
 <!-- js form -->
-<script type="text/javascript" src="<?= base_url."app/views/produk/js/initForm.js"; ?>"></script>
+<script type="text/javascript" src="<?= base_url."app/views/analisa_harga/js/initForm.js"; ?>"></script>

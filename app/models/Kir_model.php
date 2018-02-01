@@ -10,7 +10,44 @@
 
 	// get all data kir
 
-	// get kir by id
+	// get kir kopi by id
+	function get_kir_kopi_by_id($koneksi, $idKir){
+		$query = "SELECT * FROM kir_kopi WHERE id_kir = :idKir";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':idKir', $data['idKir']);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	// get kir lada by id
+	function get_kir_lada_by_id($koneksi, $idKir){
+		$query = "SELECT * FROM kir_lada WHERE id_kir = :idKir";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':idKir', $data['idKir']);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
+	// get kir yang belum diberi harga
+	function get_kir_analisa_harga($koneksi){
+		$query = "SELECT k.id id_kir, k.kd_kir, k.id_supplier, ";
+		$query .= "s.nama nama_supplier, s.npwp, s.nik FROM kir k ";
+		$query .= "LEFT JOIN analisa_harga ah ON ah.id_kir = k.id ";
+		$query .= "JOIN supplier s ON s.id = k.id_supplier WHERE ah.id_kir IS NULL ";
+		$query .= "ORDER BY k.tgl DESC";
+
+		$statement = $koneksi->prepare($query);
+		$statement->execute();
+		$result = $statement->fetchAll();
+
+		return $result;
+	}
 
 	// get increment kd kir
 	function get_inc_kd_kir($koneksi, $jenis){

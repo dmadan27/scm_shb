@@ -7,18 +7,22 @@ $(document).ready(function(){
 		cekEdit = true;
 	}
 
-	$("#bahan_baku").select2();
+	$(".select2").select2();
+	$('#tgl').datepicker({
+        autoclose: true,
+        format: "yyyy-mm-dd",
+        todayHighlight: true,
+        todayBtn: true,
+        todayHighlight: true,
+    });
+	$('#tgl').datepicker('update',getTanggal());
 
-	setSelect_satuan();
-	setSelect_bahanBaku();
+	setSelect_basis();
+	setSelect_kir();
 
 	if(cekEdit) getEdit(urlParams.id);
 
-	$("#btnTambah_komposisi").click(function(){
-		add_komposisi();
-	});
-
-    $("#form_produk").submit(function(e){
+    $("#form_analisa_harga").submit(function(e){
     	e.preventDefault();
     	submit();
     	return false;
@@ -33,11 +37,11 @@ $(document).ready(function(){
     		}
     	});
 
-    	// nama
-    	$("#nama").change(function(){
+    	// select harga basis
+    	$("#id_basis").change(function(){
     		if(this.value !== ""){
-    			$('.field-nama').removeClass('has-error').addClass('has-success');
-				$(".field-nama span.help-block").text('');
+    			$('.field-id-basis').removeClass('has-error').addClass('has-success');
+				$(".field-id-basis span.help-block").text('');
     		}
     	});
 
@@ -83,99 +87,6 @@ $(document).ready(function(){
     	});    	
     // ========================================= //
 });
-
-// funcgsi untuk list komposisi
-	// function cek bahan baku dilist
-	function validBahanBaku(bahan_baku){
-		var ada = false;
-
-	    $.each(listKomposisi, function(i, item){
-	    	if(bahan_baku==item.id_bahan_baku && item.status != "hapus") ada = true;
-	    });
-
-	    return ada;
-	}
-
-	// function add komposisi
-	function add_komposisi(){
-		var index = indexKomposisi++;
-		var kode_bahan_baku = $("#bahan_baku option:selected").text().split(' - ')[0];
-		var bahan_baku_text = $("#bahan_baku option:selected").text().split(' - ')[1];
-		var bahan_baku_value = $("#bahan_baku").val().trim();
-		var dataKomposisi = {
-			aksi: "tambah", status: "", 
-			index: index, id_komposisi: "",
-			id_bahan_baku: bahan_baku_value,
-			kd_bahan_baku: kode_bahan_baku,
-			nama_bahan_baku: bahan_baku_text, 
-		};
-
-		// validasi komposisi
-		if(validBahanBaku(bahan_baku_value)){
-			$.toast({
-	            heading: 'Pesan Error',
-	            text: bahan_baku_text+' Sudah Ada Di List !',
-	            position: 'top-right',
-	            loaderBg: '#ff6849',
-	            icon: 'error',
-	            hideAfter: 3000,
-	            stack: 6
-	        });
-			indexKomposisi -= 1;
-		}
-		else{
-			if(bahan_baku_value === ""){
-				$.toast({
-		            heading: 'Pesan Error',
-		            text: 'Bahan Baku Tidak Boleh Kosong !',
-		            position: 'top-right',
-		            loaderBg: '#ff6849',
-		            icon: 'error',
-		            hideAfter: 3000,
-		            stack: 6
-		        });
-				indexKomposisi -= 1;
-			}
-			else{
-				listKomposisi.push(dataKomposisi);
-				$("#tabel_komposisi > tbody:last-child").append(
-					"<tr>"+
-						"<td></td>"+ // nomor
-						"<td>"+kode_bahan_baku+"</td>"+ // kode
-						"<td>"+bahan_baku_text+"</td>"+ // bahan baku
-						"<td>"+btnAksi(index)+"</td>"+ // aksi
-					"</tr>"
-				);
-				numberingList();
-				$('#bahan_baku').select2().val('').trigger('change');
-			}
-		}
-
-		console.log(dataKomposisi);
-		console.log(listKomposisi);
-	}
-
-	function numberingList(){
-		$('#tabel_komposisi tbody tr').each(function (index) {
-	        $(this).children("td:eq(0)").html(index + 1);
-	    });
-	}
-
-	function btnAksi(index){
-		var btn = '<button type="button" class="btn btn-danger btn-sm bnt-flat" onclick="delList('+index+',this)" title="Hapus dari list">'+
-	              '<i class="fa fa-trash"></button>';
-	    return btn;
-	}
-
-	function delList(index, val){
-		$(val).parent().parent().remove(); // hapus data ditabel
-		$.each(listKomposisi, function(i, item){
-			if(item.index == index) item.status = "hapus";
-		});
-		numberingList(); // reset ulang nomer
-		console.log(listKomposisi);
-	}
-// ====================================== //
 
 // function get form
 function getDataForm(){
@@ -395,38 +306,33 @@ function setError(error){
 	}
 }
 
-// function set value
-function setValue(value){
-	var stok = parseFloat(value.stok) ? parseFloat(value.stok) : value.stok;
+// // function set value
+// function setValue(value){
+// 	var stok = parseFloat(value.stok) ? parseFloat(value.stok) : value.stok;
 
-	$('#kd_produk').val(value.kd_produk).trigger('change'); // kode bahan baku
-	$('#nama').val(value.nama).trigger('change'); // nama
-	$('#satuan').val(value.satuan).trigger('change'); // satuan
-	$('#ket').val(value.ket).trigger('change'); // ket
-	$('#stok').val(stok).trigger('change'); // stok
-	$('#id_produk').val(value.id);
-}
+// 	$('#kd_produk').val(value.kd_produk).trigger('change'); // kode bahan baku
+// 	$('#nama').val(value.nama).trigger('change'); // nama
+// 	$('#satuan').val(value.satuan).trigger('change'); // satuan
+// 	$('#ket').val(value.ket).trigger('change'); // ket
+// 	$('#stok').val(stok).trigger('change'); // stok
+// 	$('#id_produk').val(value.id);
+// }
 
-// function reset form
-function resetForm(){
-	$('#form_produk').trigger('reset');
-	$('#form_produk').find("div.form-group").removeClass('has-error').removeClass('has-success'); // hapus class has-error/success
-	$('#form_produk').find("span.pesan").text(""); // hapus semua span help-block
-	$('#id_produk').val("");
-}
-
-// function set select bahan baku
-function setSelect_bahanBaku(){
+// function set select basis
+function setSelect_basis(){
 	$.ajax({
-		url: base_url+"app/controllers/Bahan_baku.php",
+		url: base_url+"app/controllers/Analisa_harga.php",
 		type: "post",
 		dataType: "json",
-		data: {"action": "get_select_bahanBaku"},
+		data: {
+			"action": "get_select_basis",
+			"tgl": $('#tgl').val().trim(),
+		},
 		success: function(data){
 			console.log(data);
 			$.each(data, function(index, item){
 				var option = new Option(item.text, item.value);
-				$('#bahan_baku').append(option).trigger('change');
+				$('#id_basis').append(option).trigger('change');
 			});
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
@@ -436,29 +342,62 @@ function setSelect_bahanBaku(){
 	})
 }
 
-// function set select satuan
-function setSelect_satuan(){
-	var arrSatuan = [
-		{value: "", text: "-- Pilih Satuan --"},
-		{value: "KG", text: "KG"},
-		{value: "PCS", text: "PCS"},
-	];
+// function set select kir
+function setSelect_kir(){
+	$.ajax({
+		url: base_url+"app/controllers/Analisa_harga.php",
+		type: "post",
+		dataType: "json",
+		data: {"action": "get_select_kir_analisa_harga"},
+		success: function(data){
+			console.log(data);
+			$.each(data, function(index, item){
+				var option = new Option(item.text, item.value);
+				$('#kd_kir').append(option).trigger('change');
+			});
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})
+}
 
-	$.each(arrSatuan, function(index, item){
-		var option = new Option(item.text, item.value);
-		$("#satuan").append(option);
-	});
+// function get data kir
+function getData_kir(idKir){
+
+}
+
+// function setData_kir
+function setData_kir_kopi(){
+
+}
+
+function setData_kir_lada(){
+
+}
+
+function getTanggal(){
+    var d = new Date();
+    var month = '' + (d.getMonth() + 1);
+    var day = '' + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
 
 // function loading modal
 function setLoading(block=true){
 	if(block === true){
-		$('.form-produk').block({
+		$('.form-analisa-harga').block({
     		message: '<h4><img src="'+base_url+'assets/plugins/images/busy.gif" /> Mohon Menunggu...</h4>',
             css: {
                 border: '1px solid #fff'
             }
     	});
 	}
-	else $('.form-produk').unblock();
+	else $('.form-analisa-harga').unblock();
 }

@@ -32,9 +32,9 @@
 		return $result;
 	}
 
-	// get data pekerjaan untuk select
-	function getPekerjaan_select($koneksi){
-		$query = "SELECT id, nama FROM pekerjaan";
+	// get data harga basis untuk select
+	function getHarga_basis_select($koneksi){
+		$query = "SELECT * FROM harga_basis";
 
 		$statement = $koneksi->prepare($query);
 		$statement->execute();
