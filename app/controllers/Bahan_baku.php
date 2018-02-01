@@ -66,6 +66,7 @@
 			// hapus
 			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
 
+			// fungsi get aksi
 			$aksi = $aksiView.$aksiEdit.$aksiHapus;
 
 			$dataRow = array();

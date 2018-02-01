@@ -32,6 +32,13 @@
 	$m = isset($_GET['m']) ? strtolower(validInputan($_GET['m'], false, false)) : false; // untuk get menu
 	$p = isset($_GET['p']) ? strtolower(validInputan($_GET['p'], false, false)) : false; // untuk get page
 
+	// if(!get_hak_akses($m, $sess_akses_menu)){
+	// 	header("Location: ".base_url);
+	// 	die();
+	// }
+
+	var_dump($sess_akses_menu);
+
 ?>
 <!DOCTYPE html>
 <html>

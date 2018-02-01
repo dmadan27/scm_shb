@@ -20,7 +20,7 @@
             </li>
 
             <?php 
-                echo set_menu($sess_akses_menu); 
+                var_dump(set_menu($sess_akses_menu)) 
             ?>
         </ul>
     </div>
