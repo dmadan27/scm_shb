@@ -42,6 +42,10 @@
 				get_select_kir($koneksi);
 				break;
 
+			case 'get_kir_analisa_harga':
+				get_dataKir_analisaHarga($koneksi, $id);
+				break;
+
 			default:
 				# code...
 				break;
@@ -88,4 +92,12 @@
 		}
 
 		echo json_encode($data);
+	}
+
+	function get_dataKir_analisaHarga($koneksi, $idKir){ 
+		// get jenis kir
+		$jenis = get_jenis_kir($koneksi, $idKir);
+		$dataKir = ($jenis['jenis_bahan_baku'] == "K") ? get_kir_kopi_by_id($koneksi, $idKir) : get_kir_lada_by_id($koneksi, $idKir);
+
+		echo json_encode($dataKir);
 	}

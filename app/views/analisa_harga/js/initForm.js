@@ -29,11 +29,11 @@ $(document).ready(function(){
     });
 
     // onchange field
-    	// kode produk
-    	$("#kd_produk").change(function(){
+    	// tanggal
+    	$("#tgl").change(function(){
     		if(this.value !== ""){
-    			$('.field-kd-produk').removeClass('has-error').addClass('has-success');
-				$(".field-kd-produk span.help-block").text('');
+    			$('.field-tgl').removeClass('has-error').addClass('has-success');
+				$(".field-tgl span.help-block").text('');
     		}
     	});
 
@@ -42,47 +42,37 @@ $(document).ready(function(){
     		if(this.value !== ""){
     			$('.field-id-basis').removeClass('has-error').addClass('has-success');
 				$(".field-id-basis span.help-block").text('');
+
+				var harga_basis = $("#id_basis option:selected").text().split(" - ");
+				$("#harga_basis").val(parseFloat(harga_basis[1]));
     		}
     	});
 
-    	// satuan
-    	$("#satuan").change(function(){
+    	// harga basis
+    	$("#harga_basis").change(function(){
     		if(this.value !== ""){
-    			$('.field-satuan').removeClass('has-error').addClass('has-success');
-				$(".field-satuan span.help-block").text('');
+    			$('.field-harga-basis').removeClass('has-error').addClass('has-success');
+				$(".field-harga-basis span.help-block").text('');
 				$('.satuan-stok').text(this.value);
     		}
     	});
 
-    	// ket
-    	$("#ket").change(function(){
+    	// kode kir
+    	$("#kd_kir").change(function(){
     		if(this.value !== ""){
-    			$('.field-ket').removeClass('has-error').addClass('has-success');
-				$(".field-ket span.help-block").text('');
-    		}
-    	});
+    			$('.field-kd-kir').removeClass('has-error').addClass('has-success');
+				$(".field-kd-kir span.help-block").text('');
 
-    	// foto
-    	$("#foto").change(function(){
-    		if(this.value !== ""){
-    			$('.field-foto').removeClass('has-error').addClass('has-success');
-				$(".field-foto span.help-block").text('');
+				// get data kir
+				console.log(getData_kir(this.value));
     		}
-    	});
+    	});    	
 
-    	// stok awal
-    	$("#stok").change(function(){
+    	// harga beli
+		$("#harga_beli").change(function(){
     		if(this.value !== ""){
-    			$('.field-stok').removeClass('has-error').addClass('has-success');
-				$(".field-stok span.help-block").text('');
-    		}
-    	});
-
-    	// bahan baku
-		$("#bahan_baku").change(function(){
-    		if(this.value !== ""){
-    			$('.field-bahan-baku').removeClass('has-error').addClass('has-success');
-				$(".field-bahan-baku span.help-block").text('');
+    			$('.field-harga-beli').removeClass('has-error').addClass('has-success');
+				$(".field-harga-beli span.help-block").text('');
     		}
     	});    	
     // ========================================= //
@@ -365,7 +355,22 @@ function setSelect_kir(){
 
 // function get data kir
 function getData_kir(idKir){
-
+	$.ajax({
+		url: base_url+"app/controllers/Analisa_harga.php",
+		type: "post",
+		dataType: "json",
+		data: {
+			"action": "get_kir_analisa_harga",
+			"id": idKir,
+		},
+		success: function(data){
+			console.log(data);
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})	
 }
 
 // function setData_kir

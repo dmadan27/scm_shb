@@ -15,7 +15,7 @@
 		$query = "SELECT * FROM kir_kopi WHERE id_kir = :idKir";
 
 		$statement = $koneksi->prepare($query);
-		$statement->bindParam(':idKir', $data['idKir']);
+		$statement->bindParam(':idKir', $idKir);
 		$statement->execute();
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
 
@@ -27,11 +27,22 @@
 		$query = "SELECT * FROM kir_lada WHERE id_kir = :idKir";
 
 		$statement = $koneksi->prepare($query);
-		$statement->bindParam(':idKir', $data['idKir']);
+		$statement->bindParam(':idKir', $idKir);
 		$statement->execute();
 		$result = $statement->fetch(PDO::FETCH_ASSOC);
 
 		return $result;
+	}
+
+	function get_jenis_kir($koneksi, $idKir){
+		$query = "SELECT jenis_bahan_baku FROM kir WHERE id = :idKir";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':idKir', $idKir);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;	
 	}
 
 	// get kir yang belum diberi harga
