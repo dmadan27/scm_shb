@@ -54,20 +54,21 @@
 
 		$data_bahan_baku = get_datatable_bahan_baku($koneksi, $config_db);
 
+		session_start();
+
 		$data = array();
 		$no_urut = $_POST['start'];
 		foreach($data_bahan_baku as $row){
 			$no_urut++;
 			
-			// view
-			$aksiView = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>';	
-			// edit
-			$aksiEdit = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
-			// hapus
-			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
+			$btnAksi = array(
+				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>',
+				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>',
+				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>',
+			);
 
 			// fungsi get aksi
-			$aksi = $aksiView.$aksiEdit.$aksiHapus;
+			$aksi = get_btn_aksi('bahan_baku', $_SESSION['sess_akses_menu'], $btnAksi);
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;

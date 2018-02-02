@@ -147,7 +147,7 @@
 					'data_master' => array(
 						'pekerjaan' => array(
 							"url" => base_hak_akses['pekerjaan'],
-							"aksi" => array('view',)
+							"aksi" => array()
 						),
 						'karyawan' => array(
 							"url" => base_hak_akses['karyawan'],
@@ -179,7 +179,7 @@
 						),
 						'user' => array(
 							"url" => base_hak_akses['user'],
-							"aksi" => array('view',),
+							"aksi" => array(),
 						),
 					),
 					'kir' => array(
@@ -240,7 +240,7 @@
 					'data_master' => array(
 						'pekerjaan' => array(
 							"url" => base_hak_akses['pekerjaan'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'edit', 'hapus'),
 						),
 						'karyawan' => array(
 							"url" => base_hak_akses['karyawan'],
@@ -465,7 +465,7 @@
 					'data_master' => array(
 						'user' => array(
 							"url" => base_hak_akses['user'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'edit', 'hapus'),
 						),
 					),
 				);
@@ -477,199 +477,139 @@
 
 	function set_menu($hak_akses){
 		$menu = '';
-		foreach ($hak_akses as $key => $value) {
-		// for($i=0; $i<count($hak_akses); $i++){	
-			// menu data master
+
+		foreach($hak_akses as $key => $value){
 			if($key == "data_master"){
 				$menu .= '<li class="menu-data-master">';
 				$menu .= '<a href="javascript:void(0);" class="waves-effect"> <i class="mdi mdi-database fa-fw"></i>';
 				$menu .= '<span class="hide-menu"> Data Master <span class="fa arrow"></span> </span> </a>';
 				$menu .= '<ul class="nav nav-second-level">';
-				// pecah menu data master
-				foreach($value as $newKey => $value_data_master){
-					if($newKey == "url") $menu .= $value_data_master[$newKey];
+
+				foreach($value as $key_2 => $value_2){ 
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "url"){
+							$menu .= $newValue;
+						}
+					}
 				}
 				$menu .= '</ul></li>';
 			}
-			// menu data monitoring persediaan
 			else if($key == "monitoring_persediaan"){
 				$menu .= '<li class="menu-data-monitoring-persediaan">';
 				$menu .= '<a href="javascript:void(0);" class="waves-effect"> <i class="mdi mdi-database fa-fw"></i>';
 				$menu .= '<span class="hide-menu"> Data Monitoring Persediaan <span class="fa arrow"></span> </span> </a>';
 				$menu .= '<ul class="nav nav-second-level">';
-				// pecah menu data master
-				foreach($value as $newKey => $value_data_monitoring){
-					if($newKey == "url") $menu .= $value_data_monitoring[$newKey];
+
+				foreach($value as $key_2 => $value_2){ 
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "url"){
+							$menu .= $newValue;
+						}
+					}
 				}
 				$menu .= '</ul></li>';
 			}
 			else{
-				foreach($value as $newKey => $newValue){
-					if($newKey == "url") $menu .= $newValue[$newKey];
-				}
-			}
-		// }
-		}
-
-		return $menu;
-	}
-
-	function get_hak_akses($menu, $hak_akses){
-		$new_hakAkses = array();
-
-		if($menu == false) $cek = true;
-		else{
-			// pecah array hak akses, pindahkan ke array baru
-			foreach ($hak_akses as $key => $value) {
-				if(is_array($value)){ // jika array
-					// pecah lagi
-					foreach($value as $newKey => $newValue){
-						$new_hakAkses[$newKey] = $newKey;
+				foreach($value as $key_2 => $value_2){
+					if($key_2 == "url"){
+						$menu .= $value_2;
 					}
 				}
-				else $new_hakAkses[$key] = $key; // jika string
 			}
-			$cek = array_key_exists($menu, $new_hakAkses) ? true : false;
 		}
 
-		return $cek;
+		return $menu;		
 	}
 
-	function get_btn_aksi($hak_akses){
-		switch (strtolower($hak_akses)) {
-			case 'direktur':
-				$set_hakAkses = array(
-					'data_master' => array(
-						'pekerjaan' => base_hak_akses['pekerjaan'],
-						'karyawan' => base_hak_akses['karyawan'],
-						'supplier' => base_hak_akses['supplier'],
-						'buyer' => base_hak_akses['buyer'],
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-						'produk' => base_hak_akses['produk'],
-						'harga_basis' => base_hak_akses['harga_basis'],
-						'kendaraan' => base_hak_akses['kendaraan'],
-						'user' => base_hak_akses['user'],
-					),
-					'kir' => base_hak_akses['kir'],
-					'analisa_harga' => base_hak_akses['analisa_harga'],
-					'pembelian' => base_hak_akses['pembelian'],
-					'pemesanan' => base_hak_akses['pemesanan'],
-					'pengiriman' => base_hak_akses['pengiriman'],
-					'perencanaan_bahan_baku' => base_hak_akses['perencanaan_bahan_baku'],
-					'monitoring_persediaan' => array(
-						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
-						'stok_produk' => base_hak_akses['stok_produk'],
-						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
-						'mutasi_produk' => base_hak_akses['mutasi_produk'],
-					),
-					'produksi' => base_hak_akses['produksi'],
-				);
-				break;
+	function get_hak_akses($menu, $page, $hak_akses){
+		$new_hakAkses = array();
 
-			case 'bagian administrasi dan keuangan':
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'data_master' => array(
-						'pekerjaan' => base_hak_akses['pekerjaan'],
-						'karyawan' => base_hak_akses['karyawan'],
-						'supplier' => base_hak_akses['supplier'],
-						'buyer' => base_hak_akses['buyer'],
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-						'produk' => base_hak_akses['produk'],
-						'harga_basis' => base_hak_akses['harga_basis'],
-						'kendaraan' => base_hak_akses['kendaraan'],
-					),
-					'pembelian' => base_hak_akses['pembelian'],
-					'pemesanan' => base_hak_akses['pemesanan'],
-					'pengiriman' => base_hak_akses['pengiriman'],
-					'monitoring_persediaan' => array(
-						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
-						'stok_produk' => base_hak_akses['stok_produk'],
-						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
-						'mutasi_produk' => base_hak_akses['mutasi_produk'],
-					),
-				);
-				break;
+		if($menu==false) return $cek = true;
+		else{
+			// cek menu dengan hak akses, ada atau tidak
+			foreach($hak_akses as $key => $value){
+				if($key == "data_master"){
+					foreach($value as $key_2 => $value_2){
+						$new_hakAkses[$key_2] = $value_2;
+					}
+				}
+				else if($key == "data_monitoring"){
+					foreach($value as $key_2 => $value_2){
+						$new_hakAkses[$key_2] = $value_2;
+					}	
+				}
+				else{
+					$new_hakAkses[$key] = $value;
+				}
+			}
 
-			case 'bagian gudang':
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'data_master' => array(
-						'supplier' => base_hak_akses['supplier'],
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-						'produk' => base_hak_akses['produk'],
-					),
-					'pemesanan' => base_hak_akses['pemesanan'],
-					'perencanaan_bahan_baku' => base_hak_akses['perencanaan_bahan_baku'],
-					'monitoring_persediaan' => array(
-						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
-						'stok_produk' => base_hak_akses['stok_produk'],
-						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
-						'mutasi_produk' => base_hak_akses['mutasi_produk'],
-					),
-				);
-				break;
+			$cekMenu = array_key_exists($menu, $new_hakAkses) ? true : false;
+			if($page == "form") $cekPage = get_btn_aksi($menu, $hak_akses, false, true) ? true : false;
+			else $cekPage = true;
 
-			case 'bagian analisa harga':
-				$set_hakAkses = array(
-					'beranda' =>  base_hak_akses['beranda'],
-					'data_master' => array(
-						'supplier' => base_hak_akses['supplier'],
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-						'harga_basis' => base_hak_akses['harga_basis'],
-					),
-					'kir' => base_hak_akses['kir'],
-					'analisa_harga' => base_hak_akses['analisa_harga'],
-				);
-				break;
+			return $cek = ($cekMenu && $cekPage) ? true : false;
+		}
+	}
 
-			case 'bagian kir':
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'data_master' => array(
-						'supplier' => base_hak_akses['supplier'],
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-					),
-					'kir' => base_hak_akses['kir'],
-				);
-				break;
+	// get btn aksi
+	function get_btn_aksi($menu, $hak_akses, $btnAksi=false, $tambah=false){
+		$new_aksi = array();
 
-			case 'bagian teknisi dan operasional':
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'data_master' => array(
-						'bahan_baku' => base_hak_akses['bahan_baku'],
-						'produk' => base_hak_akses['produk'],
-					),
-					'produksi' => base_hak_akses['produksi'],
-					'monitoring_persediaan' => array(
-						'stok_bahan_baku' => base_hak_akses['stok_bahan_baku'],
-						'stok_produk' => base_hak_akses['stok_produk'],
-						'mutasi_bahan_baku' => base_hak_akses['mutasi_bahan_baku'],
-						'mutasi_produk' => base_hak_akses['mutasi_produk'],
-					),
-				);
-				break;
-
-			case 'buyer':
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'pemesanan' => base_hak_akses['pemesanan'],
-					'pengiriman' => base_hak_akses['pengiriman'],
-				);
-				break;
-			
-			default: // administrator
-				$set_hakAkses = array(
-					'beranda' => base_hak_akses['beranda'],
-					'data_master' => array(
-						'user' => base_hak_akses['user'],
-					),
-				);
-				break;
+		// get aksi tiap menu
+		foreach($hak_akses as $key => $value){
+			if($key == "data_master"){
+				foreach($value as $key_2 => $value_2){
+					$tempKey = $key_2;
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "aksi"){
+							$new_aksi[$tempKey] = $newValue;
+						}
+					}
+				}
+			}
+			else if($key == "data_monitoring"){
+				foreach($value as $key_2 => $value_2){
+					$tempKey = $key_2;
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "aksi"){
+							$new_aksi[$tempKey] = $newValue;
+						}
+					}
+				}	
+			}
+			else{
+				$tempKey = $key;
+				foreach($value as $newKey => $newValue){
+					if($newKey == "aksi"){
+						$new_aksi[$tempKey] = $newValue;
+					}
+				}
+			}
 		}
 
-		return $set_hakAkses;
+		// btn aksi di list data
+		if($btnAksi){
+			foreach($btnAksi as $key => $value){
+				$temp = $value;
+				foreach($new_aksi[$menu] as $value){
+					if($key == $value){
+						$new_bntAksi[] = $temp;
+					}
+				}
+			}
+
+			if(!empty($new_bntAksi)){
+				$output = '';
+				foreach($new_bntAksi as $value){
+					$output .= $value;
+				}
+			} else $output = "";
+				
+			return $output;
+		}
+		else if($tambah){
+			return $cek = in_array('tambah', $new_aksi[$menu]) ? true : false;
+		}
 	}
 
 	function cekDuplikat($koneksi, $config_db){

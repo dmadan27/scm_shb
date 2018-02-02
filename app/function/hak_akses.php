@@ -504,7 +504,7 @@
 				foreach($value as $key_2 => $value_2){ 
 					foreach($value_2 as $newKey => $newValue){
 						if($newKey == "url"){
-							$menu[] = $newValue;
+							$menu .= $newValue;
 						}
 					}
 				}
@@ -522,7 +522,155 @@
 		return $menu;		
 	}
 
-	$hak_akses = "bagian kir";
-	var_dump(set_menu(set_hak_akses($hak_akses)));
+	// get hak akses
+	function get_hak_akses($menu, $page, $hak_akses){
+		$new_hakAkses = array();
 
+		if($menu==false) return $cek = true;
+		else{
+			// cek menu dengan hak akses, ada atau tidak
+			foreach($hak_akses as $key => $value){
+				if($key == "data_master"){
+					foreach($value as $key_2 => $value_2){
+						$new_hakAkses[$key_2] = $value_2;
+					}
+				}
+				else if($key == "data_monitoring"){
+					foreach($value as $key_2 => $value_2){
+						$new_hakAkses[$key_2] = $value_2;
+					}	
+				}
+				else{
+					$new_hakAkses[$key] = $value;
+				}
+			}
 
+			$cekMenu = array_key_exists($menu, $new_hakAkses) ? true : false;
+			$cekPage = get_btn_aksi($menu, $hak_akses, false, true) ? true : false;
+
+			return $cek = ($cekMenu && $cekPage) ? true : false;
+
+			// if(!$aksi) return $cek = array_key_exists($menu, $new_hakAkses) ? true : false;
+			// else{
+			// 	// get aksi
+			// 	$newAksi = $new_hakAkses[$menu]['aksi'];
+			// 	foreach($btnAksi as $key => $value){
+			// 		$temp = $value;
+			// 		foreach($newAksi as $value){
+			// 			if($key == $value){
+			// 				$new_bntAksi[] = $temp;
+			// 			}
+			// 		}
+			// 	}
+
+			// 	return $new_bntAksi;
+			// }
+
+			// if(!$aksi){
+			// 	$cekMenu = array_key_exists($menu, $new_hakAkses) ? true : false;
+			// 	$cekPage = get_btn_aksi($menu, $hak_akses, false, true) ? true : false;
+
+			// 	return $cek = ($cekMenu && $cekPage) ? true : false;
+			// }
+			// else{
+			// 	// get aksi
+			// 	$newAksi = $new_hakAkses[$menu]['aksi'];
+			// 	foreach($btnAksi as $key => $value){
+			// 		$temp = $value;
+			// 		foreach($newAksi as $value){
+			// 			if($key == $value){
+			// 				$new_bntAksi[] = $temp;
+			// 			}
+			// 		}
+			// 	}
+
+			// 	return $new_bntAksi;
+			// }
+		}
+	}
+
+	// get btn aksi
+	function get_btn_aksi($menu, $hak_akses, $btnAksi=false, $tambah=false){
+		$new_aksi = array();
+
+		// get aksi tiap menu
+		foreach($hak_akses as $key => $value){
+			if($key == "data_master"){
+				foreach($value as $key_2 => $value_2){
+					$tempKey = $key_2;
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "aksi"){
+							$new_aksi[$tempKey] = $newValue;
+						}
+					}
+				}
+			}
+			else if($key == "data_monitoring"){
+				foreach($value as $key_2 => $value_2){
+					$tempKey = $key_2;
+					foreach($value_2 as $newKey => $newValue){
+						if($newKey == "aksi"){
+							$new_aksi[$tempKey] = $newValue;
+						}
+					}
+				}	
+			}
+			else{
+				$tempKey = $key;
+				foreach($value as $newKey => $newValue){
+					if($newKey == "aksi"){
+						$new_aksi[$tempKey] = $newValue;
+					}
+				}
+			}
+		}
+
+		// btn aksi di list data
+		if($btnAksi){
+			foreach($btnAksi as $key => $value){
+				$temp = $value;
+				foreach($new_aksi[$menu] as $value){
+					if($key == $value){
+						$new_bntAksi[] = $temp;
+					}
+				}
+			}
+
+			if(!empty($new_bntAksi)){
+				$output = '';
+				foreach($new_bntAksi as $value){
+					$output .= $value;
+				}
+			} else $output = "Kosong";
+				
+			return $output;
+		}
+		else if($tambah){
+			return $cek = in_array('tambah', $new_aksi[$menu]) ? true : false;
+		}
+	}
+
+	$jenis_hakAkses = "bagian kir";
+	$menu = "kir";
+	$page = "form";
+
+	$btnAksi = array(
+		'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data"><i class="ti-pencil-alt"></i>View</button>',
+		'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data"><i class="ti-pencil-alt"></i>Edit</button>',
+		'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data"><i class="ti-trash"></i>Hapus</button>',
+	);
+
+	$hak_akses = set_hak_akses($jenis_hakAkses);
+	
+	// cetak menu
+	// var_dump(set_menu($hak_akses));
+	// echo set_menu($hak_akses);
+	// echo "<br>";
+
+	// // cek validasi bypass url
+	var_dump(get_hak_akses($menu, $page, $hak_akses));
+
+	// var_dump($btnAksi);
+
+	// $aksi = get_btn_aksi($menu, $hak_akses, false, true);
+	// var_dump($aksi);

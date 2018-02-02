@@ -50,17 +50,18 @@
 
 		$data_pekerjaan = get_datatable_pekerjaan($koneksi, $config_db);
 
+		session_start();
+
 		$data = array();
 		$no_urut = $_POST['start'];
 		foreach($data_pekerjaan as $row){
 			$no_urut++;
 			
-			// edit
-			$aksiEdit = '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>';
-			// hapus
-			$aksiHapus = '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>';
-
-			$aksi = $aksiEdit.$aksiHapus;
+			$btnAksi = array(
+				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>',
+				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>',
+			);
+			$aksi = get_btn_aksi('pekerjaan', $_SESSION['sess_akses_menu'], $btnAksi)=="" ? "-" : get_btn_aksi('pekerjaan', $_SESSION['sess_akses_menu'], $btnAksi);
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
