@@ -22,6 +22,10 @@ $(document).ready(function(){
 
 	if(cekEdit) getEdit(urlParams.id);
 
+	$("#btnHitung_harga").click(function(e){
+		getData_kir($("#kd_kir").val(), true);
+	});
+
     $("#form_analisa_harga").submit(function(e){
     	e.preventDefault();
     	submit();
@@ -64,8 +68,10 @@ $(document).ready(function(){
 				$(".field-kd-kir span.help-block").text('');
 
 				// get data kir
-				console.log(getData_kir(this.value));
+				reset_kir();
+				getData_kir(this.value);
     		}
+    		else reset_kir();
     	});    	
 
     	// harga beli
@@ -82,19 +88,13 @@ $(document).ready(function(){
 function getDataForm(){
 	var data = new FormData();
 
-	var dataProduk = {
-		id_produk: $("#id_produk").val().trim(),
-		kd_produk: $("#kd_produk").val().trim(),
-		nama: $("#nama").val().trim(),
-		satuan: $("#satuan").val().trim(),
-		ket: $("#ket").val().trim(),
-		stok: $("#stok").val().trim(),
-	};
-
-	data.append('dataProduk', JSON.stringify(dataProduk)); // dataProduk
-	data.append('dataKomposisi', JSON.stringify(listKomposisi)); // dataKomposisi
-	data.append('foto', $("#foto")[0].files[0]); // foto
-	data.append('action', $("#btnSubmit_produk").val().trim()); // stok
+	data.append('id_analisa_harga', $('#id_analisa_harga').val().trim()); // dataProduk
+	data.append('tgl', $('#tgl').val().trim()); // dataKomposisi
+	data.append('id_basis', $('#id_basis').val().trim()); // dataKomposisi
+	data.append('harga_basis', parseFloat($('#harga_basis').val().trim())); // dataKomposisi
+	data.append('kd_kir', $('#kd_kir').val().trim()); // dataKomposisi
+	data.append('harga_beli', parseFloat($('#harga_beli').val().trim())); // dataKomposisi
+	data.append('action', $("#btnSubmit_analisa_harga").val().trim()); // stok
 
 	return data;
 }
@@ -106,7 +106,7 @@ function submit(){
 	console.log(data);
 
 	$.ajax({
-		url: base_url+'app/controllers/Produk.php',
+		url: base_url+'app/controllers/Analisa_harga.php',
 		type: 'POST',
 		dataType: 'json',
 		data: data,
@@ -120,56 +120,28 @@ function submit(){
 			setLoading(false);
 			console.log(output);
 			if(!output.status){ // jika gagal
-				resetForm();
 				if(output.errorDB){ // jika db error
 					setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
 				}
 				else{
-					if(!output.cekList){
-						$.toast({
-							heading: 'Pesan Error',
-							text: 'Komposisi Tidak Boleh Kosong',
-							position: 'top-right',
-				            loaderBg: '#ff6849',
-				            icon: 'error',
-				            hideAfter: 3000,
-				            stack: 6
-						});
-					}
-					else{
-						$.toast({
-							heading: 'Pesan Error',
-							text: 'Harap Cek Kembali Form Isian!',
-							position: 'top-right',
-				            loaderBg: '#ff6849',
-				            icon: 'error',
-				            hideAfter: 3000,
-				            stack: 6
-						});
-					}
-					setValue(output.setValue);
+					$.toast({
+						heading: 'Pesan Error',
+						text: 'Harap Cek Kembali Form Isian!',
+						position: 'top-right',
+			            loaderBg: '#ff6849',
+			            icon: 'error',
+			            hideAfter: 3000,
+			            stack: 6
+					});
+					// setValue(output.setValue);
 					setError(output.setError);
 				}
 			}
-			else{
-				resetForm();
-				var toastText = ($("#btnSubmit_produk").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
-				$.toast({
-					heading: 'Pesan Berhasil',
-					text: toastText,
-					position: 'top-right',
-		            loaderBg: '#ff6849',
-		            icon: 'success',
-		            hideAfter: 3000,
-		            stack: 6
-				});
-				window.location.href = base_url+"index.php?m=produk&p=list";
-			}
+			else window.location.href = base_url+"index.php?m=analisa_harga&p=list";
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
 			setLoading(false);
-            resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             console.log(jqXHR, textStatus, errorThrown);
         }
@@ -235,64 +207,54 @@ function getEdit(id){
 
 // function set error
 function setError(error){
-	// kd_produk
-	if(!jQuery.isEmptyObject(error.kd_produkError)){
-		$('.field-kd-produk').removeClass('has-success').addClass('has-error');
-		$(".field-kd-produk span.help-block").text(error.kd_produkError);
+	// tanggal
+	if(!jQuery.isEmptyObject(error.tglError)){
+		$('.field-tgl').removeClass('has-success').addClass('has-error');
+		$(".field-tgl span.help-block").text(error.tglkError);
 	}
 	else{
-		$('.field-kd-bahan-baku').removeClass('has-error').addClass('has-success');
-		$(".field-kd-bahan-baku span.help-block").text('');
+		$('.field-tgl').removeClass('has-error').addClass('has-success');
+		$(".field-tgl span.help-block").text('');
 	}
 
-	// nama
-	if(!jQuery.isEmptyObject(error.namaError)){
-		$('.field-nama').removeClass('has-success').addClass('has-error');
-		$(".field-nama span.help-block").text(error.namaError);
+	// id basis
+	if(!jQuery.isEmptyObject(error.id_basisError)){
+		$('.field-id-basis').removeClass('has-success').addClass('has-error');
+		$(".field-id-basis span.help-block").text(error.id_basisError);
 	}
 	else{
-		$('.field-nama').removeClass('has-error').addClass('has-success');
-		$(".field-nama span.help-block").text('');
+		$('.field-id-basis').removeClass('has-error').addClass('has-success');
+		$(".field-id-basis span.help-block").text('');
 	}
 
-	// satuan
-	if(!jQuery.isEmptyObject(error.satuanError)){
-		$('.field-satuan').removeClass('has-success').addClass('has-error');
-		$(".field-satuan span.help-block").text(error.satuanError);
+	// harga basis
+	if(!jQuery.isEmptyObject(error.harga_basisError)){
+		$('.field-harga-basis').removeClass('has-success').addClass('has-error');
+		$(".field-harga-basis span.help-block").text(error.harga_basisError);
 	}
 	else{
-		$('.field-satuan').removeClass('has-error').addClass('has-success');
-		$(".field-satuan span.help-block").text('');
+		$('.field-harga-basis').removeClass('has-error').addClass('has-success');
+		$(".field-harga-basis span.help-block").text('');
 	}
 
-	// ket
-	if(!jQuery.isEmptyObject(error.ketError)){
-		$('.field-ket').removeClass('has-success').addClass('has-error');
-		$(".field-ket span.help-block").text(error.ketError);
+	// kode kir
+	if(!jQuery.isEmptyObject(error.kd_kirError)){
+		$('.field-kd-kir').removeClass('has-success').addClass('has-error');
+		$(".field-kd-kir span.help-block").text(error.kd_kirError);
 	}
 	else{
-		$('.field-ket').removeClass('has-error').addClass('has-success');
-		$(".field-ket span.help-block").text('');
+		$('.field-kd-kir').removeClass('has-error').addClass('has-success');
+		$(".field-kd-kir span.help-block").text('');
 	}
 
-	// foto
-	if(!jQuery.isEmptyObject(error.fotoError)){
-		$('.field-foto').removeClass('has-success').addClass('has-error');
-		$(".field-foto span.help-block").text(error.fotoError);
+	// harga beli
+	if(!jQuery.isEmptyObject(error.harga_beliError)){
+		$('.field-harga-beli').removeClass('has-success').addClass('has-error');
+		$(".field-harga-beli span.help-block").text(error.harga_beliError);
 	}
 	else{
-		$('.field-foto').removeClass('has-error').addClass('has-success');
-		$(".field-foto span.help-block").text('');
-	}
-
-	// stok
-	if(!jQuery.isEmptyObject(error.stokError)){
-		$('.field-stok').removeClass('has-success').addClass('has-error');
-		$(".field-stok span.help-block").text(error.stokError);
-	}
-	else{
-		$('.field-stok').removeClass('has-error').addClass('has-success');
-		$(".field-stok span.help-block").text('');
+		$('.field-harga-beli').removeClass('has-error').addClass('has-success');
+		$(".field-harga-beli span.help-block").text('');
 	}
 }
 
@@ -353,34 +315,210 @@ function setSelect_kir(){
 	})
 }
 
-// function get data kir
-function getData_kir(idKir){
-	$.ajax({
-		url: base_url+"app/controllers/Analisa_harga.php",
-		type: "post",
-		dataType: "json",
-		data: {
-			"action": "get_kir_analisa_harga",
-			"id": idKir,
-		},
-		success: function(data){
-			console.log(data);
-		},
-		error: function (jqXHR, textStatus, errorThrown){ // error handling
-            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            console.log(jqXHR, textStatus, errorThrown);
-        }
-	})	
-}
+// Function Hitung Analisa Harga //
+	// function get data kir
+	function getData_kir(idKir, hitung=false){
+		$.ajax({
+			url: base_url+"app/controllers/Analisa_harga.php",
+			type: "post",
+			dataType: "json",
+			data: {
+				"action": "get_kir_analisa_harga",
+				"id": idKir,
+			},
+			success: function(data){
+				console.log(data);
+				if(!hitung){
+					// tampilkan supplier
+					var info_supplier = data.supplier.npwp+' - '+data.supplier.nama_supplier;
 
-// function setData_kir
-function setData_kir_kopi(){
+					if(!data.supplier.npwp){ // jika nik kosong
+						// jika npwp ada
+						info_supplier = (!data.supplier.nik) ? data.supplier.nik+' (NIK) - '+data.supplier.nama_supplier : data.supplier.nama_supplier;
+					}
 
-}
+					$('.kir-supplier').slideDown();
+					$('#info_supplier').text(info_supplier);
 
-function setData_kir_lada(){
+					// cek jenis
+					if(data.jenis == "K"){
+						// tampilkan data kir kopi
+						setData_kir_kopi(data.dataKir);
+					}
+					else{
+						// tampilkan data kir lada
+						setData_kir_lada(data.dataKir);
+					}
+				}
+				else{
+					hitung_analisa_harga(data.jenis, data.dataKir);
+				}	
+			},
+			error: function (jqXHR, textStatus, errorThrown){ // error handling
+	            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+	            console.log(jqXHR, textStatus, errorThrown);
+	        }
+		})	
+	}
 
-}
+	// function setData_kir
+	function setData_kir_kopi(dataKir){
+		$('.kir-kopi').slideDown();
+
+		// info kir
+		$('#info_trase').text(parseFloat(dataKir.trase)+" Gr");
+		$('#info_gelondong').text(parseFloat(dataKir.gelondong)+" Gr");
+		$('#info_air_kopi').text(parseFloat(dataKir.air)+ " %");
+		$('#info_ayakan').text(parseFloat(dataKir.ayakan)+ " Gr");
+		$('#info_kulit').text(parseFloat(dataKir.kulit)+ " Gr");
+		$('#info_rendemen').text(parseFloat(dataKir.rendemen)+" %");
+
+		// analisa harga
+		$('.analisa-kopi').slideDown();
+	}
+
+	function setData_kir_lada(dataKir){
+		$('.kir-lada').slideDown();
+
+		// info kir
+		$('#info_air_lada').text(dataKir.air);
+		$('#info_berat').text(dataKir.berat);
+		$('#info_abu').text(dataKir.abu);
+
+		// analisa harga
+		$('.analisa-lada').slideDown();
+	}
+
+	function reset_kir(){
+		// reset supplier
+		$('.kir-supplier').slideUp();
+		$('#info_supplier').text("");
+
+		// reset kir kopi
+		$('.kir-kopi').slideUp();
+		$('#info_trase').text("");
+		$('#info_gelondong').text("");
+		$('#info_air_kopi').text("");
+		$('#info_ayakan').text("");
+		$('#info_kulit').text("");
+		$('#info_rendemen').text("");
+
+		// reset analisa kopi
+		$('.analisa-kopi').slideUp();
+		$('#kalkulasi_rendemen').text("");
+
+		// reset kir lada
+		$('.kir-lada').slideUp();
+		$('#info_air_lada').text("");
+		$('#info_berat').text("");
+		$('#info_abu').text("");
+
+		// reset analisa lada
+		$('.analisa-lada').slideUp();
+		$('#kalkulasi_air_abu').text("");
+		$('#kalkulasi_berat').text("");
+
+		$('#harga_beli').val("");
+	}
+
+	function hitung_analisa_harga(jenisKir, dataKir){
+		if(jenisKir == "K"){ // kopi
+
+		}
+		else{ // lada
+			// hitung kalkulasi air-abu
+			var kalkulasi_air_abu = hitung_air_abu(parseFloat(dataKir.air), parseFloat(dataKir.abu));
+			console.log("Kalkulasi Air Abu: "+kalkulasi_air_abu);
+
+			// hitung kalkulasi berat
+			var kalkulasi_berat = hitung_berat(parseFloat(dataKir.berat));
+			console.log("Kalkulasi Berat: "+kalkulasi_berat);
+			console.log("Harga Beli Lada: "+hitung_harga_lada(parseFloat($("#harga_basis").val()), kalkulasi_air_abu, kalkulasi_berat));
+			// hitung harga
+			$('#kalkulasi_air_abu').text(kalkulasi_air_abu);
+			$('#kalkulasi_berat').text(kalkulasi_berat);
+			$("#harga_beli").val(hitung_harga_lada(parseFloat($("#harga_basis").val()), kalkulasi_air_abu, kalkulasi_berat));
+		}
+		// console.log(dataKir);
+	}
+
+	function hitung_air_abu(air, abu){
+		return ((23)-(air+abu)).toFixed(2);
+	}
+
+	function hitung_berat(berat){
+		var temp;
+		var temp_2;
+		var temp_berat;
+
+		//jika berat diatas > 1600
+		if (berat>1600){
+			//cek range
+			if((berat>1600) && (berat<=1650)){
+				temp=berat-1600;
+				temp_2=10;
+				temp_berat=temp*temp_2;
+			}
+			else if((berat>1650) && (berat<=1700)){
+				temp=berat-1650;
+				temp_2=5;
+				temp_berat=temp*temp_2;
+				temp_berat+=500;
+			}
+			else if((berat>1700) && (berat<=1750)){
+				temp=berat-1700;
+				temp_2=5;
+				temp_berat=temp*temp_2;
+				temp_berat+=750;
+			}
+		}
+		//jika berat dibawah < 1600
+		else if(berat<1600){
+			//cek range
+			if((berat<1600) && (berat>=1500))
+			{
+				temp=1600-berat;
+				temp_2=-5;
+				temp_berat=temp*temp_2;
+			}
+			else if((berat<1500) && (berat>=1400)){
+				temp=1500-berat;
+				temp_2=-10;
+				temp_berat=temp*temp_2;
+				temp_berat+=-500;
+			}
+			else if((berat<1400) && (berat>=1200)){
+				temp=1400-berat;
+				temp_2=-12.5;
+				temp_berat=temp*temp_2;
+				temp_berat+=-1500;
+			}
+		}
+		else //1600 pas, berarti tidak ada penambahan
+			temp_berat=0;
+
+		return temp_berat;
+	}
+
+	function hitung_harga_lada(basis, kalkulasi_air_abu, kalkulasi_berat){
+		//jika air+ berat+
+		if((kalkulasi_air_abu>=0) && (kalkulasi_berat>=0)){
+			return ((parseFloat(basis)+(parseFloat(basis)*kalkulasi_air_abu/100))+kalkulasi_berat).toFixed(2);
+		}
+		//jika air+ berat-
+		else if((kalkulasi_air_abu>=0) && (kalkulasi_berat<0)){
+			return ((parseFloat(basis)+kalkulasi_berat)+((parseFloat(basis)+kalkulasi_berat)*kalkulasi_air_abu/100)).toFixed(2);	
+		}
+		//jika air- berat+
+		else if((kalkulasi_air_abu<0) && (kalkulasi_berat>=0)){
+			return ((parseFloat(basis)+(parseFloat(basis)*kalkulasi_air_abu/100))+kalkulasi_berat).toFixed(2);
+		}
+		//jika air- berat-
+		else if((kalkulasi_air_abu<0) && (kalkulasi_berat<0)){
+			return ((parseFloat(basis)+(parseFloat(basis)*kalkulasi_air_abu/100))+kalkulasi_berat).toFixed(2);
+		}
+	}
+// ============================================== //
 
 function getTanggal(){
     var d = new Date();

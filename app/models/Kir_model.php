@@ -45,6 +45,18 @@
 		return $result;	
 	}
 
+	function get_supplier_kir($koneksi, $idKir){
+		$query = "SELECT s.id, s.npwp, s.nik, s.nama nama_supplier FROM kir k ";
+		$query .= "JOIN supplier s ON s.id = k.id_supplier WHERE k.id = :idKir";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':idKir', $idKir);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
 	// get kir yang belum diberi harga
 	function get_kir_analisa_harga($koneksi){
 		$query = "SELECT k.id id_kir, k.kd_kir, k.id_supplier, ";

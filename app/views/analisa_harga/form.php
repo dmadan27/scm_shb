@@ -140,47 +140,45 @@
 			    	 							</div>
 			    	 							<div class="col-md-6">
 			    	 								<div class="form-group field-info-rendemen has-feedback m-b-5">
-														<label class="col-md-12" for="info_trase">Rendemen:</label>
+														<label class="col-md-12" for="info_rendemen">Rendemen:</label>
 								                        <div class="col-md-12">
-								                            <p class="form-control-static" id="info_trase">Info Rendemen</p>
+								                            <p class="form-control-static" id="info_rendemen">Info Rendemen</p>
 								                            <span class="help-block small pesan"></span>
 								                        </div>
 													</div>
 			    	 							</div>
-			    	 						</div>
-			    	 						<!-- <div class="form-group field-harga-beli-kopi has-feedback m-b-5">
-						                        <div class="col-md-12 text-right">
-						                            <button id="btnHitung_kopi" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_kopi">Hitung Harga Beli</button>
-						                        </div>
-											</div> -->		
+			    	 						</div>	
 			    	 					</div>
 			    	 					<div class="kir-lada" style="display: none;">
-			    	 						<div class="form-group field-info-air-lada has-feedback m-b-5">
-												<label class="col-md-12" for="info_air_lada">Air:</label>
-						                        <div class="col-md-12">
-						                            <p class="form-control-static" id="info_air_lada">Info Air</p>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-											<div class="form-group field-info-berat has-feedback m-b-5">
-												<label class="col-md-12" for="info_berat">Berat:</label>
-						                        <div class="col-md-12">
-						                            <p class="form-control-static" id="info_berat">Info Berat</p>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-											<div class="form-group field-info-abu has-feedback m-b-5">
-												<label class="col-md-12" for="info_abu">Abu:</label>
-						                        <div class="col-md-12">
-						                            <p class="form-control-static" id="info_abu">Info Abu</p>
-						                            <span class="help-block small pesan"></span>
-						                        </div>
-											</div>
-											<!-- <div class="form-group field-harga-beli-lada has-feedback m-b-5">
-						                        <div class="col-md-12 text-right">
-						                            <button id="btnHitung_lada" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung_lada">Hitung Harga Beli</button>
-						                        </div>
-											</div> -->
+			    	 						<div class="row">
+			    	 							<div class="col-md-4">
+			    	 								<div class="form-group field-info-air-lada has-feedback m-b-5">
+														<label class="col-md-12" for="info_air_lada">Air:</label>
+								                        <div class="col-md-12">
+								                            <p class="form-control-static" id="info_air_lada">Info Air</p>
+								                            <span class="help-block small pesan"></span>
+								                        </div>
+													</div>
+			    	 							</div>
+			    	 							<div class="col-md-4">
+			    	 								<div class="form-group field-info-berat has-feedback m-b-5">
+														<label class="col-md-12" for="info_berat">Berat:</label>
+								                        <div class="col-md-12">
+								                            <p class="form-control-static" id="info_berat">Info Berat</p>
+								                            <span class="help-block small pesan"></span>
+								                        </div>
+													</div>
+			    	 							</div>
+			    	 							<div class="col-md-4">
+			    	 								<div class="form-group field-info-abu has-feedback m-b-5">
+														<label class="col-md-12" for="info_abu">Abu:</label>
+								                        <div class="col-md-12">
+								                            <p class="form-control-static" id="info_abu">Info Abu</p>
+								                            <span class="help-block small pesan"></span>
+								                        </div>
+													</div>
+			    	 							</div>
+			    	 						</div>		
 			    	 					</div>
 			    	 					<div class="form-group field-hitung-harga has-feedback m-b-5">
 					                        <div class="col-md-12 text-right">
