@@ -80,13 +80,13 @@
 			'pembelian' => '<li class="menu-data-pembelian"> 
 								<a href="'.base_url.'index.php?m=pembelian&p=list"> 
 									<i class="mdi mdi-cart fa-fw" data-icon="v"></i> 
-									<span class="hide-menu">Data Pembelian</span> 
+									<span class="hide-menu">Data Pembelian Bahan Baku</span> 
 								</a> 
 							</li>',
 			'pemesanan' => '<li class="menu-data-pemesanan"> 
 								<a href="'.base_url.'index.php?m=pemesanan&p=list"> 
 									<i class="mdi mdi-cart-outline fa-fw" data-icon="v"></i> 
-									<span class="hide-menu">Data Pemesanan</span> 
+									<span class="hide-menu">Data Pemesanan Produk</span> 
 								</a> 
 							</li>',
 			'pengiriman' => '<li class="menu-data-pengiriman"> 

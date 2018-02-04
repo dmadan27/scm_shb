@@ -62,7 +62,7 @@
 				                        	<div class="input-group">
 				                        		<select id="supplier" class="form-control select2"></select>
 				                        		<span class="input-group-btn">
-				                        			<button id="tambah_supplier" type="button" class="btn btn-danger btn-outline waves-effect waves-light">Supplier Baru</button>
+				                        			<button id="pengganti_supplier" type="button" class="btn btn-danger btn-outline waves-effect waves-light">Supplier Pengganti</button>
 				                        		</span>
 				                        	</div>
 				                            <span class="help-block small pesan"></span>
@@ -131,6 +131,26 @@
 		    	 			<!-- form detail pembelian -->
 			    	 		<div class="row">
 			    	 			<div class="col-md-6">
+			    	 				<!-- analisa harga -->
+			    	 				<div class="form-group field-analisa-harga has-feedback m-b-5">
+										<label class="col-md-12" for="analisa_harga">Analisa Harga*</label>
+				                        <div class="col-md-12">
+				                            <select id="analisa_harga" class="form-control select2">
+				                            	<option value="">-- Pilih Analisa Harga --</option>
+				                            </select>
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+									<!-- harga -->
+			    	 				<div class="form-group field-harga has-feedback m-b-5">
+										<label class="col-md-12" for="harga">Harga Beli*</label>
+				                        <div class="col-md-12">
+				                        	<input id="harga" type="number" min="0" class="form-control" placeholder="Masukkan Harga Beli">
+				                            <span class="help-block small pesan"></span>
+				                        </div>
+									</div>
+			    	 			</div>
+			    	 			<div class="col-md-6">
 		    	 					<!-- bahan baku -->
 			    	 				<div class="form-group field-bahan-baku has-feedback m-b-5">
 										<label class="col-md-12" for="bahan_baku">Bahan Baku*</label>
@@ -161,35 +181,15 @@
 						                        <div class="col-md-12">
 						                        	<div class="input-group">
 						                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah">
-						                        		<span class="input-group-addon"></span>
+						                        		<span class="input-group-addon satuan"></span>                   	
+						                        		<span class="input-group-btn">
+						                        			<button type="button" id="btnTambah_barang" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pembelian"><i class="fa fa-plus"></i></button>
+						                        		</span>
 						                        	</div>
 						                            <span class="help-block small pesan"></span>
 						                        </div>
 											</div>
 										</div>
-									</div>
-			    	 			</div>
-			    	 			<div class="col-md-6">
-			    	 				<!-- analisa harga -->
-			    	 				<div class="form-group field-analisa-harga has-feedback m-b-5">
-										<label class="col-md-12" for="analisa_harga">Analisa Harga*</label>
-				                        <div class="col-md-12">
-				                            <select id="analisa_harga" class="form-control select2"></select>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-			    	 				<!-- harga -->
-			    	 				<div class="form-group field-harga has-feedback m-b-5">
-										<label class="col-md-12" for="harga">Harga Beli*</label>
-				                        <div class="col-md-12">
-				                        	<div class="input-group">
-				                        		<input id="harga" type="number" min="0" class="form-control" placeholder="Masukkan Harga Beli">
-				                        		<span class="input-group-btn">
-				                        			<button type="button" id="btnTambah_barang" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pembelian"><i class="fa fa-plus"></i></button>
-				                        		</span>
-				                        	</div>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
 									</div>
 			    	 			</div>
 			    	 		</div>
@@ -211,7 +211,10 @@
 											</thead>
 											<tbody></tbody>
 										</table>
-									</div>	
+									</div>
+									<h4 id="tampilPPH" class="text-right">PPH: Rp. -,00</h4>
+									<h4 id="tampilHarga" class="text-right">Sub Total: Rp. -,00</h4>
+									<h2 id="tampilTotal" class="text-right">Total: Rp. -,00</h2>	
 			    	 			</div>
 			    	 		</div>
 			 			</div>

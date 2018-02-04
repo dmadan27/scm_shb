@@ -422,8 +422,12 @@ function setSelect_kir(){
 	}
 
 	function hitung_analisa_harga(jenisKir, dataKir){
-		if(jenisKir == "K"){ // kopi
+		var harga = 0;
 
+		if(jenisKir == "K"){ // kopi
+			harga = parseFloat($("#harga_basis").val())*parseFloat(dataKir.rendemen)/100;
+			$("#kalkulasi_rendemen").text($("#harga_basis").val()+" x "+parseFloat(dataKir.rendemen)+"%");
+			$("#harga_beli").val(parseFloat(harga).toFixed(2));
 		}
 		else{ // lada
 			// hitung kalkulasi air-abu
@@ -435,9 +439,11 @@ function setSelect_kir(){
 			console.log("Kalkulasi Berat: "+kalkulasi_berat);
 			console.log("Harga Beli Lada: "+hitung_harga_lada(parseFloat($("#harga_basis").val()), kalkulasi_air_abu, kalkulasi_berat));
 			// hitung harga
+			harga = hitung_harga_lada(parseFloat($("#harga_basis").val()), kalkulasi_air_abu, kalkulasi_berat);
+			
 			$('#kalkulasi_air_abu').text(kalkulasi_air_abu);
 			$('#kalkulasi_berat').text(kalkulasi_berat);
-			$("#harga_beli").val(hitung_harga_lada(parseFloat($("#harga_basis").val()), kalkulasi_air_abu, kalkulasi_berat));
+			$("#harga_beli").val(parseFloat(harga).toFixed(2));
 		}
 		// console.log(dataKir);
 	}

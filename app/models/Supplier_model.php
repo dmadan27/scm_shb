@@ -51,6 +51,16 @@
 		return $result;
 	}
 
+	// function get_data_supplier($koneksi){
+	// 	$query = "SELECT id, nik, npwp, nama, supplier_utama FROM supplier";
+
+	// 	$statement = $koneksi->prepare($query);
+	// 	$statement->execute();
+	// 	$result = $statement->fetchAll();
+
+	// 	return $result;
+	// }
+
 	// function insert
 	function insertSupplier($koneksi, $data){
 		$query = "CALL tambah_supplier (:nik, :npwp, :nama, :alamat, :telp, :email, :status, :supplier_utama) ";

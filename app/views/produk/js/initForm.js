@@ -273,23 +273,11 @@ function submit(){
 				}
 			}
 			else{
-				resetForm();
-				var toastText = ($("#btnSubmit_produk").val().toLowerCase()=="tambah") ? 'Data Berhasil di Simpan' : 'Data Berhasil di Edit';
-				$.toast({
-					heading: 'Pesan Berhasil',
-					text: toastText,
-					position: 'top-right',
-		            loaderBg: '#ff6849',
-		            icon: 'success',
-		            hideAfter: 3000,
-		            stack: 6
-				});
 				window.location.href = base_url+"index.php?m=produk&p=list";
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
 			setLoading(false);
-            resetForm();
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
             console.log(jqXHR, textStatus, errorThrown);
         }

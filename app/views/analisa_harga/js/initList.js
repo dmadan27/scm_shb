@@ -53,7 +53,7 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 6], // disable order di kolom 1 dan 3
+                "targets":[0, 7], // disable order di kolom 1 dan 3
                 "orderable":false,
             }
         ],
@@ -71,8 +71,45 @@ $(document).ready(function(){
 
 });
 
+function getView(id){
+    window.location.href = base_url+"index.php?m=analisa_harga&p=view&id="+id;
+}
+
 function getEdit(id){
     window.location.href = base_url+"index.php?m=analisa_harga&p=form&id="+id;
+}
+
+function getHapus(id){
+    swal({
+        title: "Pesan Konfirmasi",
+        text: "Apakah Anda Yakin Akan Menghapus Data Ini!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Ya, Hapus!",
+        closeOnConfirm: false,
+    }, function(){
+        $.ajax({
+            url: base_url+"app/controllers/Analisa_harga.php",
+            type: "post",
+            dataType: "json",
+            data: {
+                "id": id,
+                "action": "hapus",
+            },
+            success: function(output){
+                console.log(output);
+                if(output.status){
+                    swal("Pesan Berhasil", "Data Berhasil Dihapus", "success");
+                    tabel_analisa_harga.ajax.reload();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) { // error handling
+                swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        })   
+    });
 }
 
 // Function export PDF

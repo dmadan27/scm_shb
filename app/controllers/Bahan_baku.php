@@ -36,6 +36,10 @@
 				get_select_bahanBaku($koneksi);
 				break;
 
+			case 'get_satuan_bahanbaku':
+				get_satuan_bahanbaku($koneksi, $id);
+				break;
+
 			default:
 				# code...
 				break;
@@ -249,6 +253,12 @@
 		}
 
 		echo json_encode($data);
+	}
+
+	function get_satuan_bahanbaku($koneksi, $id){
+		$data_satuan = getBahanBaku_by_id($koneksi, $id);
+
+		echo json_encode($data_satuan['satuan']);
 	}
 
 	// function set rule

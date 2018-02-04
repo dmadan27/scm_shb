@@ -236,7 +236,7 @@
 		subtotal double(12,2),
 
 		CONSTRAINT pk_detail_pembelian PRIMARY KEY(id),
-		CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian(id)
+		CONSTRAINT fk_detail_pembelian_id_pembelian FOREIGN KEY(id_pembelian) REFERENCES pembelian_bahan_baku(id)
 			ON DELETE RESTRICT ON UPDATE CASCADE,
 		CONSTRAINT fk_detail_pembelian_id_bahan_baku FOREIGN KEY(id_bahan_baku) REFERENCES bahan_baku(id)
 			ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -506,6 +506,49 @@
 	END;
 
 	-- Tambah Detail Pembelian
+	CREATE PROCEDURE tambah_detail_pembelian(
+		in invoice_param varchar(25),
+		in tgl_param date,
+		in id_bahan_baku_param int,
+		in id_analisa_harga_param int,
+		in colly_param int,
+		in jumlah_param double(12,2),
+		in harga_param double(12,2),
+		in subtotal_param double(12,2)
+	)
+	BEGIN
+		DECLARE id_pembelian_param int;
+		DECLARE cek_tgl int;
+		DECLARE get_brg_masuk double(12,2);
+
+		SELECT id INTO id_pembelian_param FROM pembelian_bahan_baku WHERE invoice = invoice_param;
+
+		-- insert detail
+		INSERT INTO detail_pembelian 
+			(id_pembelian, id_bahan_baku, id_analisa_harga, colly, jumlah, harga, subtotal)
+		VALUES
+			(id_pembelian_param, id_bahan_baku_param, id_analisa_harga_param, 
+				colly_param, jumlah_param, harga_param, subtotal_param);
+
+		-- get tgl mutasi
+		SELECT COUNT(tgl) INTO cek_tgl FROM mutasi_bahan_baku WHERE tgl=tgl_param AND id_bahan_baku = id_bahan_baku_param;
+
+		IF cek_tgl > 0 THEN -- jika tgl pembelian dan mutasi sesuai
+			-- get barang masuk
+			SELECT brg_masuk INTO get_brg_masuk FROM mutasi_bahan_baku WHERE id_bahan_baku = id_bahan_baku_param AND tgl = tgl_param;
+
+			UPDATE mutasi_bahan_baku SET
+				brg_masuk = (jumlah_param+get_brg_masuk)
+			WHERE
+				id_bahan_baku = id_bahan_baku_param AND tgl = tgl_param;
+
+		ELSE -- jika tgl pembelian tidak ada yg sama dgn tgl mutasi
+			-- insert mutasi bahan baku
+			INSERT INTO mutasi_bahan_baku (tgl, id_bahan_baku, brg_masuk, brg_keluar)
+			VALUES (tgl_param, id_bahan_baku_param, jumlah_param, '');
+
+		END IF;
+	END;
 
 # =========================================== #
 
@@ -597,6 +640,23 @@
 	-- View kir kopi
 
 	-- View kir lada
+
+	-- view analisa harga
+	CREATE OR REPLACE VIEW v_analisa_harga AS
+		SELECT
+			ah.id id_analisa_harga, ah.tgl tgl_analisa, 
+    		k.id id_kir, k.kd_kir kd_kir, 
+    		(CASE WHEN (k.jenis_bahan_baku = "K") THEN "KOPI ASALAN" ELSE "LADA HITAM ASALAN" END) jenis_kir,
+    		hb.id id_harga_basis, 
+    		(CASE WHEN (hb.jenis = "K") THEN "BASIS KOPI" ELSE "BASIS LADA" END) jenis_basis, 
+    		hb.harga_basis hb_harga_basis, ah.harga_basis harga_basis, ah.harga_beli harga_beli,
+    		s.id id_supplier, s.nama nama_supplier, s.nik, s.npwp, s.supplier_utama,
+		    (CASE WHEN (ah.status = "1") THEN "SUDAH DIBAYAR" ELSE "BELUM DIBAYAR" END) status_analisa
+		FROM analisa_harga ah
+		JOIN kir k ON k.id = ah.id_kir
+		JOIN harga_basis hb ON hb.id = ah.id_harga_basis
+		JOIN supplier s ON s.id = k.id_supplier
+		ORDER BY ah.tgl DESC;
 
 	-- View pembelian
 

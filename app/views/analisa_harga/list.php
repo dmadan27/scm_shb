@@ -43,6 +43,7 @@
                                     <th>Supplier</th>
                                     <th>Harga Basis</th>
                                     <th>Harga Beli</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

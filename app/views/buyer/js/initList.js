@@ -42,6 +42,43 @@ $(document).ready(function(){
 
 });
 
+function getView(id){
+    window.location.href = base_url+"index.php?m=buyer&p=view&id="+id;
+}
+
+function getHapus(id){
+    swal({
+        title: "Pesan Konfirmasi",
+        text: "Apakah Anda Yakin Akan Menghapus Data Ini!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Ya, Hapus!",
+        closeOnConfirm: false,
+    }, function(){
+        $.ajax({
+            url: base_url+"app/controllers/Buyer.php",
+            type: "post",
+            dataType: "json",
+            data: {
+                "id": id,
+                "action": "hapus",
+            },
+            success: function(output){
+                console.log(output);
+                if(output.status){
+                    swal("Pesan Berhasil", "Data Berhasil Dihapus", "success");
+                    tabel_analisa_harga.ajax.reload();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) { // error handling
+                swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+                console.log(jqXHR, textStatus, errorThrown);
+            }
+        })   
+    });
+}
+
 // Function export PDF
     function createPDF(){
         getDataPDF(function(data){

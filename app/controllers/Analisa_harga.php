@@ -54,9 +54,9 @@
 
 	function listAnalisaHarga($koneksi){
 		$config_db = array(
-			'tabel' => 'v_produk',
-			'kolomOrder' => array(null, 'kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok_akhir', null),
-			'kolomCari' => array('kd_produk', 'nama', 'satuan', 'ket', 'komposisi', 'stok_akhir'),
+			'tabel' => 'v_analisa_harga',
+			'kolomOrder' => array(null, 'tgl_analisa', 'kd_kir', 'nama_supplier', 'harga_basis', 'harga_beli', 'status_analisa', null),
+			'kolomCari' => array('tgl_analisa', 'nama_supplier', 'kd_kir', 'jenis_kir', 'nik', 'npwp', 'harga_basis', 'harga_beli', 'status_analisa'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
@@ -71,22 +71,28 @@
 			$no_urut++;
 			
 			$btnAksi = array(
-				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>',
-				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>',
-				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>',
+				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id_analisa_harga"]."'".')"><i class="ti-zoom-in"></i></button>',
+				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id_analisa_harga"]."'".')"><i class="ti-pencil-alt"></i></button>',
+				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id_analisa_harga"]."'".')"><i class="ti-trash"></i></button>',
 			);
 
 			// fungsi get aksi
 			$aksi = get_btn_aksi('analisa_harga', $_SESSION['sess_akses_menu'], $btnAksi);
+			$supplier = $row['npwp'].' - '.$row['nama_supplier'];
+			if(empty($row['npwp'])){ // jika nik kosong
+				// jika npwp ada
+				$supplier = (!empty($row['nik'])) ? $row['nik'].' (NIK) - '.$row['nama_supplier'] : $row['nama_supplier'];
+			}
+			$status = strtolower($row['status_analisa'])=='tersedia' ? '<span class="label label-success label-rouded">'.$row['status_analisa'].'</span>' : '<span class="label label-danger label-rouded">'.$row['status_analisa'].'</span>';
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = cetakTgl($row['tgl'], 'full');
+			$dataRow[] = cetakTgl($row['tgl_analisa'], 'full');
 			$dataRow[] = $row['kd_kir'];
-			$dataRow[] = $row['supplier'];
+			$dataRow[] = $supplier;
 			$dataRow[] = rupiah($row['harga_basis']);
 			$dataRow[] = rupiah($row['harga_beli']);
-			$dataRow[] = $row['status'];
+			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
 			$data[] = $dataRow;
@@ -105,56 +111,43 @@
 	function actionAdd($koneksi){
 		$dataForm = isset($_POST) ? $_POST : false;
 
-		// // validasi
-		// 	$status = $errorDB = false;
+		// validasi
+			$status = $errorDB = false;
 
-		// 	$configData = setRule_validasi($dataForm);
-		// 	$validasi = set_validasi($configData);
-		// 	$cek = $validasi['cek'];
-		// 	$setError = $validasi['setError'];
-		// 	$setValue = $validasi['setValue'];
-		// // ================================== //
-		// if($cek){
-		// 	$dataForm = array(
-		// 		'id_produk' => validInputan($dataForm['id_produk'], false, false),
-		// 		'kd_produk' => validInputan($dataForm['kd_produk'], false, false),
-		// 		'nama' => (empty($dataForm['nama'])) ? NULL : validInputan($dataForm['nama'], false, false),
-		// 		'satuan' => (empty($dataForm['satuan'])) ? NULL : validInputan($dataForm['satuan'], false, false),
-		// 		'ket' => (empty($dataForm['ket'])) ? NULL : validInputan($dataForm['ket'], false, false),
-		// 		'stok' => validInputan($dataForm['stok'], false, false),
-		// 	);
+			$configData = setRule_validasi($dataForm);
+			$validasi = set_validasi($configData);
+			$cek = $validasi['cek'];
+			$setError = $validasi['setError'];
+			$setValue = $validasi['setValue'];
+		// ================================== //
+		if($cek){
+			$dataForm = array(
+				'id_analisa_harga' => validInputan($dataForm['id_analisa_harga'], false, false),
+				'tgl' => validInputan($dataForm['tgl'], false, false),
+				'id_basis' => validInputan($dataForm['id_basis'], false, false),
+				'kd_kir' => validInputan($dataForm['kd_kir'], false, false),
+				'harga_basis' => validInputan($dataForm['harga_basis'], false, false),
+				'harga_beli' => validInputan($dataForm['harga_beli'], false, false),
+			);
 
-		// 	// lakukan insert
-		// 	if(insertProduk($koneksi, $dataProduk)){
-		// 		foreach($dataKomposisi as $index => $array){
-		// 			// insert hanya yg statusnya bukan hapus
-		// 			if($dataKomposisi[$index]['status'] != "hapus"){
-		// 				$dataInsert['kd_produk'] = $dataProduk['kd_produk'];
-		// 				// get data list item
-		// 				foreach ($dataKomposisi[$index] as $key => $value) {
-		// 					$dataInsert[$key] = $value;
-		// 				}
-		// 				insertKomposisi($koneksi, $dataInsert);
-		// 			}
-		// 		}
-		// 		$status = true;
-		// 		session_start();
-		// 		$_SESSION['notif'] = "Tambah Data Berhasil";
-		// 	}
-		// 	else{
-		// 		$status = false;
-		// 		$errorDB = true;
-		// 	}
-		// }
-		// else $status = false;
+			// lakukan insert
+			if(insertAnalisa_harga($koneksi, $dataForm)){
+				$status = true;
+				session_start();
+				$_SESSION['notif'] = "Tambah Data Berhasil";
+			}
+			else{
+				$status = false;
+				$errorDB = true;
+			}
+		}
+		else $status = false;
 
 		$output = array(
-			// 'status' => $status,
-			// 'errorDB' => $errorDB,
-			// 'cekList' => $cekArray,
-			// 'setError' => $setError,
-			// 'setValue' => $setValue,
-			'post' => $dataForm,
+			'status' => $status,
+			'errorDB' => $errorDB,
+			'setError' => $setError,
+			'setValue' => $setValue,
 		);
 
 		echo json_encode($output);
@@ -216,33 +209,31 @@
 	}
 
 	function setRule_validasi($data){
-		$required = $_POST['action'] == "edit" ? "not_required" : "required";
-
 		$ruleData = array(
 			// tgl
 			array(
-				'field' => $data['kd_produk'], 'label' => 'Kode Produk', 'error' => 'kd_produkError',
-				'value' => 'kd_produk', 'rule' => 'string | 1 | 25 | required',
+				'field' => $data['tgl'], 'label' => 'Tanggal', 'error' => 'tglError',
+				'value' => 'tgl', 'rule' => 'string | 1 | 25 | required',
 			),
 			// id basis
 			array(
-				'field' => $data['nama'], 'label' => 'Nama Produk', 'error' => 'namaError',
-				'value' => 'nama', 'rule' => 'string | 1 | 50 | required',
+				'field' => $data['id_basis'], 'label' => 'Basis', 'error' => 'id_basisError',
+				'value' => 'id_basis', 'rule' => 'angka | 1 | 50 | required',
 			),
 			// harga basis
 			array(
-				'field' => $data['satuan'], 'label' => 'Satuan Produk', 'error' => 'satuanError',
-				'value' => 'satuan', 'rule' => 'string | 2 | 10 | required',
+				'field' => $data['harga_basis'], 'label' => 'Harga Basis', 'error' => 'harga_basisError',
+				'value' => 'harga_basis', 'rule' => 'nilai | 1 | 9999999 | required',
 			),
 			// kd kir
 			array(
-				'field' => $data['ket'], 'label' => 'Keterangan', 'error' => 'ketError',
-				'value' => 'ket', 'rule' => 'string | 1 | 255 | not_required',
+				'field' => $data['kd_kir'], 'label' => 'Kode Kir', 'error' => 'kd_kirError',
+				'value' => 'Kode Kir', 'rule' => 'angka | 1 | 255 | required',
 			),
 			// harga beli
 			array(
-				'field' => $data['stok'], 'label' => 'Stok Awal', 'error' => 'stokError',
-				'value' => 'stok', 'rule' => 'nilai | 1 | 999999999999 | '.$required,
+				'field' => $data['harga_beli'], 'label' => 'Harga Beli', 'error' => 'harga_beliError',
+				'value' => 'harga_beli', 'rule' => 'nilai | 1 | 9999999999 | required',
 			),
 		);
 
