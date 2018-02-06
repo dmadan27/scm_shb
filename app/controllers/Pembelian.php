@@ -112,72 +112,72 @@
 		echo json_encode($output);
 	}
 
-	// function actionAdd($koneksi){
-	// 	$dataPembelian = isset($_POST['dataPembelian']) ? json_decode($_POST['dataPembelian'],true) : false;
-	// 	$dataDetail = isset($_POST['dataDetail']) ? json_decode($_POST['dataDetail'],true) : false;
+	function actionAdd($koneksi){
+		$dataPembelian = isset($_POST['dataPembelian']) ? json_decode($_POST['dataPembelian'],true) : false;
+		$dataDetail = isset($_POST['dataDetail']) ? json_decode($_POST['dataDetail'],true) : false;
 
-	// 	// validasi
-	// 		$status = $errorDB = $cekArray = false;
-	// 		if($dataDetail){ // cek isi list komposisi ada / tidak
-	// 			if(cekArray($dataDetail)) $cekArray = false; // array kosong
-	// 			else $cekArray = true;
-	// 		}
+		// validasi
+			$status = $errorDB = $cekArray = false;
+			if($dataDetail){ // cek isi list komposisi ada / tidak
+				if(cekArray($dataDetail)) $cekArray = false; // array kosong
+				else $cekArray = true;
+			}
 
-	// 		$configData = setRule_validasi($dataPembelian);
-	// 		$validasi = set_validasi($configData);
-	// 		$cek = $validasi['cek'];
-	// 		$setError = $validasi['setError'];
-	// 		$setValue = $validasi['setValue'];
+			$configData = setRule_validasi($dataPembelian);
+			$validasi = set_validasi($configData);
+			$cek = $validasi['cek'];
+			$setError = $validasi['setError'];
+			$setValue = $validasi['setValue'];
 
-	// 		if(!$cekArray) $cek = false;
-	// 	// ============================== //
-	// 	if($cek){
-	// 		$dataPembelian = array(
-	// 			'id_pembelian' => validInputan($dataPembelian['id_pembelian'], false, false),
-	// 			'tgl' => validInputan($dataPembelian['tgl'], false, false),
-	// 			'invoice' => validInputan($dataPembelian['invoice'], false, false),
-	// 			'supplier' => validInputan($dataPembelian['supplier'], false, false),
-	// 			'status' => validInputan($dataPembelian['status'], false, false),
-	// 			'jenis_pembayaran' => validInputan($dataPembelian['jenis_pembayaran'], false, false),
-	// 			'jenis_pph' => validInputan($dataPembelian['jenis_pph'], false, false),
-	// 			'pph' => validInputan($dataPembelian['pph'], false, false),,
-	// 			'total' => validInputan($dataPembelian['total_pph'], false, false),,
-	// 			'ket' => validInputan($dataPembelian['ket'], false, false),
-	// 		);
+			if(!$cekArray) $cek = false;
+		// ============================== //
+		if($cek){
+			$dataPembelian = array(
+				'id_pembelian' => validInputan($dataProduk['id_pembelian'], false, false),
+				'tgl' => validInputan($dataProduk['tgl'], false, false),
+				'invoice' => validInputan($dataProduk['invoice'], false, false),
+				'supplier' => validInputan($dataProduk['supplier'], false, false),
+				'status' => validInputan($dataProduk['status'], false, false),
+				'jenis_pembayaran' => validInputan($dataProduk['jenis_pembayaran'], false, false),
+				'jenis_pph' => validInputan($dataProduk['jenis_pph'], false, false),
+				'pph' => validInputan($dataProduk['pph'], false, false),,
+				'total' => validInputan($dataProduk['total_pph'], false, false),,
+				'ket' => validInputan($dataProduk['ket'], false, false),
+			);
 
-	// 		if(insertPembelian($koneksi, $dataPembelian)){
-	// 			foreach($dataPembelian as $index => $array){
-	// 				// insert hanya yg statusnya bukan hapus
-	// 				if($dataPembelian[$index]['status'] != "hapus"){
-	// 					$dataInsert['tgl'] = $dataPembelian['tgl'];
-	// 					// get data list item
-	// 					foreach ($dataDetail[$index] as $key => $value) {
-	// 						$dataInsert[$key] = $value;
-	// 					}
-	// 					insertDetail_pembelian($koneksi, $dataInsert);
-	// 				}
-	// 			}
-	// 			$status = true;
-	// 			session_start();
-	// 			$_SESSION['notif'] = "Tambah Data Berhasil";
-	// 		}
-	// 		else{
-	// 			$status = false;
-	// 			$errorDB = true;
-	// 		}
-	// 	}
-	// 	else $status = false;
+			if(insertPembelian($koneksi, $dataPembelian)){
+				foreach($dataPembelian as $index => $array){
+					// insert hanya yg statusnya bukan hapus
+					if($dataPembelian[$index]['status'] != "hapus"){
+						$dataInsert['tgl'] = $dataPembelian['tgl'];
+						// get data list item
+						foreach ($dataDetail[$index] as $key => $value) {
+							$dataInsert[$key] = $value;
+						}
+						insertDetail_pembelian($koneksi, $dataInsert);
+					}
+				}
+				$status = true;
+				session_start();
+				$_SESSION['notif'] = "Tambah Data Berhasil";
+			}
+			else{
+				$status = false;
+				$errorDB = true;
+			}
+		}
+		else $status = false;
 
-	// 	$output = array(
-	// 		'status' => $status,
-	// 		'errorDB' => $errorDB,
-	// 		'cekList' => $cekArray,
-	// 		'setError' => $setError,
-	// 		'setValue' => $setValue,
-	// 	);
+		$output = array(
+			'status' => $status,
+			'errorDB' => $errorDB,
+			'cekList' => $cekArray,
+			'setError' => $setError,
+			'setValue' => $setValue,
+		);
 
-	// 	echo json_encode($output);
-	// }
+		echo json_encode($output);
+	}
 
 	function get_invoice_pembelian($koneksi){
 		$invoice = get_inc_invoice_pembelian($koneksi);

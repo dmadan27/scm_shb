@@ -76,7 +76,7 @@
 			);
 
 			// fungsi get aksi
-			$aksi = get_btn_aksi('user', $_SESSION['sess_akses_menu'], $btnAksi);
+			$aksi = get_btn_aksi('bahan_baku', $_SESSION['sess_akses_menu'], $btnAksi);
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;

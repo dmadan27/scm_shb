@@ -205,6 +205,22 @@
 			$getBulanPertama = date('Y-m', strtotime('-36 months', strtotime($dataForm['periode'])));
 			$get_dataPemesanan = getPemesanan_sukses($koneksi, $getBulanPertama, $getBulanSebelumnya, $dataForm['produk']);
 
+			// get list bulan
+				// $start    = new DateTime($getBulanPertama); // bulan pertama (data ke 1)
+				// $start->modify('first day of this month');
+				// $end      = new DateTime($getBulanSebelumnya); // bulan terakhir (data ke 36) - bulan sebelum peramalan yg diinginkan
+				// $end->modify('first day of next month');
+				// $interval = DateInterval::createFromDateString('1 month');
+				// $period   = new DatePeriod($start, $interval, $end);
+
+				// $listBulan = array();
+				// foreach ($period as $dt) {
+				//     $listBulan[] = $dt->format("Y-m");
+				// }
+
+				// proses penyesuaian nilai data pemesanan dgn list bulan
+				// $data_pemesanan = array();
+
 			// proses hitung single exponential smoothing
 			foreach($arrayAlpha as $key => $alpha){
 				$tempGalatKuadrat = array();
