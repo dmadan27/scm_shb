@@ -21,16 +21,3 @@
 
 		return $result;
 	}
-
-	// function get_data_login_buyer($koneksi, $username){
-	// 	$query = "SELECT u.username, u.password, u.jenis, u.hak_akses, b.id id_buyer, b.nama, b.email, b.foto ";
-	// 	$query .= "FROM user u JOIN user_buyer ub ON ub.username = u.username JOIN buyer b ON b.id = ub.id_buyer ";
-	// 	$query .= "WHERE BINARY u.username = :username";
-
-	// 	$statement = $koneksi->prepare($query);
-	// 	$statement->bindParam(':username', $username);
-	// 	$statement->execute();
-	// 	$result = $statement->fetch(PDO::FETCH_ASSOC);
-
-	// 	return $result;
-	// }

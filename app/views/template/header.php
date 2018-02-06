@@ -18,7 +18,7 @@
 	                <!--This is dark logo text-->
 	                <img src="<?= base_url."assets/plugins/images/admin-text.png"; ?>" alt="home" class="dark-logo" />
 	                <!--This is light logo text-->
-	            	<img src="<?= base_url."assets/plugins/images/admin-text-dark.png"; ?>" alt="home" class="light-logo" />
+	            	<img src="<?= base_url."assets/plugins/images/scmshb-text-dark.png"; ?>" alt="home" class="light-logo" />
              	</span>
          	</a>
         </div>
