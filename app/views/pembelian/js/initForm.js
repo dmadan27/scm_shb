@@ -58,6 +58,7 @@ $(document).ready(function(){
 
 				$("#analisa_harga").find('option').remove().end().trigger('change');
 				setSelect_analisa_harga();
+				setJenis_PPH(this.value);
     		}
     	});
 
@@ -134,6 +135,28 @@ $(document).ready(function(){
     // ==================================
 
 });
+
+// function set jenis sesuai supplier
+function setJenis_PPH(supplier){
+	$.ajax({
+		url: base_url+'app/controllers/Pembelian.php',
+		type: 'post',
+		dataType: 'json',
+		data: {"id_supplier": supplier, "action": "get_jenis_pph"},
+		beforeSend: function(){
+			setLoading();
+		},
+		success: function(data){
+			console.log(data);
+		},
+		error: function (jqXHR, textStatus, errorThrown){ // error handling
+			setLoading(false);	
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+	})	
+}
+
 
 // function detail pembelian
 	// function add detail
