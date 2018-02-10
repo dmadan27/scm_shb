@@ -1036,7 +1036,53 @@
 		('lisori', '$2y$10$NovbEZwyLg8XJIgaFqgDVOs1yXZOM/qoH3wFpGdfy6TAkUIeN/3O.', 8, 'BAGIAN KIR', '1'),
 		('ratnasari', '$2y$10$eLN/koyTMbpvNwp0N8JsluBe7qu0CR1WppY/UGAhcNvx3pus7XZJS', 4, 'BAGIAN ADMINISTRASI DAN KEUANGAN', '1'),
 		('sarifhifni', '$2y$10$4v8SU4WKmqyBmRP97lz.1uXxkxX1Y./qu6wZFgsIQcGkUqAQ7bMYO', 1, 'DIREKTUR', '1');
+# ======================================= #
 
+# Data Bahan Baku #
+	-- CALL tambah_bahan_baku(kd_bahan_baku, nama, satuan, ket, foto, tgl, stok);
+
+	CALL tambah_bahan_baku('KP-ASL', 'KOPI ASALAN', 'KG', NULL, NULL, CURDATE(), 100); -- 1. kopi asalan
+	CALL tambah_bahan_baku('LD-ASL', 'KOPI HITAM ASALAN', 'KG', NULL, NULL, CURDATE(), 100); -- 2. lada hitam asalan
+	CALL tambah_bahan_baku('KP-SUTA', 'KOPI SUTON A', 'KG', NULL, NULL, CURDATE(), 50); -- 3. kopi suton a
+	CALL tambah_bahan_baku('KP-SUTB', 'KOPI SUTON B', 'KG', NULL, NULL, CURDATE(), 50); -- 4. kopi suton b
+# ======================================= #
+
+# Data Produk - Komposisi #
+	-- CALL tambah_bahan_baku(kd_produk, nama, satuan, ket, foto, tgl, stok);
+	-- CALL tambah_komposisi(kd_produk, id_bahan_baku, penyusutan);
+
+	-- 1. kopi def 80 - kp-asl
+	CALL tambah_produk('KP-DEF80', 'KOPI DEF-80', 'KG', NULL, NULL, CURDATE(), 100);
+	CALL tambah_komposisi('KP-DEF80', 1, 0.05);
+
+	-- 2. kopi def 120 - kp asl
+	CALL tambah_produk('KP-DEF120', 'KOPI DEF-120', 'KG', NULL, NULL, CURDATE(), 100);
+	CALL tambah_komposisi('KP-DEF120', 1, 0.02);
+
+	-- 3. kopi 20/25 - kp suta
+	CALL tambah_produk('KP-2025', 'KOPI 20/25', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-2025', 3, 0.15);
+
+	-- 4. kopi 40/45 - kp suta
+	CALL tambah_produk('KP-4045', 'KOPI 40/45', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-4045', 3, 0.10);
+
+	-- 5. kopi 80/85 - kp sutb
+	CALL tambah_produk('KP-8085', 'KOPI 80/85', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-DEF80', 4, 0.20);
+
+	-- 6. kopi 60/65 - kp sutb
+	CALL tambah_produk('KP-6065', 'KOPI 60/65', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-6065', 4, 0.25);
+# ======================================= #
+
+# Data Kir Kopi #
+# ======================================= #
+
+# Data Kir Lada #
+# ======================================= #
+
+# Data Analisa Harga #
 # ======================================= #
 
 # Data Pembelian Bahan Baku #

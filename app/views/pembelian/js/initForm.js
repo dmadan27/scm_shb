@@ -147,7 +147,9 @@ function setJenis_PPH(supplier){
 			setLoading();
 		},
 		success: function(data){
+			setLoading(false);
 			console.log(data);
+			$('#jenis_pph').val(data).trigger('change');
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
 			setLoading(false);	
@@ -196,7 +198,7 @@ function setJenis_PPH(supplier){
 		);
 		numberingList();
 		clearDetail();
-		console.log(listPembelian);
+		// console.log(listPembelian);
 	}
 
 	function numberingList(){
@@ -257,7 +259,7 @@ function setJenis_PPH(supplier){
 			if(item.index == index) item.status = "hapus";
 		});
 		numberingList(); // reset ulang nomer
-		console.log(listPembelian);
+		// console.log(listPembelian);
 	}
 
 	function onChange_colly(index, val){
@@ -267,7 +269,7 @@ function setJenis_PPH(supplier){
 			} 
 		});
 		numberingList();
-		console.log(listPembelian);
+		// console.log(listPembelian);
 	}
 
 	function onChange_jumlah(index, val){
@@ -281,7 +283,7 @@ function setJenis_PPH(supplier){
 			// console.log(item);
 		});
 		numberingList();
-		console.log(listPembelian);
+		// console.log(listPembelian);
 	}
 
 	function onChange_hargaBeli(index, val){
@@ -295,7 +297,7 @@ function setJenis_PPH(supplier){
 			// console.log(item);
 		});
 		numberingList();
-		console.log(listPembelian);	
+		// console.log(listPembelian);	
 	}
 // ====================================== //
 	
