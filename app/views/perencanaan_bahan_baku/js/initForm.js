@@ -571,6 +571,9 @@ function submit(){
 					// setLoading();
 					swal("Pesan Error", "Koneksi Database Error, Silahkan Coba Lagi", "error");
 				}
+				else if(output.cekDuplikat){
+					swal("Pesan Error", "Perencanaan Tidak Boleh Sama Dengan Periode dan Produk yang Sebelumnya, Harap Cek Kembali", "warning");	
+				}
 				$.toast({
 					heading: 'Pesan Error',
 					text: 'Harap Cek Kembali Form Isian!',

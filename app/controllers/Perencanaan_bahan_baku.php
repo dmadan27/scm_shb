@@ -35,6 +35,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'hitung_peramalan':
 				hitung_peramalan($koneksi);
 				break;
@@ -96,11 +100,13 @@
 			}
 
 			$jumlah_bahanBaku = implode(', ', $jumlah_bahanBaku);
+			$tempPeriode = explode("-", $row['periode']);
+			$periode = strtoupper(get_bulanIndo($tempPeriode[1]))." ".$tempPeriode[0];
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
 			$dataRow[] = cetakTgl($row['tgl'], 'full');
-			$dataRow[] = $row['periode'];
+			$dataRow[] = $periode;
 			$dataRow[] = $row['kd_produk']." - ".$row['nama_produk'];
 			$dataRow[] = $row['jumlah_perencanaan']." ".$row['satuan_produk'];
 			$dataRow[] = cetakListItem($row['komposisi']);
@@ -125,7 +131,7 @@
 		$listJumlahBahanBaku = isset($_POST['listJumlahBahanBaku']) ? json_decode($_POST['listJumlahBahanBaku'],true) : false;
 		$safety_stock_bahanBaku = isset($_POST['safety_stock_bahanBaku']) ? json_decode($_POST['safety_stock_bahanBaku'],true) : false;
 
-		$status = $errorDB = false;
+		$status = $errorDB = $cekDuplikat = false;
 
 		// validasi
 			$configData = setRule_validasi($dataPerencanaan);
@@ -133,9 +139,6 @@
 			$cek = $validasi['cek'];
 			$setError = $validasi['setError'];
 			$setValue = $validasi['setValue'];
-
-			// cek duplikat periode dan produk
-
 		// ====================================== //
 
 		if($cek){
@@ -148,23 +151,30 @@
 				'safety_stock_produk' => validInputan($dataPerencanaan['safety_stock_produk'], false, false),
 			);
 
-			// insert
-			if(insertPerencanaan_bahan_baku($koneksi, $dataPerencanaan)){
-				$status = true;
-				session_start();
-				$_SESSION['notif'] = "Tambah Data Berhasil";
+			// cek duplikat periode dan produk
+			if(cek_duplikat_perencanaan($koneksi, $dataPerencanaan['periode'], $dataPerencanaan['produk'])){
+				$status = false;
+				$cekDuplikat = true;
 			}
 			else{
-				$status = false;
-				$errorDB = true;
-			}
+				// insert
+				if(insertPerencanaan_bahan_baku($koneksi, $dataPerencanaan)){
+					$status = true;
+					session_start();
+					$_SESSION['notif'] = "Tambah Data Berhasil";
+				}
+				else{
+					$status = false;
+					$errorDB = true;
+				}
+			}	
 		}
 		else $status = false;
 
 		$output = array(
 			'status' => $status,
 			'errorDB' => $errorDB,
-			// 'cekList' => $cekArray,
+			'cekDuplikat' => $cekDuplikat,
 			'setError' => $setError,
 			'setValue' => $setValue,
 		);
@@ -325,6 +335,19 @@
 		);
 
 		echo json_encode($output);
+	}
+
+	function cek_duplikat_perencanaan($koneksi, $periode, $id_produk){
+		$duplikat = cekDuplikat_perencanaan($koneksi, $periode, $id_produk);
+
+		if($duplikat['duplikat'] > 0) $cek = true; // jika duplikat
+		else $cek = false; // jika tidak
+
+		return $cek;
+	}
+
+	function getHapus($koneksi, $id){
+		
 	}
 	
 	function setRule_peramalan($data){

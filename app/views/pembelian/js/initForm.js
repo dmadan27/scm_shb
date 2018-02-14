@@ -9,7 +9,6 @@ $(document).ready(function(){
         format: "yyyy-mm-dd",
         todayHighlight: true,
         todayBtn: true,
-        todayHighlight: true,
     });
 	$('#tgl').datepicker('update',getTanggal());
 
@@ -17,9 +16,9 @@ $(document).ready(function(){
     $("#invoice").prop("readonly", true);
 
     setSelect_supplier();
+    setSelect_status();
     setSelect_jenisPembayaran();
     setSelect_jenisPPH();
-    setSelect_status();
     setSelect_bahan_baku();
 
     // tambah list barang
@@ -50,14 +49,25 @@ $(document).ready(function(){
     		}
     	});
 
+    	// status
+    	$("#status").change(function(){
+    		if(this.value !== ""){
+    			$('.field-status').removeClass('has-error').addClass('has-success');
+				$(".field-status span.help-block").text('');	
+    		}
+    	});
+
     	// supplier
     	$("#supplier").change(function(){
     		if(this.value !== ""){
     			$('.field-supplier').removeClass('has-error').addClass('has-success');
 				$(".field-supplier span.help-block").text('');
 
+				// set analisa harga sesuai dengan supplier yg dipilih
 				$("#analisa_harga").find('option').remove().end().trigger('change');
 				setSelect_analisa_harga();
+
+				// set pph sesuai dgn supplier
 				setJenis_PPH(this.value);
     		}
     	});
@@ -92,11 +102,12 @@ $(document).ready(function(){
     			$('.field-analisa-harga').removeClass('has-error').addClass('has-success');
 				$(".field-analisa-harga span.help-block").text('');
 
+				// set harga beli
 				var harga = $("#analisa_harga option:selected").text().split(" - ");
 				$("#harga").val(parseFloat(harga[1]));
 
-				// get bahan baku
-				// get_satuanBahanBaku($("#bahan_baku").val().trim());
+				// set bahan baku
+				
     		}
     	});
 
@@ -125,10 +136,10 @@ $(document).ready(function(){
     	});
 
     	// harga beli
-    	$("#harga_beli").change(function(){
+    	$("#harga").change(function(){
     		if(this.value !== ""){
-    			$('.field-harga-beli').removeClass('has-error').addClass('has-success');
-				$(".field-harga-beli span.help-block").text('');	
+    			$('.field-harga').removeClass('has-error').addClass('has-success');
+				$(".field-harga span.help-block").text('');	
     		}
     	});
 
@@ -205,13 +216,31 @@ function setJenis_PPH(supplier){
 		$('#tabel_detail_pembelian tbody tr').each(function (index) {
 	        $(this).children("td:eq(0)").html(index + 1);
 	    });
-	    $("#tampilPPH").text("PPH "+$("#jenis_pph").val()+" %: Rp. "+hitungPPH());
+	    $("#tampilPPH").text("PPH "+$("#jenis_pph option:selected").text()+" : Rp. "+hitungPPH());
 	    $("#tampilHarga").text("Sub Total: Rp. "+hitungTotal());
 	    $("#tampilTotal").text("Total: Rp. "+parseFloat(hitungTotal()-hitungPPH()).toFixed(2));
 	}
 
 	function clearDetail(){
+		$("#analisa_harga").val("");
+		$('.field-analisa-harga').removeClass('has-error').removeClass('has-success');
+		$(".field-analisa-harga span.help-block").text('');
 
+		$("#harga").val(0);
+		$('.field-harga').removeClass('has-error').removeClass('has-success');
+		$(".field-harga span.help-block").text('');
+
+		$("#bahan_baku").val("").trigger('change');
+		$('.field-bahan-baku').removeClass('has-error').removeClass('has-success');
+		$(".field-bahan-baku span.help-block").text('');
+
+		$("#colly").val(0);
+		$('.field-colly').removeClass('has-error').removeClass('has-success');
+		$(".field-colly span.help-block").text('');
+
+		$("#jumlah").val(0);
+		$('.field-jumlah').removeClass('has-error').removeClass('has-success');
+		$(".field-jumlah span.help-block").text('');
 	}
 
 	function hitungTotal(){
@@ -238,7 +267,7 @@ function setJenis_PPH(supplier){
 	}
 
 	function fieldJumlah(jumlah, index){
-		var field = '<input type="number" min="1" onchange="onChange_jumlah('+index+',this)" class="form-control" value="'+jumlah+'">';
+		var field = '<input type="number" min="1" step="any" onchange="onChange_jumlah('+index+',this)" class="form-control" value="'+jumlah+'">';
 		return field;
 	}
 
@@ -317,7 +346,7 @@ function getDataForm(){
 		ket: $("#ket").val().trim(),
 		pph: parseFloat(hitungPPH()),
 		total: parseFloat(hitungTotal()),
-		total_pph: parseFloat(hitungTotal()-hitungPPH()),
+		total_pph: parseFloat(hitungTotal())-parseFloat(hitungPPH()),
 	};
 
 	data.append('dataPembelian', JSON.stringify(dataPembelian)); // id
@@ -377,6 +406,7 @@ function submit(){
 			}
 			else{
 				window.location.href = base_url+"index.php?m=pembelian&p=list";
+				// swal("Data Berhasil Ditambah");
 			}
 		},
 		error: function (jqXHR, textStatus, errorThrown){ // error handling
@@ -431,6 +461,7 @@ function getEdit(id){
 }
 
 function setError(error){
+	// tanggal
 	if(!jQuery.isEmptyObject(error.tglError)){
 		$('.field-tgl').removeClass('has-success').addClass('has-error');
 		$(".field-tgl span.help-block").text(error.tglError);
@@ -440,22 +471,64 @@ function setError(error){
 		$(".field-tgl span.help-block").text('');	
 	}
 
-	if(!jQuery.isEmptyObject(error.jenisError)){
-		$('.field-jenis').removeClass('has-success').addClass('has-error');
-		$(".field-jenis span.help-block").text(error.jenisError);
+	// invoice
+	if(!jQuery.isEmptyObject(error.invoiceError)){
+		$('.field-invoice').removeClass('has-success').addClass('has-error');
+		$(".field-invoice span.help-block").text(error.invoiceError);
 	}
 	else{
-		$('.field-jenis').removeClass('has-error').addClass('has-success');
-		$(".field-jenis span.help-block").text('');	
+		$('.field-invoice').removeClass('has-error').addClass('has-success');
+		$(".field-invoice span.help-block").text('');	
 	}
 
-	if(!jQuery.isEmptyObject(error.harga_basisError)){
-		$('.field-harga-basis').removeClass('has-success').addClass('has-error');
-		$(".field-harga-basis span.help-block").text(error.harga_basisError);
+	// supplier
+	if(!jQuery.isEmptyObject(error.supplierError)){
+		$('.field-supplier').removeClass('has-success').addClass('has-error');
+		$(".field-supplier span.help-block").text(error.supplierError);
 	}
 	else{
-		$('.field-harga-basis').removeClass('has-error').addClass('has-success');
-		$(".field-harga-basis span.help-block").text('');	
+		$('.field-supplier').removeClass('has-error').addClass('has-success');
+		$(".field-supplier span.help-block").text('');	
+	}
+
+	// status
+	if(!jQuery.isEmptyObject(error.statusError)){
+		$('.field-status').removeClass('has-success').addClass('has-error');
+		$(".field-status span.help-block").text(error.statusError);
+	}
+	else{
+		$('.field-status').removeClass('has-error').addClass('has-success');
+		$(".field-status span.help-block").text('');	
+	}
+
+	// jenis pembayaran
+	if(!jQuery.isEmptyObject(error.jenis_pembayaranError)){
+		$('.field-jenis-pembayaran').removeClass('has-success').addClass('has-error');
+		$(".field-jenis-pembayaran span.help-block").text(error.jenis_pembayaranError);
+	}
+	else{
+		$('.field-jenis-pembayaran').removeClass('has-error').addClass('has-success');
+		$(".field-jenis-pembayaran span.help-block").text('');	
+	}
+
+	// jenis pph
+	if(!jQuery.isEmptyObject(error.jenis_pphError)){
+		$('.field-jenis-pph').removeClass('has-success').addClass('has-error');
+		$(".field-jenis-pph span.help-block").text(error.jenis_pphError);
+	}
+	else{
+		$('.field-jenis-pph').removeClass('has-error').addClass('has-success');
+		$(".field-jenis-pph span.help-block").text('');	
+	}
+
+	// keterangan
+	if(!jQuery.isEmptyObject(error.ketError)){
+		$('.field-ket').removeClass('has-success').addClass('has-error');
+		$(".field-ket span.help-block").text(error.ketError);
+	}
+	else{
+		$('.field-ket').removeClass('has-error').addClass('has-success');
+		$(".field-ket span.help-block").text('');	
 	}
 }
 
@@ -566,8 +639,8 @@ function setSelect_jenisPembayaran(){
 function setSelect_jenisPPH(){
 	var arrJenisPPH = [
 		{value: "", text: "-- Pilih Jenis PPH --"},
-		{value: 0.025, text: "0.025 %"},
-		{value: 0.05, text: "0.05 %"},
+		{value: 0.025, text: "2.5 %"},
+		{value: 0.05, text: "5 %"},
 	];
 
 	$.each(arrJenisPPH, function(index, item){
@@ -580,8 +653,8 @@ function setSelect_jenisPPH(){
 function setSelect_status(){
 	var arrStatus = [
 		{value: "", text: "-- Pilih Status --"},
-		{value: "S", text: "LUNAS"},
-		{value: "O", text: "TITIPAN"},
+		{value: "L", text: "LUNAS"},
+		{value: "T", text: "TITIPAN"},
 	];
 
 	$.each(arrStatus, function(index, item){

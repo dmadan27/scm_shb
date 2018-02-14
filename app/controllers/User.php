@@ -73,6 +73,8 @@
 				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["username"]."'".')"><i class="ti-zoom-in"></i></button>',
 				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["username"]."'".')"><i class="ti-pencil-alt"></i></button>',
 				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["username"]."'".')"><i class="ti-trash"></i></button>',
+				'status' => '<button type="button" class="btn btn-primary btn-outline btn-circle m-r-5" title="Ubah Status" onclick="setStatus('."'".$row["username"]."'".')"><i class="ti-check-box"></i></button>',
+				'reset' => '<button type="button" class="btn btn-warning btn-outline btn-circle m-r-5" title="Reset Password" onclick="getReset('."'".$row["username"]."'".')"><i class="ti-reload"></i></button>',
 			);
 
 			// fungsi get aksi

@@ -231,27 +231,27 @@
 			// trase
 			array(
 				'field' => $data['trase'], 'label' => 'Trase', 'error' => 'traseError',
-				'value' => 'trase', 'rule' => 'nilai | 1 | 999 | required',
+				'value' => 'trase', 'rule' => 'nilai | 0.01 | 999 | required',
 			),
 			// gelondong
 			array(
 				'field' => $data['gelondong'], 'label' => 'Gelondong', 'error' => 'gelondongError',
-				'value' => 'gelondong', 'rule' => 'nilai | 1 | 999 | required',
+				'value' => 'gelondong', 'rule' => 'nilai | 0.01 | 999 | required',
 			),
 			// air_kopi
 			array(
 				'field' => $data['air'], 'label' => 'Air', 'error' => 'air_kopiError',
-				'value' => 'air_kopi', 'rule' => 'nilai | 1 | 999 | required',
+				'value' => 'air_kopi', 'rule' => 'nilai | 0.01 | 999 | required',
 			),
 			// ayakan
 			array(
 				'field' => $data['ayakan'], 'label' => 'Ayakan', 'error' => 'ayakanError',
-				'value' => 'ayakan', 'rule' => 'nilai | 1 | 999 | required',
+				'value' => 'ayakan', 'rule' => 'nilai | 0.01 | 999 | required',
 			),
 			// kulit
 			array(
 				'field' => $data['kulit'], 'label' => 'Kulit', 'error' => 'kulitError',
-				'value' => 'kulit', 'rule' => 'nilai | 1 | 999 | required',
+				'value' => 'kulit', 'rule' => 'nilai | 0.01 | 999 | required',
 			),
 			// rendemen
 			array(

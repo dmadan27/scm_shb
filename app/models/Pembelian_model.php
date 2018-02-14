@@ -28,7 +28,7 @@
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':tgl', $data['tgl']);
 		$statement->bindParam(':invoice', $data['invoice']);
-		$statement->bindParam(':id_supplier', $data['id_supplier']);
+		$statement->bindParam(':id_supplier', $data['supplier']);
 		$statement->bindParam(':jenis_pembayaran', $data['jenis_pembayaran']);
 		$statement->bindParam(':jenis_pph', $data['jenis_pph']);
 		$statement->bindParam(':pph', $data['pph']);
@@ -41,3 +41,19 @@
 	}
 
 	// function insert detail pembelian
+	function insertDetail_pembelian($koneksi, $data){
+		$query = "CALL tambah_detail_pembelian(:invoice, :tgl, :id_bahan_baku, :id_analisa_harga, :colly, :jumlah, :harga, :subtotal)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':invoice', $data['invoice']);
+		$statement->bindParam(':tgl', $data['tgl']);
+		$statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
+		$statement->bindParam(':id_analisa_harga', $data['id_analisa_harga']);
+		$statement->bindParam(':colly', $data['colly']);
+		$statement->bindParam(':jumlah', $data['jumlah']);
+		$statement->bindParam(':harga', $data['harga_beli']);
+		$statement->bindParam(':subtotal', $data['subtotal']);
+		$result = $statement->execute();
+
+		return $result;
+	}

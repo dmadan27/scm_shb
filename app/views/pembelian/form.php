@@ -145,7 +145,7 @@
 			    	 				<div class="form-group field-harga has-feedback m-b-5">
 										<label class="col-md-12" for="harga">Harga Beli*</label>
 				                        <div class="col-md-12">
-				                        	<input id="harga" type="number" min="0" class="form-control" placeholder="Masukkan Harga Beli">
+				                        	<input id="harga" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Harga Beli">
 				                            <span class="help-block small pesan"></span>
 				                        </div>
 									</div>
@@ -167,7 +167,7 @@
 												<label class="col-md-12" for="colly">Colly</label>
 						                        <div class="col-md-12">
 						                        	<div class="input-group">
-						                        		<input id="colly" type="number" min="0" class="form-control" placeholder="Masukkan Colly">
+						                        		<input id="colly" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Colly">
 						                        		<span class="input-group-addon">PCS</span>
 						                        	</div>
 						                            <span class="help-block small pesan"></span>
@@ -180,7 +180,7 @@
 												<label class="col-md-12" for="jumlah">Jumlah*</label>
 						                        <div class="col-md-12">
 						                        	<div class="input-group">
-						                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah">
+						                        		<input id="jumlah" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Jumlah">
 						                        		<span class="input-group-addon satuan"></span>                   	
 						                        		<span class="input-group-btn">
 						                        			<button type="button" id="btnTambah_barang" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pembelian"><i class="fa fa-plus"></i></button>

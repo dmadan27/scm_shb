@@ -538,6 +538,92 @@
 		return $output;
 	}
 
+	function validFile($configFile){
+		$errorFile = $configFile['error'];
+		$sizeFile = $configFile['size'];
+		$tmp_nameFile = $configFile['tmp_name'];
+		$max = $configFile['max'];
+		// $path = $configFoto['path'];
+
+		// cek error value
+		switch ($errorFile) {
+			case UPLOAD_ERR_OK:
+				$cekValid['error'] = "";
+            	break;
+	        case UPLOAD_ERR_NO_FILE:
+	            $output = array(
+					'cek' => false,
+					'error' => "Upload Gagal, Tidak File Yang Terupload",
+				);
+				return $output;
+				break;
+
+	        case UPLOAD_ERR_INI_SIZE:
+	        case UPLOAD_ERR_FORM_SIZE:
+	            $output = array(
+					'cek' => false,
+					'error' => "Upload Gagal, Ukuran File Tidak Sesuai",
+				);
+				return $output;
+				break;
+
+	        default:
+	            $output = array(
+					'cek' => false,
+					'error' => "Upload Gagal, Error Tidak Diketahui",
+				);
+				return $output;
+				break;
+		}
+
+		// cek ukuran foto
+		// 2*1048576 (2 mb)
+		if($sizeFile > $max){
+			/*
+				lakukan resize ukuran foto (pengembangan)
+			*/
+			$output = array(
+				'cek' => false,
+				'error' => "Upload Gagal, Ukuran File Tidak Sesuai",
+			);
+			return $output;
+		}
+
+		// cek mime type file
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		// jika format file ngaco
+		if(false === $ext = array_search(
+			$finfo->file($tmp_nameFile), 
+			array(
+	            'jpg' => 'image/jpeg',
+	            'png' => 'image/png',
+	            'gif' => 'image/gif',
+	            'word' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+	            'excel' => 'application/vnd.ms-excel',
+	            'pdf' => 'application/pdf',
+	            'zip' => 'application/zip',
+	            'rar' => 'application/x-rar-compressed',
+	        ), true))
+		{
+			$output = array(
+				'cek' => false,
+				'error' => "Upload Gagal, Format File Tidak Sesuai",
+			);
+			return $output;
+		}
+
+		// ganti nama file
+		$namaFileBaru = sprintf('%s.%s', sha1_file($tmp_nameFile), $ext);
+
+		$output = array(
+			'cek' => true,
+			'error' => "",
+			'namaFile' => $namaFileBaru,
+		);
+
+		return $output;
+	}
+
 	/*
 		fungsi validasi untuk password dan konfirm password
 	*/

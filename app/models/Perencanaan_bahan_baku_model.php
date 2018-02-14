@@ -11,6 +11,19 @@
 
 	// get all data perencanaan
 
+	// cek duplikat periode dan produk
+	function cekDuplikat_perencanaan($koneksi, $periode, $id_produk){
+		$query = "SELECT COUNT(*) duplikat FROM perencanaan_bahan_baku WHERE periode=:periode AND id_produk=:id_produk";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':periode', $periode);
+		$statement->bindParam(':id_produk', $id_produk);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
 	// function insert
 	function insertPerencanaan_bahan_baku($koneksi, $data){
 		$query = "INSERT INTO perencanaan_bahan_baku (tgl, periode, id_produk, jumlah_perencanaan, safety_stok_produk) ";

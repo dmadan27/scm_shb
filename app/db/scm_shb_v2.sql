@@ -276,7 +276,7 @@
 		id_kendaraan int, -- fk
 		colly int,
 		jumlah double(12,2),
-		status char(1), -- status pengiriman. perjalanan/on delivery, terkirim, sedang di proses
+		status char(1), -- p: proses, o: on delivery / dalam perjalanan, t: terkirim
 
 		CONSTRAINT pk_pengiriman_id PRIMARY KEY(id),
 		CONSTRAINT fk_pengiriman_id_pemesanan FOREIGN KEY(id_pemesanan) REFERENCES pemesanan(id)
@@ -520,8 +520,13 @@
 		DECLARE id_pembelian_param int;
 		DECLARE cek_tgl int;
 		DECLARE get_brg_masuk double(12,2);
+		DECLARE get_stok double(12,2);
 
+		-- get id pembelian
 		SELECT id INTO id_pembelian_param FROM pembelian_bahan_baku WHERE invoice = invoice_param;
+
+		-- get stok bahan baku
+		SELECT stok_akhir INTO get_stok FROM bahan_baku WHERE id = id_bahan_baku_param;
 
 		-- insert detail
 		INSERT INTO detail_pembelian 
@@ -548,6 +553,62 @@
 			VALUES (tgl_param, id_bahan_baku_param, jumlah_param, '');
 
 		END IF;
+
+		-- update stok
+		UPDATE bahan_baku SET stok_akhir = (get_stok+jumlah_param) WHERE id = id_bahan_baku_param;
+
+		-- update analisa harga
+		UPDATE analisa_harga SET status = "1" WHERE id = id_analisa_harga_param;
+	END;
+
+	-- Tambah Pengiriman
+	CREATE PROCEDURE tambah_pengiriman(
+		in tgl_param date,
+		in id_pemesanan_param int,
+		in id_kendaraan_param int,
+		in colly_param int,
+		in jumlah_param double(12,2),
+		in status_param char(1)
+	)
+	BEGIN
+		DECLARE id_produk_param int;
+		DECLARE cek_tgl int;
+		DECLARE get_brg_keluar double(12,2);
+		DECLARE get_stok double(12,2);
+
+		-- get id produk
+		SELECT id_produk INTO id_produk_param FROM pemesanan WHERE id = id_pemesanan_param;
+		-- get stok produk
+		SELECT stok_akhir INTO get_stok FROM produk WHERE id = id_produk_param; 
+
+		INSERT INTO pengiriman (tgl, id_pemesanan, id_kendaraan, colly, jumlah, status) 
+		VALUES (tgl_param, id_pemesanan_param, id_kendaraan_param, colly_param, jumlah_param, status_param);
+
+		-- get tgl mutasi
+		SELECT COUNT(tgl) INTO cek_tgl FROM mutasi_produk WHERE tgl=tgl_param AND id_produk = id_produk_param;
+
+		-- cek status
+		IF status_param = "O" || status_param = "T" THEN -- jika dalam perjalanan
+			IF cek_tgl > 0 THEN -- jika tgl pengiriman dan mutasi sesuai
+				-- get barang masuk
+				SELECT brg_keluar INTO get_brg_keluar FROM mutasi_produk WHERE id_produk = id_produk_param AND tgl = tgl_param;
+
+				UPDATE mutasi_produk SET
+					brg_keluar = (jumlah_param+get_brg_keluar)
+				WHERE
+					id_produk = id_produk_param AND tgl = tgl_param;
+
+			ELSE -- jika tgl pengiriman tidak ada yg sama dgn tgl mutasi
+				-- insert mutasi pengiriman
+				INSERT INTO mutasi_produk (tgl, id_produk, brg_masuk, brg_keluar)
+				VALUES (tgl_param, id_produk_param, '', jumlah_param);
+
+			END IF;
+
+			-- update stok
+			UPDATE produk SET stok_akhir = (get_stok-jumlah_param) WHERE id = id_produk_param;
+		END IF;
+
 	END;
 
 # =========================================== #
@@ -656,16 +717,33 @@
 		JOIN kir k ON k.id = ah.id_kir
 		JOIN harga_basis hb ON hb.id = ah.id_harga_basis
 		JOIN supplier s ON s.id = k.id_supplier
-		ORDER BY ah.tgl DESC;
+		ORDER BY ah.tgl DESC, k.id DESC;
 
 	-- View pembelian
+	CREATE OR REPLACE VIEW v_pembelian AS
+		SELECT
+			pbb.id, pbb.tgl tgl_pembelian, pbb.invoice, 
+			s.id id_supplier, s.nama nama_supplier, s.nik, s.npwp, s.supplier_utama, s2.nama nama_supplier_utama,
+		    pbb.jenis_pembayaran, pbb.jenis_pph, pbb.pph, pbb.total, pbb.ket,
+		    (CASE WHEN (pbb.status = 'L') THEN 'LUNAS' ELSE 'TITIPAN' END) status,
+		    GROUP_CONCAT(concat_ws(' - ', bb.kd_bahan_baku, bb.nama)) bahan_baku,
+		    GROUP_CONCAT(concat_ws(' ', dp.colly, 'PCS')) colly,
+		    GROUP_CONCAT(concat_ws(' ', dp.jumlah, bb.satuan)) jumlah,
+		    GROUP_CONCAT(concat_ws(' ', 'Rp. ', dp.harga)) harga_beli
+		FROM pembelian_bahan_baku pbb
+		JOIN supplier s ON s.id = pbb.id_supplier
+		JOIN supplier s2 ON s2.id = s.supplier_utama
+		JOIN detail_pembelian dp ON dp.id_pembelian = pbb.id
+		JOIN bahan_baku bb ON bb.id = dp.id_bahan_baku
+		GROUP BY pbb.id
+		ORDER BY pbb.tgl DESC, status ASC;
 
 	-- View pemesanan
 	CREATE OR REPLACE VIEW v_pemesanan AS
 		SELECT
 			p.id id_pemesanan, p.tgl, p.no_kontrak,
 		    p.id_buyer, b.nama nama_buyer,
-		    p.id_produk, pr.nama nama_produk, pr.satuan satuan_produk,
+		    p.id_produk, pr.kd_produk, pr.nama nama_produk, pr.satuan satuan_produk,
 		    p.jumlah_karung, p.ket_karung, p.kemasan, p.jumlah,
 		    p.waktu_pengiriman, p.batas_waktu_pengiriman, p.ket, p.lampiran,
 		    (CASE 
@@ -680,6 +758,26 @@
 		ORDER BY p.tgl DESC; 
 
 	-- View pengiriman
+	CREATE OR REPLACE VIEW v_pengiriman AS
+		SELECT
+			p.id, p.tgl tgl_pengiriman, p.id_pemesanan, pm.no_kontrak,
+			pm.id_buyer, b.nama nama_buyer,
+			pm.id_produk, pr.kd_produk, pr.nama nama_produk,
+			p.id_kendaraan, kd.no_polis, kd.id_supir, kr.nama nama_supir,
+			p.colly, p.jumlah,
+			(CASE 
+		     	WHEN (p.status = 'P') THEN 'PROSES'
+		     	WHEN (p.status = 'O') THEN 'DALAM PERJALANAN' 
+		     	ELSE 'TERKIRIM' 
+		     END) status
+		FROM pengiriman p
+		JOIN pemesanan pm ON pm.id = p.id_pemesanan
+		JOIN produk pr ON pr.id = pm.id_produk
+		JOIN buyer b ON b.id = pm.id_buyer
+		JOIN kendaraan kd ON kd.id = p.id_kendaraan
+		JOIN karyawan kr ON kr.id = kd.id_supir
+		ORDER BY p.tgl DESC;
+
 
 	-- View perencanaan pengadaan bahan baku
 	CREATE OR REPLACE VIEW v_perencanaan_bahan_baku AS
@@ -687,13 +785,31 @@
 			pbb.id, pbb.tgl, pbb.periode, 
 			pr.id id_produk, pr.kd_produk, pr.nama nama_produk, pr.satuan satuan_produk,
 		    pbb.jumlah_perencanaan, pbb.safety_stok_produk,
-		   	GROUP_CONCAT(concat_ws(' - ', bb.kd_bahan_baku, bb.nama)) komposisi
+		   	GROUP_CONCAT(concat_ws(' - ', bb.kd_bahan_baku, bb.nama) ORDER BY bb.kd_bahan_baku ASC) komposisi
 		FROM perencanaan_bahan_baku pbb
 		JOIN produk pr ON pr.id = pbb.id_produk
 		JOIN komposisi k ON k.id_produk = pr.id
 		JOIN bahan_baku bb ON bb.id = k.id_bahan_baku
 		GROUP BY pbb.id
 		ORDER BY pbb.periode DESC;
+
+	-- View mutasi bahan baku
+	CREATE OR REPLACE VIEW v_mutasi_bahan_baku AS
+		SELECT
+			mbb.id, mbb.tgl, bb.id id_bahan_baku, bb.kd_bahan_baku, bb.nama nama_bahan_baku, bb.satuan, 
+			mbb.brg_masuk, mbb.brg_keluar
+		FROM mutasi_bahan_baku mbb
+		JOIN bahan_baku bb ON bb.id = mbb.id_bahan_baku
+		ORDER BY mbb.tgl DESC, bb.id ASC;
+
+	-- View mutasi produk
+	CREATE OR REPLACE VIEW v_mutasi_produk AS
+		SELECT
+			mpr.id, mpr.tgl, p.id id_produk, p.kd_produk, p.nama nama_produk, p.satuan, 
+			mpr.brg_masuk, mpr.brg_keluar
+		FROM mutasi_produk mpr
+		JOIN produk p ON p.id = mpr.id_produk
+		ORDER BY mpr.tgl DESC, p.id ASC;
 
 # =========================================== #
 

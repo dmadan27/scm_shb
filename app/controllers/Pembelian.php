@@ -63,28 +63,29 @@
 
 	function listPembelian($koneksi){
 		$config_db = array(
-			'tabel' => 'v_kir',
-			'kolomOrder' => array(null, 'tgl', 'kd_kir', 'nama_supplier', 'jenis_bahan_baku', 'status', null),
-			'kolomCari' => array('tgl', 'kd_kir', 'nama_supplier', 'jenis_bahan_baku', 'status'),
+			'tabel' => 'v_pembelian',
+			'kolomOrder' => array(null, 'tgl_pembelian', 'invoice', 'nama_supplier', 'bahan_baku', 'colly', 'jumlah', 'harga_beli', 'pph', 'total', 'status', null),
+			'kolomCari' => array('tgl_pembelian', 'invoice', 'nama_supplier', 'bahan_baku', 'colly', 'jumlah', 'harga_beli', 'pph', 'total', 'status'),
 			'orderBy' => false,
 			'kondisi' => false,
 		);
 
-		$data_kir = get_datatable_kir($koneksi, $config_db);
+		$data_pembelian = get_datatable_pembelian($koneksi, $config_db);
 
 		session_start();
 
 		$data = array();
 		$no_urut = $_POST['start'];
-		foreach($data_kir as $row){
+		foreach($data_pembelian as $row){
 			$no_urut++;
 			
 			$btnAksi = array(
 				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>',
 				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>',
 				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>',
+				'status' => '<button type="button" class="btn btn-primary btn-outline btn-circle m-r-5" title="Ubah Status" onclick="getStatus('."'".$row["id"]."'".')"><i class="ti-check-box"></i></button>',
 			);
-			$aksi = get_btn_aksi('kir', $_SESSION['sess_akses_menu'], $btnAksi);
+			$aksi = get_btn_aksi('pembelian', $_SESSION['sess_akses_menu'], $btnAksi);
 
 			$supplier = $row['npwp'].' - '.$row['nama_supplier'];
 			if(empty($row['npwp'])){ // jika nik kosong
@@ -92,14 +93,19 @@
 				$supplier = (!empty($row['nik'])) ? $row['nik'].' (NIK) - '.$row['nama_supplier'] : $row['nama_supplier'];
 			}
 
-			$status = strtolower($row['status'])=='sesuai standar' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
+			$status = strtolower($row['status'])=='lunas' ? '<span class="label label-success label-rouded">'.$row['status'].'</span>' : '<span class="label label-info label-rouded">'.$row['status'].'</span>';
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
-			$dataRow[] = cetakTgl($row['tgl'], 'full');
-			$dataRow[] = $row['kd_kir'];
+			$dataRow[] = cetakTgl($row['tgl_pembelian'], 'full');
+			$dataRow[] = $row['invoice'];
 			$dataRow[] = $supplier;
-			$dataRow[] = $row['jenis_bahan_baku'];
+			$dataRow[] = cetakListItem($row['bahan_baku']);
+			$dataRow[] = cetakListItem($row['colly']);
+			$dataRow[] = cetakListItem($row['jumlah']);
+			$dataRow[] = cetakListItem($row['harga_beli']);
+			$dataRow[] = rupiah($row['pph']);
+			$dataRow[] = rupiah($row['total']);
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
@@ -134,16 +140,61 @@
 			$setValue = $validasi['setValue'];
 
 			if(!$cekArray) $cek = false;
-		
+
+		// =============================== //
+		if($cek){
+			$dataPembelian = array(
+				'id_pembelian' => validInputan($dataPembelian['id_pembelian'], false, false),
+				'tgl' => validInputan($dataPembelian['tgl'], false, false),
+				'invoice' => validInputan($dataPembelian['invoice'], false, false),
+				'supplier' => validInputan($dataPembelian['supplier'], false, false),
+				'status' => validInputan($dataPembelian['status'], false, false),
+				'jenis_pembayaran' => validInputan($dataPembelian['jenis_pembayaran'], false, false),
+				'jenis_pph' => validInputan($dataPembelian['jenis_pph'], false, false),
+				'ket' => (empty($dataPembelian['ket'])) ? NULL : validInputan($dataPembelian['ket'], false, false),
+				'pph' => validInputan($dataPembelian['pph'], false, false),
+				'total' => validInputan($dataPembelian['total'], false, false),
+				'total_pph' => validInputan($dataPembelian['total_pph'], false, false),
+			);
+
+			// insert pembelian
+			if(insertPembelian($koneksi, $dataPembelian)){
+				foreach($dataDetail as $index => $array){
+					// insert hanya yg statusnya bukan hapus
+					if($dataDetail[$index]['status'] != "hapus"){
+						$dataInsert['tgl'] = $dataPembelian['tgl'];
+						// get data list item
+						foreach ($dataDetail[$index] as $key => $value) {
+							$dataInsert[$key] = $value;
+						}
+						insertDetail_pembelian($koneksi, $dataInsert);
+					}
+				}
+				$status = true;
+				session_start();
+				$_SESSION['notif'] = "Tambah Data Berhasil";
+			}
+			else{
+				$status = false;
+				$errorDB = true;
+			}
+		}
+		else $status = false;
 
 		$output = array(
 			'data_pembelian' => $dataPembelian,
 			'data_detail' => $dataDetail,
+			'status' => $status,
 			'cek' => $cek,
-			'cek_list' => $cekArray,
+			'cekList' => $cekArray,
 			'setError' => $setError,
 			'setValue' => $setValue,
 		);
+
+		// $output = array(
+		// 	'dataPembelian' => $dataPembelian,
+		// 	'dataDetail' => $dataDetail,
+		// );
 
 		echo json_encode($output);
 	}

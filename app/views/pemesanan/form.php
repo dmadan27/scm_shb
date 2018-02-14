@@ -36,7 +36,7 @@
 									</div>
 			    	 				<!-- no_kontrak -->
 			    	 				<div class="form-group field-no-kontrak has-feedback m-b-5">
-										<label class="col-md-12" for="no_kontrak">No. Kontrak*</label>
+										<label class="col-md-12" for="no_kontrak">No. Kontrak**</label>
 				                        <div class="col-md-12">
 				                            <input id="no_kontrak" type="text" class="form-control" placeholder="Masukkan No. Kontrak">
 				                            <span class="help-block small pesan"></span>
@@ -68,7 +68,7 @@
 												<label class="col-md-12" for="jumlah">Jumlah Produk*</label>
 						                        <div class="col-md-12">
 						                        	<div class="input-group">
-						                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah Produk">
+						                        		<input id="jumlah" type="number" min="0" step="any" class="form-control" placeholder="Masukkan Jumlah Produk">
 						                        		<span class="input-group-addon satuan-produk"></span>
 						                        	</div>
 						                            <span class="help-block small pesan"></span>
@@ -78,7 +78,7 @@
 									</div>	
 			    	 				<!-- jumlah karung -->
 			    	 				<div class="form-group field-jumlah-karung has-feedback m-b-5">
-										<label class="col-md-12" for="jumlah_karung">Jumlah Karung*</label>
+										<label class="col-md-12" for="jumlah_karung">Jumlah Karung</label>
 				                        <div class="col-md-12">
 				                            <input id="jumlah_karung" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah Karung">
 				                            <span class="help-block small pesan"></span>
@@ -89,7 +89,7 @@
 										<div class="col-md-6">
 											<!-- ket karung -->
 					    	 				<div class="form-group field-ket-karung has-feedback m-b-5">
-												<label class="col-md-12" for="ket_karung">Keterangan Karung*</label>
+												<label class="col-md-12" for="ket_karung">Keterangan Karung</label>
 						                        <div class="col-md-12">
 						                            <select id="ket_karung" class="form-control"></select>
 						                            <span class="help-block small pesan"></span>
@@ -99,7 +99,7 @@
 										<div class="col-md-6">
 											<!-- kemasan -->
 					    	 				<div class="form-group field-kemasan has-feedback m-b-5">
-												<label class="col-md-12" for="kemasan">Kemasan*</label>
+												<label class="col-md-12" for="kemasan">Kemasan</label>
 						                        <div class="col-md-12">
 						                            <select id="kemasan" class="form-control"></select>
 						                            <span class="help-block small pesan"></span>
@@ -171,6 +171,7 @@
 		        		<div class="row">
 							<div class="col-md-12">
 								<span class="help-block small">* Wajib Diisi</span>
+								<span class="help-block small">** Wajib Diisi Jika Ada</span>
 							</div>
 						</div>	
 		        		<div class="text-right">

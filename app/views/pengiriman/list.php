@@ -44,11 +44,11 @@
     	 					<thead>
     	 						<tr>
     	 							<th style="width: 15px">No</th>
+                                    <th>Tanggal</th>
+                                    <th>Kendaraan</th>
                                     <th>No. Kontrak</th>
                                     <th>Buyer</th>
-                                    <th>Tanggal</th>
                                     <th>Produk</th>
-                                    <th>Kendaraan</th>
                                     <th>Colly</th>
                                     <th>Jumlah</th>
                                     <th>Status</th>

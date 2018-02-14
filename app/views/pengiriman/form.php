@@ -6,12 +6,12 @@
 <!-- Breadcrumb -->
 <div class="row bg-title">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-        <h4 class="page-title">Form <?= ucfirst($btn); ?> Data Pengiriman</h4>
+        <h4 class="page-title">Form <?= ucfirst($btn); ?> Data Penjadwalan Pengiriman</h4>
     </div>
     <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
         <ol class="breadcrumb">
             <li><a href="<?= base_url; ?>">Beranda</a></li>
-            <li class="active">Data Pengiriman</li>
+            <li class="active">Data Penjadwalan Pengiriman</li>
         </ol>
     </div>
 </div>
@@ -95,7 +95,7 @@
 										<!-- button proses penjadwalan -->
 										<div class="form-group field-produk has-feedback m-b-5">
 					                        <div class="col-md-12 text-right">
-					                            <button id="btnHitung_peramalan" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="hitung">Rekomendasi Penjadwalan Pengiriman</button>
+					                            <button id="btnRekomendasi" type="button" class="btn btn-danger btn-outline waves-effect waves-light" value="rekomendasi">Rekomendasi Penjadwalan Pengiriman</button>
 					                        </div>
 										</div>
 			    	 				</fieldset>
@@ -165,26 +165,42 @@
 									</div>
 			 					</div>
 			 					<div class="col-md-6">
-			 						<!-- colly -->
-									<div class="form-group field-colly has-feedback m-b-5">
-										<label class="col-md-12" for="kontrak">Colly*</label>
+			 						<div class="row">
+			 							<div class="col-md-6">
+			 								<!-- colly -->
+											<div class="form-group field-colly has-feedback m-b-5">
+												<label class="col-md-12" for="kontrak">Colly*</label>
+						                        <div class="col-md-12">
+						                            <div class="input-group">
+						                        		<input id="colly" type="number" min="0" class="form-control" placeholder="Masukkan Colly">
+						                        		<span class="input-group-addon">PCS</span>
+						                        	</div>
+						                            <span class="help-block small pesan"></span>
+						                        </div>
+											</div>
+			 							</div>
+			 							<div class="col-md-6">
+			 								<!-- jumlah -->
+											<div class="form-group field-jumlah has-feedback m-b-5">
+												<label class="col-md-12" for="kontrak">Jumlah*</label>
+						                        <div class="col-md-12">
+						                            <div class="input-group">
+						                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah">
+						                        		<span class="input-group-addon">KG</span>
+						                        	</div>
+						                            <span class="help-block small pesan"></span>
+						                        </div>
+											</div>
+			 							</div>
+			 						</div>	
+									<!-- status -->
+									<div class="form-group field-status has-feedback m-b-5">
+										<label class="col-md-12" for="status">Status*</label>
 				                        <div class="col-md-12">
 				                            <div class="input-group">
-				                        		<input id="colly" type="number" min="0" class="form-control" placeholder="Masukkan Colly">
-				                        		<span class="input-group-addon">PCS</span>
-				                        	</div>
-				                            <span class="help-block small pesan"></span>
-				                        </div>
-									</div>
-									<!-- jumlah -->
-									<div class="form-group field-jumlah has-feedback m-b-5">
-										<label class="col-md-12" for="kontrak">Jumlah*</label>
-				                        <div class="col-md-12">
-				                            <div class="input-group">
-				                        		<input id="jumlah" type="number" min="0" class="form-control" placeholder="Masukkan Jumlah">
-				                        		<span class="input-group-addon"></span>
+				                        		<select id="status" class="form-control"></select>
 				                        		<span class="input-group-btn">
-				                        			<button type="button" id="btnTambah_barang" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pengiriman"><i class="fa fa-plus"></i></button>
+				                        			<button type="button" id="btnTambah_pengiriman" class="btn btn-danger btn-outline waves-effect waves-light" title="Tambah Detail Pengiriman"><i class="fa fa-plus"></i></button>
 				                        		</span>
 				                        	</div>
 				                            <span class="help-block small pesan"></span>
@@ -204,6 +220,7 @@
 													<th>Kendaraan</th>
 													<th>Colly</th>
 													<th>Jumlah</th>
+													<th>Status</th>
 													<th>Aksi</th>
 												</tr>
 											</thead>
@@ -228,8 +245,8 @@
 							</div>
 						</div>	
 		        		<div class="text-right">
-		        			<button id="btnSubmit_pemesanan" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
-		        			<a href="<?=base_url."index.php?m=pemesanan&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
+		        			<button id="btnSubmit_pengiriman" type="submit" class="btn btn-lg btn-info btn-outline waves-effect waves-light" value="<?= $btn ?>"><?= ucfirst($btn); ?></button>
+		        			<a href="<?=base_url."index.php?m=pengiriman&p=list" ?>" class="btn btn-lg btn-default btn-outline waves-effect waves-light">Batal</a>
 		        		</div>
 		        	</div>
 		        </div>
@@ -238,9 +255,5 @@
 	</form>
 </div>
 
-<script type="text/javascript">
-    var listDetailPengiriman = [];
-    var indexDetailPengiriman = 0;
-</script>
 <!-- js form -->
 <script type="text/javascript" src="<?= base_url."app/views/pengiriman/js/initForm.js"; ?>"></script>

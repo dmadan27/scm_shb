@@ -83,7 +83,7 @@
 				// jika npwp ada
 				$supplier = (!empty($row['nik'])) ? $row['nik'].' (NIK) - '.$row['nama_supplier'] : $row['nama_supplier'];
 			}
-			$status = strtolower($row['status_analisa'])=='tersedia' ? '<span class="label label-success label-rouded">'.$row['status_analisa'].'</span>' : '<span class="label label-danger label-rouded">'.$row['status_analisa'].'</span>';
+			$status = strtolower($row['status_analisa'])=='sudah dibayar' ? '<span class="label label-success label-rouded">'.$row['status_analisa'].'</span>' : '<span class="label label-danger label-rouded">'.$row['status_analisa'].'</span>';
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;

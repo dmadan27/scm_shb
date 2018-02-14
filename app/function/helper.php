@@ -244,7 +244,7 @@
 						),
 						'karyawan' => array(
 							"url" => base_hak_akses['karyawan'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'view', 'edit', 'hapus', 'status'),
 						),
 						'supplier' => array(
 							"url" => base_hak_akses['supplier'],
@@ -273,15 +273,15 @@
 					),
 					'pembelian' => array(
 							"url" => base_hak_akses['pembelian'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'view', 'edit', 'hapus', 'status'),
 						),
 					'pemesanan' => array(
 							"url" => base_hak_akses['pemesanan'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'view', 'edit', 'hapus', 'jadwal', 'status'),
 						),
 					'pengiriman' => array(
 							"url" => base_hak_akses['pengiriman'],
-							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'view', 'edit', 'hapus', 'status'),
 						),
 					'monitoring_persediaan' => array(
 						'stok_bahan_baku' => array(
@@ -443,7 +443,7 @@
 					),
 					'produksi' => array(
 							"url" => base_hak_akses['produksi'],
-							"aksi" => array(),
+							"aksi" => array('tambah', 'view', 'edit', 'hapus', 'status'),
 						),
 				);
 				break;
@@ -465,7 +465,7 @@
 					'data_master' => array(
 						'user' => array(
 							"url" => base_hak_akses['user'],
-							"aksi" => array('tambah', 'edit', 'hapus'),
+							"aksi" => array('tambah', 'edit', 'hapus', 'status', 'reset'),
 						),
 					),
 				);
@@ -533,7 +533,7 @@
 						$new_hakAkses[$key_2] = $value_2;
 					}
 				}
-				else if($key == "data_monitoring"){
+				else if($key == "monitoring_persediaan"){
 					foreach($value as $key_2 => $value_2){
 						$new_hakAkses[$key_2] = $value_2;
 					}	
@@ -567,7 +567,7 @@
 					}
 				}
 			}
-			else if($key == "data_monitoring"){
+			else if($key == "monitoring_persediaan"){
 				foreach($value as $key_2 => $value_2){
 					$tempKey = $key_2;
 					foreach($value_2 as $newKey => $newValue){

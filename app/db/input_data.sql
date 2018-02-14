@@ -999,12 +999,6 @@
 			NULL, NULL, NULL, '1');
 # ======================================= #
 
-# Data Bahan Baku #
-# ======================================= #
-
-# Data Produk #
-# ======================================= #
-
 # Data Harga Basis #
 # ======================================= #
 
@@ -1042,7 +1036,7 @@
 	-- CALL tambah_bahan_baku(kd_bahan_baku, nama, satuan, ket, foto, tgl, stok);
 
 	CALL tambah_bahan_baku('KP-ASL', 'KOPI ASALAN', 'KG', NULL, NULL, CURDATE(), 100); -- 1. kopi asalan
-	CALL tambah_bahan_baku('LD-ASL', 'KOPI HITAM ASALAN', 'KG', NULL, NULL, CURDATE(), 100); -- 2. lada hitam asalan
+	CALL tambah_bahan_baku('LD-ASL', 'LADA HITAM ASALAN', 'KG', NULL, NULL, CURDATE(), 100); -- 2. lada hitam asalan
 	CALL tambah_bahan_baku('KP-SUTA', 'KOPI SUTON A', 'KG', NULL, NULL, CURDATE(), 50); -- 3. kopi suton a
 	CALL tambah_bahan_baku('KP-SUTB', 'KOPI SUTON B', 'KG', NULL, NULL, CURDATE(), 50); -- 4. kopi suton b
 # ======================================= #
@@ -1055,75 +1049,747 @@
 	CALL tambah_produk('KP-DEF80', 'KOPI DEF-80', 'KG', NULL, NULL, CURDATE(), 100);
 	CALL tambah_komposisi('KP-DEF80', 1, 0.05);
 
-	-- 2. kopi def 120 - kp asl
+	-- 2. kopi def 120 - kp-asl
 	CALL tambah_produk('KP-DEF120', 'KOPI DEF-120', 'KG', NULL, NULL, CURDATE(), 100);
 	CALL tambah_komposisi('KP-DEF120', 1, 0.02);
 
-	-- 3. kopi 20/25 - kp suta
+	-- 3. kopi 20/25 - kp-suta
 	CALL tambah_produk('KP-2025', 'KOPI 20/25', 'KG', NULL, NULL, CURDATE(), 50);
-	CALL tambah_komposisi('KP-2025', 3, 0.15);
+	CALL tambah_komposisi('KP-2025', 3, 0.20);
 
-	-- 4. kopi 40/45 - kp suta
+	-- 4. kopi 30/35 - kp-suta
+	CALL tambah_produk('KP-3035', 'KOPI 30/35', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-3035', 3, 0.15);
+
+	-- 5. kopi 40/45 - kp-suta
 	CALL tambah_produk('KP-4045', 'KOPI 40/45', 'KG', NULL, NULL, CURDATE(), 50);
 	CALL tambah_komposisi('KP-4045', 3, 0.10);
 
-	-- 5. kopi 80/85 - kp sutb
-	CALL tambah_produk('KP-8085', 'KOPI 80/85', 'KG', NULL, NULL, CURDATE(), 50);
-	CALL tambah_komposisi('KP-DEF80', 4, 0.20);
-
-	-- 6. kopi 60/65 - kp sutb
+	-- 6. kopi 60/65 - kp-sutb
 	CALL tambah_produk('KP-6065', 'KOPI 60/65', 'KG', NULL, NULL, CURDATE(), 50);
 	CALL tambah_komposisi('KP-6065', 4, 0.25);
+
+	-- 7. kopi 80/85 - kp-sutb
+	CALL tambah_produk('KP-8085', 'KOPI 80/85', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('KP-8085', 4, 0.20);
+
+	-- 8. lada hitam - ld-asl
+	CALL tambah_produk('LD-HTM', 'LADA HITAM', 'KG', NULL, NULL, CURDATE(), 50);
+	CALL tambah_komposisi('LD-HTM', 2, 0.05);
 # ======================================= #
 
 # Data Kir Kopi #
+	-- 2017-01-04
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170104-1', '2017-01-04', 74, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170104-1', 21.80, 1.38, 21.62, 1.19, 1.64, 83.26);
+		-- 100, 9740, 22600
+
+	-- 2017-01-05
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170105-1', '2017-01-05', 107, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170105-1', 18.95, 1.79, 22.75, 1.30, 1.27, 84.30);
+		-- 81, 8156, 22600
+
+	-- 2017-01-06
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170106-1', '2017-01-06', 120, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170106-1', 13.40, 0.56, 17.90, 1.68, 0.30, 90.04);
+		-- 2, 232.2, 23860
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170106-2', '2017-01-06', 44, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170106-2', 8.55, 1.20, 17.30, 0.80, 1.00, 93.12);
+		-- 97, 10451, 24800
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170106-3', '2017-01-06', 110, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170106-3', 11.90, 0.82, 19.30, 1.02, 0.47, 90.50);
+		-- 12, 1226, 24200
+
+	-- 2017-01-07
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170107-1', '2017-01-07', 14, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170107-1', 18.95, 1.00, 17.70, 1.30, 1.30, 98.00);
+		-- 102, 10879, 25600
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170107-2', '2017-01-07', 125, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170107-2', 12.55, 1.04, 18.10, 1.03, 1.10, 90.74);
+		-- 16, 1865, 24050
+
+	-- 2017-01-08
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170108-1', '2017-01-08', 6, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170108-1', 17.30, 2.08, 23.37, 1.13, 0.54, 84.82);
+		-- 30, 3241, 22500
+
+	-- 2017-01-12
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170112-1', '2017-01-12', 132, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170112-1', 11.05, 1.38, 18.80, 2.20, 0.51, 88.79);
+		-- 3, 261.7, 2400
+
+	-- 2017-01-13
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170113-1', '2017-01-13', 6, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170113-1', 21.20, 2.32, 21.37, 1.00, 1.11, 85.31);
+		-- 28, 2892, 23460
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170113-2', '2017-01-13', 107, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170113-2', 8.55, 2.18, 17.70, 0.95, 0.90, 92.18);
+		-- 32, 2504, 25275
+
+	-- 2017-01-14
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170114-1', '2017-01-14', 14, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170114-1', 8.55, 1.00, 18.00, 1.30, 1.30, 98.00);
+		-- 92, 9802, 26100	
+
+	-- 2017-01-16
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170116-1', '2017-01-16', 74, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170116-1', 19.55, 1.14, 19.20, 1.67, 1.81, 87.11);
+		-- 100, 9770, 24000
+
+	-- 2017-01-20
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170120-1', '2017-01-20', 74, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170120-1', 23.95, 1.12, 20.00, 1.27, 1.56, 87.46);
+		-- 94, 9402, 24900
+
+	-- 2017-01-21
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170121-1', '2017-01-21', 132, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170121-1', 23.95, 1.80, 19.00, 0.95, 1.30, 90.44);
+		-- 1, 112.3, 25000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170121-2', '2017-01-21', 2, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170121-2', 11.90, 1.68, 18.50, 1.18, 1.30, 89.88);
+		-- 46, 4926, 25000
+
+	-- 2017-01-23
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170123-1', '2017-01-23', 120, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170123-1', 13.50, 0.40, 18.20, 1.40, 0.10, 90.27);
+		-- 2, 137, 24800
+
+	-- 2017-02-02
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170202-1', '2017-02-02', 110, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170202-1', 27.60, 1.60, 18.80, 2.35, 1.50, 83.02);
+		-- 2, 128.7, 23
+
+	-- 2017-02-06
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170206-1', '2017-02-06', 120, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170206-1', 11.00, 1.18, 18.30, 1.13, 0.23, 90.75);
+		-- 3, 277.1, 24500
+
+	-- 2017-02-08
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170208-1', '2017-02-08', 121, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170208-1', 14.15, 5.30, 22.75, 1.43, 1.92, 81.20);
+		-- 5, 586.6, 22300
+
+	-- 2017-02-09
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170209-1', '2017-02-09', 125, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170209-1', 14.00, 1.44, 19.90, 0.69, 1.09, 88.60);
+		-- 19, 2154, 2450
+
+	-- 2017-02-27
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170227-1', '2017-02-27', 74, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170227-1', 25.65, 2.98, 21.62, 2.53, 2.51, 80.68);
+		-- 100, 9670, 24000
+
+	-- 2017-03-04
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170304-1', '2017-03-04', 84, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170304-1', 12.30, 1.65, 19.10, 1.43, 0.59, 88.63);
+		-- 9, 900.3, 25000
+
+	-- 2017-03-07
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170307-1', '2017-03-07', 74, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170307-1', 21.10, 2.98, 21.25, 2.33, 2.06, 81.51);
+		-- 97, 9551, 24500
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170307-2', '2017-03-07', 2, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170307-2', 8.55, 1.15, 17.80, 1.17, 0.64, 92.68);
+		-- 8, 868, 26000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170307-3', '2017-03-07', 2, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170307-3', 25.60, 0.70, 19.80, 3.63, 1.50, 81.86);
+		-- 3, 348.7, 22950
+
+	-- 2017-03-17
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-KP-20170317-1', '2017-03-17', 5, 'K', '1');
+		CALL tambah_kir_kopi ('KIR-KP-20170317-1', 15.60, 2.12, 19.10, 2.42, 1.07, 86.82);
+		-- 9, 641.1, 24350
 # ======================================= #
 
 # Data Kir Lada #
-# ======================================= #
+	-- 2017-01-02
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170102-1', '2017-01-02', 219, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170102-1',  17 , 1710, 3.23);
+		-- 3, 307/1, 76900
 
-# Data Analisa Harga #
-# ======================================= #
+	-- 2017-01-05
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170105-1', '2017-01-05', 95, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170105-1', 17.15, 1666, 1.95);
+		-- 1, 68.1, 77500
 
-# Data Pembelian Bahan Baku #
+	-- 2017-01-06
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170106-1', '2017-01-06', 1, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170106-1', 17.6, 1739, 1.13);
+		-- 3, 299.7, 78100
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170106-2', '2017-01-06', 110, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170106-2', 16.2, 1620, 1.60);
+		-- 2, 177, 78100
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170106-3', '2017-01-06', 221, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170106-3', 17.6, 1635, 2.19);
+		-- 1, 89.7, 76750
+
+	-- 2017-01-08
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170108-1', '2017-01-08', 222, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170108-1', 23.6, 1392, 4.5);
+		-- 3, 94, 68150
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170108-2', '2017-01-08', 95, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170108-2', 18.1, 1660, 2.36);
+		-- 1, 52.2, 76400
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170108-3', '2017-01-08', 220, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170108-3', 16.9, 1435, 1.68);
+		-- 1, 30.8, 75550
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170108-4', '2017-01-08', 181, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170108-4', 19.3, 1697, 1.71);
+		-- 1, 32.8, 76200
+
+	-- 2017-01-12
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170112-1', '2017-01-12', 101, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170112-1', 17.15, 1590, 1.45);
+		-- 2, 188.4, 78200
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170112-2', '2017-01-12', 218, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170112-2', 18.1, 1655, 3.63);
+		-- 1, 54.4, 76500
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170112-3', '2017-01-12', 175, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170112-3', 18.1, 1540, 2.69);
+		-- 6, 522.8, 76050
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170112-4', '2017-01-12', 2, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170112-4', 15.95, 1575, 2.46);
+		-- 3, 262, 78200
+
+	-- 2017-01-14
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170114-1', '2017-01-14', 98, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170114-1', 17, 1630, 1.27);
+		-- 1, 24.8, 77500
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170114-2', '2017-01-14', 105, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170114-2', 15.85, 1645, 1.46);
+		-- 1, 63.6, 78700
+
+	-- 2017-01-16
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170116-1', '2017-01-16', 125, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170116-1', 18.1, 1636, 2.47);
+		-- 6, 371.2, 76200
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170116-2', '2017-01-16', 132, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170116-2', 17, 1660, 2.15);
+		-- 2, 184.2, 77500
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170116-3', '2017-01-16', 149, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170116-3', 17.5, 1660, 1.11);
+		-- 6, 592.8, 78350
+
+	-- 2017-01-19
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170119-1', '2017-01-19', 216, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170119-1', 17.85, 1717, 3.5);
+		-- 1, 50.8, 76100
+
+	-- 2017-01-20
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170120-1', '2017-01-20', 94, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170120-1', 17.25, 1687, 2.5);
+		-- 2, 77.4, 76000
+
+	-- 2017-01-21
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170121-1', '2017-01-21', 132, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170121-1', 17.15, 1635, 1.06);
+		-- 3, 220.2, 77000
+
+	-- 2017-01-23
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170123-1', '2017-01-23', 5, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170123-1', 16.55, 1655, 1.41);
+		-- 3, 148.1, 77300
+
+	-- 2017-02-01
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170201-1', '2017-02-01', 105, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170201-1', 16.8, 1655, 1.85);
+		-- 1, 78.5, 77000
+
+	-- 2017-02-02
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170202-1', '2017-02-02', 110, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170202-1', 17.6, 1500, 3.77);
+		-- 5, 283.7, 74200
+
+	-- 2017-02-03
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170203-1', '2017-02-03', 120, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170203-1', 18.95, 1726, 1.82);
+		-- 1, 60.3, 75500
+
+	-- 2017-02-06
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170206-1', '2017-02-06', 73, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170206-1', 17, 1756, 1.1);
+		-- 1, 15.8, 76000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170206-2', '2017-02-06', 217, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170206-2', 17, 1756, 1.1);
+		-- 1, 68.8, 76000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170206-3', '2017-02-06', 5, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170206-3', 17, 1756, 1.1);
+		-- 1, 53.9, 75600
+
+	-- 2017-02-16
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170216-1', '2017-02-16', 104, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170216-1', 17, 1661, 2.5);
+		-- 4, 367.1, 71000
+
+	-- 2017-02-20
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170220-1', '2017-02-20', 1, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170220-1', 16.45, 1770, 1.13);
+		-- 3, 249.2, 72700
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170220-2', '2017-02-20', 1, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170220-2', 17, 1731, 1.47);
+		-- 3, 304.9, 72000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170220-3', '2017-02-20', 179, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170220-3', 16.8, 1653, 1.76);
+		-- 1, 57.2, 70000
+
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170220-4', '2017-02-20', 73, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170220-4', 17.15, 1603, 2.2);
+		-- 3, 253.1, 68500
+
+	-- 2017-02-27
+		INSERT INTO kir (kd_kir, tgl, id_supplier, jenis_bahan_baku, status) 
+			VALUES ('KIR-LD-20170227-1', '2017-02-27', 81, 'L', '1');
+		CALL tambah_kir_lada ('KIR-LD-20170227-1', 18, 1723, 2.33);
+		-- 2, 121.9, 68625
 # ======================================= #
 
 # Data Penjualan / Pemesanan #
-	INSERT INTO `pemesanan` (`id`, `tgl`, `no_kontrak`, `id_buyer`, `id_produk`, `jumlah_karung`, `ket_karung`, `kemasan`, `jumlah`, `waktu_pengiriman`, `batas_waktu_pengiriman`, `ket`, `lampiran`, `status`) VALUES
-		(1, '2014-01-01', NULL, 1, 1, NULL, NULL, NULL, 259860.00, NULL, NULL, NULL, NULL, 'S'),
-		(2, '2014-02-01', NULL, 1, 1, NULL, NULL, NULL, 255727.00, NULL, NULL, NULL, NULL, 'S'),
-		(3, '2014-03-01', NULL, 1, 1, NULL, NULL, NULL, 185878.00, NULL, NULL, NULL, NULL, 'S'),
-		(4, '2014-04-01', NULL, 1, 1, NULL, NULL, NULL, 476354.00, NULL, NULL, NULL, NULL, 'S'),
-		(5, '2014-05-01', NULL, 1, 1, NULL, NULL, NULL, 1814268.00, NULL, NULL, NULL, NULL, 'S'),
-		(6, '2014-06-01', NULL, 1, 1, NULL, NULL, NULL, 2046570.00, NULL, NULL, NULL, NULL, 'S'),
-		(7, '2014-07-01', NULL, 1, 1, NULL, NULL, NULL, 1842250.00, NULL, NULL, NULL, NULL, 'S'),
-		(8, '2014-08-01', NULL, 1, 1, NULL, NULL, NULL, 732694.00, NULL, NULL, NULL, NULL, 'S'),
-		(9, '2014-09-01', NULL, 1, 1, NULL, NULL, NULL, 775217.00, NULL, NULL, NULL, NULL, 'S'),
-		(10, '2014-10-01', NULL, 1, 1, NULL, NULL, NULL, 220926.00, NULL, NULL, NULL, NULL, 'S'),
-		(11, '2014-11-01', NULL, 1, 1, NULL, NULL, NULL, 50255.00, NULL, NULL, NULL, NULL, 'S'),
-		(12, '2014-12-01', NULL, 1, 1, NULL, NULL, NULL, 50120.00, NULL, NULL, NULL, NULL, 'S'),
-		(13, '2015-01-01', NULL, 1, 1, NULL, NULL, NULL, 120576.00, NULL, NULL, NULL, NULL, 'S'),
-		(14, '2015-02-01', NULL, 1, 1, NULL, NULL, NULL, 60768.00, NULL, NULL, NULL, NULL, 'S'),
-		(15, '2015-03-01', NULL, 1, 1, NULL, NULL, NULL, 100850.00, NULL, NULL, NULL, NULL, 'S'),
-		(16, '2015-04-01', NULL, 1, 1, NULL, NULL, NULL, 463689.00, NULL, NULL, NULL, NULL, 'S'),
-		(17, '2015-05-01', NULL, 1, 1, NULL, NULL, NULL, 1842000.00, NULL, NULL, NULL, NULL, 'S'),
-		(18, '2015-06-01', NULL, 1, 1, NULL, NULL, NULL, 3407830.00, NULL, NULL, NULL, NULL, 'S'),
-		(19, '2015-07-01', NULL, 1, 1, NULL, NULL, NULL, 3081809.00, NULL, NULL, NULL, NULL, 'S'),
-		(20, '2015-08-01', NULL, 1, 1, NULL, NULL, NULL, 2650120.00, NULL, NULL, NULL, NULL, 'S'),
-		(21, '2015-09-01', NULL, 1, 1, NULL, NULL, NULL, 1142170.00, NULL, NULL, NULL, NULL, 'S'),
-		(22, '2015-10-01', NULL, 1, 1, NULL, NULL, NULL, 425040.00, NULL, NULL, NULL, NULL, 'S'),
-		(23, '2015-11-01', NULL, 1, 1, NULL, NULL, NULL, 152530.00, NULL, NULL, NULL, NULL, 'S'),
-		(24, '2015-12-01', NULL, 1, 1, NULL, NULL, NULL, 75000.00, NULL, NULL, NULL, NULL, 'S'),
-		(25, '2016-01-01', NULL, 1, 1, NULL, NULL, NULL, 100170.00, NULL, NULL, NULL, NULL, 'S'),
-		(26, '2016-02-01', NULL, 1, 1, NULL, NULL, NULL, 200940.00, NULL, NULL, NULL, NULL, 'S'),
-		(27, '2016-03-01', NULL, 1, 1, NULL, NULL, NULL, 100850.00, NULL, NULL, NULL, NULL, 'S'),
-		(28, '2016-04-01', NULL, 1, 1, NULL, NULL, NULL, 50130.00, NULL, NULL, NULL, NULL, 'S'),
-		(29, '2016-05-01', NULL, 1, 1, NULL, NULL, NULL, 581540.00, NULL, NULL, NULL, NULL, 'S'),
-		(30, '2016-06-01', NULL, 1, 1, NULL, NULL, NULL, 130480.00, NULL, NULL, NULL, NULL, 'S'),
-		(31, '2016-07-01', NULL, 1, 1, NULL, NULL, NULL, 4134668.20, NULL, NULL, NULL, NULL, 'S'),
-		(32, '2016-08-01', NULL, 1, 1, NULL, NULL, NULL, 2251926.00, NULL, NULL, NULL, NULL, 'S'),
-		(33, '2016-09-01', NULL, 1, 1, NULL, NULL, NULL, 4870263.00, NULL, NULL, NULL, NULL, 'S'),
-		(34, '2016-10-01', NULL, 1, 1, NULL, NULL, NULL, 3482958.00, NULL, NULL, NULL, NULL, 'S'),
-		(35, '2016-11-01', NULL, 1, 1, NULL, NULL, NULL, 1000121.00, NULL, NULL, NULL, NULL, 'S'),
-		(36, '2016-12-01', NULL, 1, 1, NULL, NULL, NULL, 60320.00, NULL, NULL, NULL, NULL, 'S');
-# ======================================= #
+
+	-- data tahun 2014
+		-- kopi def 80
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 1, 259860.00, 'S'),
+			('2014-02-01', 1, 1, 255727.00, 'S'),
+			('2014-03-01', 1, 1, 185878.00, 'S'),
+			('2014-04-01', 1, 1, 476354.00, 'S'),
+			('2014-05-01', 1, 1, 1814268.00, 'S'),
+			('2014-06-01', 1, 1, 2046570.00, 'S'),
+			('2014-07-01', 1, 1, 1842250.00, 'S'),
+			('2014-08-01', 1, 1, 732694.00, 'S'),
+			('2014-09-01', 1, 1, 775217.00, 'S'),
+			('2014-10-01', 1, 1, 220926.00, 'S'),
+			('2014-11-01', 1, 1, 50255.00, 'S'),
+			('2014-12-01', 1, 1, 50120.00, 'S');
+
+		-- kopi def 120
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 2, 25000.00, 'S'),
+			('2014-02-01', 1, 2, 10000.00, 'S'),
+			('2014-03-01', 1, 2, 185878.00, 'S'),
+			('2014-04-01', 1, 2, 476354.00, 'S'),
+			('2014-05-01', 1, 2, 1814268.00, 'S'),
+			('2014-06-01', 1, 2, 2046570.00, 'S'),
+			('2014-07-01', 1, 2, 1842250.00, 'S'),
+			('2014-08-01', 1, 2, 732694.00, 'S'),
+			('2014-09-01', 1, 2, 775217.00, 'S'),
+			('2014-10-01', 1, 2, 220926.00, 'S'),
+			('2014-11-01', 1, 2, 50255.00, 'S'),
+			('2014-12-01', 1, 2, 50120.00, 'S');
+
+		-- kopi 20/25
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 3, 259860.00, 'S'),
+			('2014-02-01', 1, 3, 255727.00, 'S'),
+			('2014-03-01', 1, 3, 185878.00, 'S'),
+			('2014-04-01', 1, 3, 476354.00, 'S'),
+			('2014-05-01', 1, 3, 1814268.00, 'S'),
+			('2014-06-01', 1, 3, 2046570.00, 'S'),
+			('2014-07-01', 1, 3, 1842250.00, 'S'),
+			('2014-08-01', 1, 3, 732694.00, 'S'),
+			('2014-09-01', 1, 3, 775217.00, 'S'),
+			('2014-10-01', 1, 3, 220926.00, 'S'),
+			('2014-11-01', 1, 3, 50255.00, 'S'),
+			('2014-12-01', 1, 3, 50120.00, 'S');
+
+		-- kopi 30/35 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 4, 259860.00, 'S'),
+			('2014-02-01', 1, 4, 255727.00, 'S'),
+			('2014-03-01', 1, 4, 185878.00, 'S'),
+			('2014-04-01', 1, 4, 476354.00, 'S'),
+			('2014-05-01', 1, 4, 1814268.00, 'S'),
+			('2014-06-01', 1, 4, 2046570.00, 'S'),
+			('2014-07-01', 1, 4, 1842250.00, 'S'),
+			('2014-08-01', 1, 4, 732694.00, 'S'),
+			('2014-09-01', 1, 4, 775217.00, 'S'),
+			('2014-10-01', 1, 4, 220926.00, 'S'),
+			('2014-11-01', 1, 4, 50255.00, 'S'),
+			('2014-12-01', 1, 4, 50120.00, 'S');
+
+		-- kopi 40/45
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 5, 259860.00, 'S'),
+			('2014-02-01', 1, 5, 255727.00, 'S'),
+			('2014-03-01', 1, 5, 185878.00, 'S'),
+			('2014-04-01', 1, 5, 476354.00, 'S'),
+			('2014-05-01', 1, 5, 1814268.00, 'S'),
+			('2014-06-01', 1, 5, 2046570.00, 'S'),
+			('2014-07-01', 1, 5, 1842250.00, 'S'),
+			('2014-08-01', 1, 5, 732694.00, 'S'),
+			('2014-09-01', 1, 5, 775217.00, 'S'),
+			('2014-10-01', 1, 5, 220926.00, 'S'),
+			('2014-11-01', 1, 5, 50255.00, 'S'),
+			('2014-12-01', 1, 5, 50120.00, 'S');
+
+		-- kopi 60/65 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 6, 259860.00, 'S'),
+			('2014-02-01', 1, 6, 255727.00, 'S'),
+			('2014-03-01', 1, 6, 185878.00, 'S'),
+			('2014-04-01', 1, 6, 476354.00, 'S'),
+			('2014-05-01', 1, 6, 1814268.00, 'S'),
+			('2014-06-01', 1, 6, 2046570.00, 'S'),
+			('2014-07-01', 1, 6, 1842250.00, 'S'),
+			('2014-08-01', 1, 6, 732694.00, 'S'),
+			('2014-09-01', 1, 6, 775217.00, 'S'),
+			('2014-10-01', 1, 6, 220926.00, 'S'),
+			('2014-11-01', 1, 6, 50255.00, 'S'),
+			('2014-12-01', 1, 6, 50120.00, 'S');
+
+		-- kopi 80/85
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 7, 259860.00, 'S'),
+			('2014-02-01', 1, 7, 255727.00, 'S'),
+			('2014-03-01', 1, 7, 185878.00, 'S'),
+			('2014-04-01', 1, 7, 476354.00, 'S'),
+			('2014-05-01', 1, 7, 1814268.00, 'S'),
+			('2014-06-01', 1, 7, 2046570.00, 'S'),
+			('2014-07-01', 1, 7, 1842250.00, 'S'),
+			('2014-08-01', 1, 7, 732694.00, 'S'),
+			('2014-09-01', 1, 7, 775217.00, 'S'),
+			('2014-10-01', 1, 7, 220926.00, 'S'),
+			('2014-11-01', 1, 7, 50255.00, 'S'),
+			('2014-12-01', 1, 7, 50120.00, 'S');
+
+		-- lada hitam
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2014-01-01', 1, 8, 259860.00, 'S'),
+			('2014-02-01', 1, 8, 255727.00, 'S'),
+			('2014-03-01', 1, 8, 185878.00, 'S'),
+			('2014-04-01', 1, 8, 476354.00, 'S'),
+			('2014-05-01', 1, 8, 1814268.00, 'S'),
+			('2014-06-01', 1, 8, 2046570.00, 'S'),
+			('2014-07-01', 1, 8, 1842250.00, 'S'),
+			('2014-08-01', 1, 8, 732694.00, 'S'),
+			('2014-09-01', 1, 8, 775217.00, 'S'),
+			('2014-10-01', 1, 8, 220926.00, 'S'),
+			('2014-11-01', 1, 8, 50255.00, 'S'),
+			('2014-12-01', 1, 8, 50120.00, 'S');
+
+	-- data tahun 2015
+		-- kopi def 80
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 1, 120576.00, 'S'),
+			('2015-02-01', 1, 1, 60768.00, 'S'),
+			('2015-03-01', 1, 1, 100850.00, 'S'),
+			('2015-04-01', 1, 1, 463689.00, 'S'),
+			('2015-05-01', 1, 1, 1842000.00, 'S'),
+			('2015-06-01', 1, 1, 3407830.00, 'S'),
+			('2015-07-01', 1, 1, 3081809.00, 'S'),
+			('2015-08-01', 1, 1, 2650120.00, 'S'),
+			('2015-09-01', 1, 1, 1142170.00, 'S'),
+			('2015-10-01', 1, 1, 425040.00, 'S'),
+			('2015-11-01', 1, 1, 152530.00, 'S'),
+			('2015-12-01', 1, 1, 75000.00, 'S');
+
+		-- kopi def 120
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 2, 259860.00, 'S'),
+			('2015-02-01', 1, 2, 255727.00, 'S'),
+			('2015-03-01', 1, 2, 185878.00, 'S'),
+			('2015-04-01', 1, 2, 476354.00, 'S'),
+			('2015-05-01', 1, 2, 1814268.00, 'S'),
+			('2015-06-01', 1, 2, 2046570.00, 'S'),
+			('2015-07-01', 1, 2, 1842250.00, 'S'),
+			('2015-08-01', 1, 2, 732694.00, 'S'),
+			('2015-09-01', 1, 2, 775217.00, 'S'),
+			('2015-10-01', 1, 2, 220926.00, 'S'),
+			('2015-11-01', 1, 2, 50255.00, 'S'),
+			('2015-12-01', 1, 2, 50120.00, 'S');
+
+		-- kopi 20/25
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 3, 259860.00, 'S'),
+			('2015-02-01', 1, 3, 255727.00, 'S'),
+			('2015-03-01', 1, 3, 185878.00, 'S'),
+			('2015-04-01', 1, 3, 476354.00, 'S'),
+			('2015-05-01', 1, 3 1814268.00, 'S'),
+			('2015-06-01', 1, 3, 2046570.00, 'S'),
+			('2015-07-01', 1, 3, 1842250.00, 'S'),
+			('2015-08-01', 1, 3, 732694.00, 'S'),
+			('2015-09-01', 1, 3, 775217.00, 'S'),
+			('2015-10-01', 1, 3, 220926.00, 'S'),
+			('2015-11-01', 1, 3, 50255.00, 'S'),
+			('2015-12-01', 1, 3, 50120.00, 'S');
+
+		-- kopi 30/35 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 4, 259860.00, 'S'),
+			('2015-02-01', 1, 4, 255727.00, 'S'),
+			('2015-03-01', 1, 4, 185878.00, 'S'),
+			('2015-04-01', 1, 4, 476354.00, 'S'),
+			('2015-05-01', 1, 4, 1814268.00, 'S'),
+			('2015-06-01', 1, 4, 2046570.00, 'S'),
+			('2015-07-01', 1, 4, 1842250.00, 'S'),
+			('2015-08-01', 1, 4, 732694.00, 'S'),
+			('2015-09-01', 1, 4, 775217.00, 'S'),
+			('2015-10-01', 1, 4, 220926.00, 'S'),
+			('2015-11-01', 1, 4, 50255.00, 'S'),
+			('2015-12-01', 1, 4, 50120.00, 'S');
+
+		-- kopi 40/45
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 5, 259860.00, 'S'),
+			('2015-02-01', 1, 5, 255727.00, 'S'),
+			('2015-03-01', 1, 5, 185878.00, 'S'),
+			('2015-04-01', 1, 5, 476354.00, 'S'),
+			('2015-05-01', 1, 5, 1814268.00, 'S'),
+			('2015-06-01', 1, 5, 2046570.00, 'S'),
+			('2015-07-01', 1, 5, 1842250.00, 'S'),
+			('2015-08-01', 1, 5, 732694.00, 'S'),
+			('2015-09-01', 1, 5, 775217.00, 'S'),
+			('2015-10-01', 1, 5, 220926.00, 'S'),
+			('2015-11-01', 1, 5, 50255.00, 'S'),
+			('2015-12-01', 1, 5, 50120.00, 'S');
+
+		-- kopi 60/65 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 6, 259860.00, 'S'),
+			('2015-02-01', 1, 6, 255727.00, 'S'),
+			('2015-03-01', 1, 6, 185878.00, 'S'),
+			('2015-04-01', 1, 6, 476354.00, 'S'),
+			('2015-05-01', 1, 6, 1814268.00, 'S'),
+			('2015-06-01', 1, 6, 2046570.00, 'S'),
+			('2015-07-01', 1, 6, 1842250.00, 'S'),
+			('2015-08-01', 1, 6, 732694.00, 'S'),
+			('2015-09-01', 1, 6, 775217.00, 'S'),
+			('2015-10-01', 1, 6, 220926.00, 'S'),
+			('2015-11-01', 1, 6, 50255.00, 'S'),
+			('2015-12-01', 1, 6, 50120.00, 'S');
+
+		-- kopi 80/85
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 7, 259860.00, 'S'),
+			('2015-02-01', 1, 7, 255727.00, 'S'),
+			('2015-03-01', 1, 7, 185878.00, 'S'),
+			('2015-04-01', 1, 7, 476354.00, 'S'),
+			('2015-05-01', 1, 7, 1814268.00, 'S'),
+			('2015-06-01', 1, 7, 2046570.00, 'S'),
+			('2015-07-01', 1, 7, 1842250.00, 'S'),
+			('2015-08-01', 1, 7, 732694.00, 'S'),
+			('2015-09-01', 1, 7, 775217.00, 'S'),
+			('2015-10-01', 1, 7, 220926.00, 'S'),
+			('2015-11-01', 1, 7, 50255.00, 'S'),
+			('2015-12-01', 1, 7, 50120.00, 'S');
+
+		-- lada hitam
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2015-01-01', 1, 8, 259860.00, 'S'),
+			('2015-02-01', 1, 8, 255727.00, 'S'),
+			('2015-03-01', 1, 8, 185878.00, 'S'),
+			('2015-04-01', 1, 8, 476354.00, 'S'),
+			('2015-05-01', 1, 8, 1814268.00, 'S'),
+			('2015-06-01', 1, 8, 2046570.00, 'S'),
+			('2015-07-01', 1, 8, 1842250.00, 'S'),
+			('2015-08-01', 1, 8, 732694.00, 'S'),
+			('2015-09-01', 1, 8, 775217.00, 'S'),
+			('2015-10-01', 1, 8, 220926.00, 'S'),
+			('2015-11-01', 1, 8, 50255.00, 'S'),
+			('2015-12-01', 1, 8, 50120.00, 'S');
+
+	-- data tahun 2016
+		-- kopi def 80
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 1, 100170.00, 'S'),
+			('2016-02-01', 1, 1, 200940.00, 'S'),
+			('2016-03-01', 1, 1, 100850.00, 'S'),
+			('2016-04-01', 1, 1, 50130.00, 'S'),
+			('2016-05-01', 1, 1, 581540.00, 'S'),
+			('2016-06-01', 1, 1, 130480.00, 'S'),
+			('2016-07-01', 1, 1, 4134668.20, 'S'),
+			('2016-08-01', 1, 1, 2251926.00, 'S'),
+			('2016-09-01', 1, 1, 4870263.00, 'S'),
+			('2016-10-01', 1, 1, 3482958.00, 'S'),
+			('2016-11-01', 1, 1, 1000121.00, 'S'),
+			('2016-12-01', 1, 1, 60320.00, 'S');
+
+		-- kopi def 120
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 2, 259860.00, 'S'),
+			('2016-02-01', 1, 2, 255727.00, 'S'),
+			('2016-03-01', 1, 2, 185878.00, 'S'),
+			('2016-04-01', 1, 2, 476354.00, 'S'),
+			('2016-05-01', 1, 2, 1814268.00, 'S'),
+			('2016-06-01', 1, 2, 2046570.00, 'S'),
+			('2016-07-01', 1, 2, 1842250.00, 'S'),
+			('2016-08-01', 1, 2, 732694.00, 'S'),
+			('2016-09-01', 1, 2, 775217.00, 'S'),
+			('2016-10-01', 1, 2, 220926.00, 'S'),
+			('2016-11-01', 1, 2, 50255.00, 'S'),
+			('2016-12-01', 1, 2, 50120.00, 'S');
+
+		-- kopi 20/25
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 3, 259860.00, 'S'),
+			('2016-02-01', 1, 3, 255727.00, 'S'),
+			('2016-03-01', 1, 3, 185878.00, 'S'),
+			('2016-04-01', 1, 3, 476354.00, 'S'),
+			('2016-05-01', 1, 3, 1814268.00, 'S'),
+			('2016-06-01', 1, 3, 2046570.00, 'S'),
+			('2016-07-01', 1, 3, 1842250.00, 'S'),
+			('2016-08-01', 1, 3, 732694.00, 'S'),
+			('2016-09-01', 1, 3, 775217.00, 'S'),
+			('2016-10-01', 1, 3, 220926.00, 'S'),
+			('2016-11-01', 1, 3, 50255.00, 'S'),
+			('2016-12-01', 1, 3, 50120.00, 'S');
+
+		-- kopi 30/35 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 4, 259860.00, 'S'),
+			('2016-02-01', 1, 4, 255727.00, 'S'),
+			('2016-03-01', 1, 4, 185878.00, 'S'),
+			('2016-04-01', 1, 4, 476354.00, 'S'),
+			('2016-05-01', 1, 4, 1814268.00, 'S'),
+			('2016-06-01', 1, 4, 2046570.00, 'S'),
+			('2016-07-01', 1, 4, 1842250.00, 'S'),
+			('2016-08-01', 1, 4, 732694.00, 'S'),
+			('2016-09-01', 1, 4, 775217.00, 'S'),
+			('2016-10-01', 1, 4, 220926.00, 'S'),
+			('2016-11-01', 1, 4, 50255.00, 'S'),
+			('2016-12-01', 1, 4, 50120.00, 'S');
+
+		-- kopi 40/45
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 5, 259860.00, 'S'),
+			('2016-02-01', 1, 5, 255727.00, 'S'),
+			('2016-03-01', 1, 5, 185878.00, 'S'),
+			('2016-04-01', 1, 5, 476354.00, 'S'),
+			('2016-05-01', 1, 5, 1814268.00, 'S'),
+			('2016-06-01', 1, 5, 2046570.00, 'S'),
+			('2016-07-01', 1, 5, 1842250.00, 'S'),
+			('2016-08-01', 1, 5, 732694.00, 'S'),
+			('2016-09-01', 1, 5, 775217.00, 'S'),
+			('2016-10-01', 1, 5, 220926.00, 'S'),
+			('2016-11-01', 1, 5, 50255.00, 'S'),
+			('2016-12-01', 1, 5, 50120.00, 'S');
+
+		-- kopi 60/65 
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 6, 259860.00, 'S'),
+			('2016-02-01', 1, 6, 255727.00, 'S'),
+			('2016-03-01', 1, 6, 185878.00, 'S'),
+			('2016-04-01', 1, 6, 476354.00, 'S'),
+			('2016-05-01', 1, 6, 1814268.00, 'S'),
+			('2016-06-01', 1, 6, 2046570.00, 'S'),
+			('2016-07-01', 1, 6, 1842250.00, 'S'),
+			('2016-08-01', 1, 6, 732694.00, 'S'),
+			('2016-09-01', 1, 6, 775217.00, 'S'),
+			('2016-10-01', 1, 6, 220926.00, 'S'),
+			('2016-11-01', 1, 6, 50255.00, 'S'),
+			('2016-12-01', 1, 6, 50120.00, 'S');
+
+		-- kopi 80/85
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 7, 259860.00, 'S'),
+			('2016-02-01', 1, 7, 255727.00, 'S'),
+			('2016-03-01', 1, 7, 185878.00, 'S'),
+			('2016-04-01', 1, 7, 476354.00, 'S'),
+			('2016-05-01', 1, 7, 1814268.00, 'S'),
+			('2016-06-01', 1, 7, 2046570.00, 'S'),
+			('2016-07-01', 1, 7, 1842250.00, 'S'),
+			('2016-08-01', 1, 7, 732694.00, 'S'),
+			('2016-09-01', 1, 7, 775217.00, 'S'),
+			('2016-10-01', 1, 7, 220926.00, 'S'),
+			('2016-11-01', 1, 7, 50255.00, 'S'),
+			('2016-12-01', 1, 7, 50120.00, 'S');
+
+		-- lada hitam
+		INSERT INTO pemesanan (tgl, id_buyer, id_produk, jumlah, status) VALUES 
+			('2016-01-01', 1, 8, 259860.00, 'S'),
+			('2016-02-01', 1, 8, 255727.00, 'S'),
+			('2016-03-01', 1, 8, 185878.00, 'S'),
+			('2016-04-01', 1, 8, 476354.00, 'S'),
+			('2016-05-01', 1, 8, 1814268.00, 'S'),
+			('2016-06-01', 1, 8, 2046570.00, 'S'),
+			('2016-07-01', 1, 8, 1842250.00, 'S'),
+			('2016-08-01', 1, 8, 732694.00, 'S'),
+			('2016-09-01', 1, 8, 775217.00, 'S'),
+			('2016-10-01', 1, 8, 220926.00, 'S'),
+			('2016-11-01', 1, 8, 50255.00, 'S'),
+			('2016-12-01', 1, 8, 50120.00, 'S');
+
+	-- data tahun 2017
+	-- INSERT INTO pemesanan (tgl, no_kontrak, id_buyer, id_produk, jumlah, waktu_pengiriman, batas_waktu_pengiriman, status) 
+	-- 	VALUES (CURDATE(), );

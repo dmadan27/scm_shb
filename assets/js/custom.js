@@ -206,7 +206,7 @@ $(document).ready(function () {
                     break;
 
                 // menu data analisa harga
-                case "kir":
+                case "analisa_harga":
                     $('.menu-data-analisa-harga').addClass('active');
                     $('.menu-data-analisa-harga').find('a').first().addClass('active');
                     break;
@@ -231,17 +231,26 @@ $(document).ready(function () {
 
                 // menu data perencanaan bahan baku
                 case "perencanaan_bahan_baku":
-                    $('.menu-data-peramalan').addClass('active');
-                    $('.menu-data-peramalan').find('a').first().addClass('active');
+                    $('.menu-data-perencanaan-bahan-baku').addClass('active');
+                    $('.menu-data-perencanaan-bahan-baku').find('a').first().addClass('active');
                     break;
 
-                 // menu data safety stock
-                case "safety_stock":
+                // menu data stok bahan baku
+                case "stok_bahan_baku":
                     $('.menu-data-monitoring-persediaan').addClass('active');
                     $('.menu-data-monitoring-persediaan').find('a').first().addClass('active');
                     $('.menu-data-monitoring-persediaan').find('ul').first().addClass('in');
-                    $('.menu-data-safety-stock').addClass('active');
-                    $('.menu-data-safety-stock').find('a').first().addClass('active');
+                    $('.menu-data-stok-bahan-baku').addClass('active');
+                    $('.menu-data-stok-bahan-baku').find('a').first().addClass('active');
+                    break;
+
+                // menu data stok produk
+                case "stok_produk":
+                    $('.menu-data-monitoring-persediaan').addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('a').first().addClass('active');
+                    $('.menu-data-monitoring-persediaan').find('ul').first().addClass('in');
+                    $('.menu-data-stok-produk').addClass('active');
+                    $('.menu-data-stok-produk').find('a').first().addClass('active');
                     break;
 
                  // menu data mutasi bahan baku

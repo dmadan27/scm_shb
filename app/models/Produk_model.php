@@ -37,7 +37,8 @@
 		$query = "SELECT k.id id_komposisi, p.id id_produk, p.kd_produk, p.nama nama_produk, ";
 		$query .= "b.id id_bahan_baku, b.nama nama_bahan_baku, b.kd_bahan_baku, b.satuan satuan_bahan_baku, k.penyusutan ";
 		$query .= "FROM komposisi k JOIN produk p ON p.id = k.id_produk ";
-		$query .= "JOIN bahan_baku b ON b.id = k.id_bahan_baku WHERE k.id_produk=:id";
+		$query .= "JOIN bahan_baku b ON b.id = k.id_bahan_baku WHERE k.id_produk=:id ";
+		$query .= "ORDER BY k.id_bahan_baku ASC";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id', $id);

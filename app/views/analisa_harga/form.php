@@ -243,7 +243,7 @@
 			 						<div class="form-group field-harga-beli has-feedback m-b-5">
 										<label class="col-md-12" for="harga_beli">Harga Beli:</label>
 				                        <div class="col-md-12">
-				                            <input id="harga_beli" type="number" class="form-control" placeholder="Masukkan Harga Beli">
+				                            <input id="harga_beli" type="number" class="form-control" step="any" placeholder="Masukkan Harga Beli">
 				                            <span class="help-block small pesan"></span>
 				                        </div>
 									</div>

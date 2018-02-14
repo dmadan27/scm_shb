@@ -61,6 +61,39 @@
         </div>
     </div>
 </div>
+
+<!-- modals ubah status -->
+<div class="modal fade" id="modal_ubah_status" tabindex="-1" role="dialog" aria-labelledby="labelModalUbahStatus" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="labelModalUbahStatus">Ubah Status Pemesanan</h4>
+            </div>
+            <form id="form_ubah_status" class="form-material" role="form" enctype="multipart/form-data">
+                <input type="hidden" name="id_pemesanan" id="id_pemesanan">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- satuan -->
+                            <div class="form-group field-satuan has-feedback m-b-5">
+                                <label class="col-md-12" for="satuan">Status Pemesanan</label>
+                                <div class="col-md-12">
+                                    <select id="status" class="form-control"></select>
+                                    <span class="help-block small pesan"></span>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>  
+                </div>
+                <div class="modal-footer">
+                    <button id="btnSubmit_ubah_status" type="submit" class="btn btn-info btn-outline waves-effect waves-light" value="ubah_status">Ubah</button>
+                    <button type="button" class="btn btn-default btn-outline waves-effect waves-light" data-dismiss="modal">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <?php 
     if($notif){
         ?>

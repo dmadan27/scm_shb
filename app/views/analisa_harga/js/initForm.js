@@ -334,7 +334,7 @@ function setSelect_kir(){
 
 					if(!data.supplier.npwp){ // jika nik kosong
 						// jika npwp ada
-						info_supplier = (!data.supplier.nik) ? data.supplier.nik+' (NIK) - '+data.supplier.nama_supplier : data.supplier.nama_supplier;
+						info_supplier = (data.supplier.nik) ? data.supplier.nik+' (NIK) - '+data.supplier.nama_supplier : data.supplier.nama_supplier;
 					}
 
 					$('.kir-supplier').slideDown();
