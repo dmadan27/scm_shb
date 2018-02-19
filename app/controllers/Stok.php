@@ -50,7 +50,7 @@
 				$hitung_jumlah = hitung_jumlah_safety_stok_bahanBaku(getPerencanaan_produk_by_bahanBaku($koneksi, $row['id'], '2017-01'));
 				$jumlah_perencanaan = $hitung_jumlah['jumlah_bahanBaku'];
 				$safety_stok_bahan_baku = $hitung_jumlah['safety_stok_bahan_baku'];
-				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan + $safety_stok_bahan_baku) - $row['stok_akhir']) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku));
+				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku))) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku));
 
 				$status = ($row['stok_akhir'] >= $jumlah_yang_dibutuhkan) ? '<span class="label label-success label-rouded">AMAN</span>' : '<span class="label label-danger label-rouded">TIDAK AMAN</span>';
 			}
@@ -95,12 +95,15 @@
 			$no_urut++;
 
 			// get safety stock produk
-			if(get_safetyStock($koneksi, $row['id'], '2017-01')){
-				$safety_stock = get_safetyStock($koneksi, $row['id'], '2017-01');
+			if(get_perencanaanProduk($koneksi, $row['id'], '2017-01')){
+				$data_perencanaan = get_perencanaanProduk($koneksi, $row['id'], '2017-01');
+				$jumlah_perencanaan = $data_perencanaan['jumlah_perencanaan'];
+				$safety_stock = $data_perencanaan['safety_stok_produk'];
+				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stock))) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stock));
 				$status = ($row['stok_akhir'] < $safety_stock) ? '<span class="label label-danger label-rouded">TIDAK AMAN</span>' : '<span class="label label-success label-rouded">AMAN</span>';
 			}
 			else{
-				$safety_stock = "0";
+				$jumlah_perencanaan = $safety_stock = $jumlah_yang_dibutuhkan = "0";
 				$status = '<span class="label label-warning label-rouded">BELUM DIRENCANAKAN</span>';
 			}
 
@@ -108,9 +111,10 @@
 			$dataRow[] = $no_urut;
 			$dataRow[] = $row['kd_produk'];
 			$dataRow[] = $row['nama'];
-			$dataRow[] = ""; // jumlah perencanaan
+			$dataRow[] = cetakAngka($jumlah_perencanaan)." ".$row['satuan']; // jumlah perencanaan
 			$dataRow[] = cetakAngka($safety_stock)." ".$row['satuan']; // safety stock
 			$dataRow[] = cetakAngka($row['stok_akhir'])." ".$row['satuan'];
+			$dataRow[] = cetakAngka($jumlah_yang_dibutuhkan)." ".$row['satuan']; // jumlah yang dibutuhkan
 			$dataRow[] = $status; // status
 			$data[] = $dataRow;
 		}
@@ -126,10 +130,10 @@
 	}
 
 	// get safety stock produk
-	function get_safetyStock($koneksi, $id_produk, $periode){
-		$data_safetyStock = get_safetyStock_produk($koneksi, $id_produk, $periode);
+	function get_perencanaanProduk($koneksi, $id_produk, $periode){
+		$data_perencanaan = get_perencanaan_produk($koneksi, $id_produk, $periode);
 
-		return ($data_safetyStock) ? $data_safetyStock['safety_stok_produk'] : $data_safetyStock;
+		return ($data_perencanaan) ? $data_perencanaan : false;
 	}
 
 	// hitung jumlah bahan baku total dan safety stock bahan baku total

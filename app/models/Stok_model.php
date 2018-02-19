@@ -17,8 +17,8 @@
 		return $result;
 	}
 
-	function get_safetyStock_produk($koneksi, $id_produk, $periode){
-		$query = "SELECT safety_stok_produk FROM perencanaan_bahan_baku WHERE id_produk=:id_produk AND periode=:periode";
+	function get_perencanaan_produk($koneksi, $id_produk, $periode){
+		$query = "SELECT jumlah_perencanaan, safety_stok_produk FROM perencanaan_bahan_baku WHERE id_produk=:id_produk AND periode=:periode";
 
 		$statement = $koneksi->prepare($query);
 		$statement->bindParam(':id_produk', $id_produk);
