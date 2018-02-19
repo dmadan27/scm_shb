@@ -9,10 +9,7 @@ $(document).ready(function () {
     //extra-chart
     var chart = new Chartist.Line('#ct-extra', {
         labels: ['1', '2', '3', '4', '5', '6'],
-        series: [
-    [1, -2, 5, 3, 0, 2.5]
-
-  ]
+        series: [[1, -2, 5, 3, 0, 2.5]]
     }, {
         showArea: true,
         showPoint: true,
@@ -37,10 +34,10 @@ $(document).ready(function () {
 
     //ct-main-balance-chart
     var chart = new Chartist.Line('#ct-main-bal', {
-        labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+        labels: ['1', '2', '3', '4', '5', '6'],
         series: [
-    [1, 2, 5, 3, 4, 2.5, 5, 3, 1],
-    [1, 4, 2, 5, 2, 5.5, 3, 4, 1]
+    [1, 2, 5, 3, 4, 1],
+    [1, 4, 2, 5, 2, 1]
    ]
 
     }, {
@@ -100,18 +97,18 @@ $(document).ready(function () {
         data: [{
             label: "Jan",
             value: 15,
-    }, {
+        }, {
             label: "Feb",
             value: 15,
-    }, {
+        }, {
             label: "Mar",
             value: 35,
-    }, {
+        }, {
             label: "Apr",
             value: 105
         }],
         resize: true,
-        colors: ['#ff7676', '#2cabe3', '#53e69d', '#7bcef3']
+        colors: ['#f33155', '#7460ee', '#7ace4c', '#11a0f8']
     });
 
     // Real Time chart
@@ -131,7 +128,7 @@ $(document).ready(function () {
             }
             data.push(y);
         }
-        // Zip the generated y values with the x values 
+        // Zip the generated y values with the x values
         var res = [];
         for (var i = 0; i < data.length; ++i) {
             res.push([i, data[i]])
@@ -163,7 +160,7 @@ $(document).ready(function () {
         xaxis: {
             show: false
         },
-        colors: ["#fff"],
+        colors: ["#41b3f9"],
         grid: {
             color: "rgba(255, 255, 255, 0.3)",
             hoverable: true,
@@ -183,7 +180,7 @@ $(document).ready(function () {
         plot.draw();
         setTimeout(update, updateInterval);
     }
-    $(window).resize(function () {
+    $(window).on("resize", function () {
         $.plot($('#placeholder'), [getRandomData()]);
     });
     update();

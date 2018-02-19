@@ -35,6 +35,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'get_invoice_pembelian':
 				get_invoice_pembelian($koneksi);
 				break;
@@ -197,6 +201,28 @@
 		// );
 
 		echo json_encode($output);
+	}
+
+	function getHapus($koneksi, $id){
+		$cek = false;
+
+		// get data detail pembelian
+		$dataDetail = getDetail_pembelian_by_id_pembelian($koneksi, $id);
+
+		foreach($dataDetail as $index => $array){
+			foreach ($dataDetail[$index] as $key => $value) {
+				$dataDelete[$key] = $value;
+			}
+			if(deleteDetail_pembelian($koneksi, $dataDelete)) $cek = true;
+		}
+
+		if($cek){
+			if(deletePembelian_bahan_baku($koneksi, $id))$status = true;
+			else $status = false;
+		}
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	function get_invoice_pembelian($koneksi){

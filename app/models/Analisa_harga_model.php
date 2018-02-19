@@ -39,3 +39,14 @@
 
 		return $result;
 	}
+
+	// function delete analisa harga
+	function deleteAnalisa_harga($koneksi, $id){
+		$query = "DELETE FROM analisa_harga WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

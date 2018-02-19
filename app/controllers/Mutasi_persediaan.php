@@ -47,8 +47,8 @@
 			$dataRow[] = cetakTgl($row['tgl'], 'full');
 			$dataRow[] = $row['kd_bahan_baku'];
 			$dataRow[] = $row['nama_bahan_baku'];
-			$dataRow[] = $row['brg_masuk']." ".$row['satuan'];
-			$dataRow[] = $row['brg_keluar']." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['brg_masuk'])." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['brg_keluar'])." ".$row['satuan'];
 			$data[] = $dataRow;
 		}
 
@@ -83,8 +83,8 @@
 			$dataRow[] = cetakTgl($row['tgl'], 'full');
 			$dataRow[] = $row['kd_produk'];
 			$dataRow[] = $row['nama_produk'];
-			$dataRow[] = $row['brg_masuk']." ".$row['satuan'];
-			$dataRow[] = $row['brg_keluar']." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['brg_masuk'])." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['brg_keluar'])." ".$row['satuan'];
 			$data[] = $dataRow;
 		}
 

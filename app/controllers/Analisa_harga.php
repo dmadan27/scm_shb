@@ -34,6 +34,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'get_select_basis':
 				get_select_basis($koneksi);
 				break;
@@ -206,6 +210,15 @@
 			'dataKir' => $dataKir,
 		);
 		echo json_encode($output);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteAnalisa_harga($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	function setRule_validasi($data){

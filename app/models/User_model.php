@@ -33,3 +33,13 @@
 
 		return $result;
 	}
+
+	function deleteUser($koneksi, $id){
+		$query = "DELETE FROM user WHERE username = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

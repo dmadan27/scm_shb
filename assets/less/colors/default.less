@@ -8,13 +8,21 @@
 @headingtext: #2b2b2b;
 @bodytext: #686868;
 @sidebar-text:#54667a;
-@themecolor: @danger;
+@themecolor: @info;
 @dark-themecolor: #4F5467;
 
 body {
     background: @sidebar;
 }
-
+.top-left-part{
+    background:@sidebar;
+    .dark-logo{
+        display:none;
+    }
+    .light-logo{
+        display:inline-block;
+    }
+}
 /*Top Header Part*/
 
 .logo i {
@@ -67,13 +75,15 @@ body {
 }
 
 #side-menu > li > a {
+    border-left:3px solid transperant;
     &:hover,
     &:focus {
         background: rgba(0, 0, 0, 0.07);
     }
     &.active {
-        background: @themecolor;
-        color: @white;
+        background: transperant;
+        color: @sidebar-text;
+        border-left:3px solid @themecolor;
         font-weight: 500;
     }
 }
@@ -83,7 +93,7 @@ body {
         color: @themecolor;
     }
     &.active {
-        color: @themecolor;
+        color: @sidebar-text;
         font-weight: 500;
     }
 }

@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading">List Data Stok Bahan Baku</div>
+            <div class="panel-heading">Lihat Semua Data Stok Bahan Baku</div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-wrapper collapse in">
                     <div class="panel-body">
@@ -47,10 +47,10 @@
                                     <th>Kode Bahan Baku</th>
                                     <th>Nama</th>
                                     <th>Jumlah Perencanaan</th>
-                                    <th>Stok Gudang</th>
                                     <th>Safety Stock</th>
+                                    <th>Stok Gudang</th>
+                                    <th>Jumlah Yang Dibutuhkan</th>
                                     <th>Status</th>
-                                    <th>Jumlah Bahan Baku Yang Dibutuhkan</th>
                                 </tr>
                             </thead>
                         </table>

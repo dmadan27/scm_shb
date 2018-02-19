@@ -20,6 +20,18 @@
 		return $result;
 	}
 
+	// function get detail pembelian by id pembelian
+	function getDetail_pembelian_by_id_pembelian($koneksi, $id){
+		$query = "SELECT * FROM v_detail_pembelian WHERE id_pembelian = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$statement->execute();
+		$result = $statement->fetchAll();
+
+		return $result;
+	}
+
 	// function insert pembelian
 	function insertPembelian($koneksi, $data){
 		$query = "INSERT INTO pembelian_bahan_baku (tgl, invoice, id_supplier, jenis_pembayaran, jenis_pph, pph, total, ket, status) ";
@@ -53,6 +65,30 @@
 		$statement->bindParam(':jumlah', $data['jumlah']);
 		$statement->bindParam(':harga', $data['harga_beli']);
 		$statement->bindParam(':subtotal', $data['subtotal']);
+		$result = $statement->execute();
+
+		return $result;
+	}
+
+	function deletePembelian_bahan_baku($koneksi, $id){
+		$query = "DELETE FROM pembelian_bahan_baku WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}
+
+	function deleteDetail_pembelian($koneksi, $data){
+		$query = "CALL hapus_detail_pembelian (:id_detail, :tgl, :id_bahan_baku, :id_analisa_harga, :jumlah)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id_detail', $data['id']);
+		$statement->bindParam(':tgl', $data['tgl']);
+		$statement->bindParam(':id_bahan_baku', $data['id_bahan_baku']);
+		$statement->bindParam(':id_analisa_harga', $data['id_analisa_harga']);
+		$statement->bindParam(':jumlah', $data['jumlah']);
 		$result = $statement->execute();
 
 		return $result;

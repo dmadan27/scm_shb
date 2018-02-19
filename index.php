@@ -85,7 +85,8 @@
 
      	<!-- Custom CSS -->
         <link href="<?= base_url."assets/css/style.css"; ?>" rel="stylesheet">
-        <link href="<?= base_url."assets/css/colors/megna-dark.css"; ?>" id="theme" rel="stylesheet">
+        <link href="<?= base_url."assets/css/style_custom.css"; ?>" rel="stylesheet">
+        <link href="<?= base_url."assets/css/colors/default.css"; ?>" id="theme" rel="stylesheet">
 	    
 	    <!-- autoload index js -->
 	    <?php include_once("app/views/template/js/autoload_js.php"); ?>

@@ -15,7 +15,8 @@ $(document).ready(function () {
     /* ===== Theme Settings ===== */
 
     $(".open-close").on("click", function () {
-        body.toggleClass("show-sidebar");
+        body.toggleClass("show-sidebar").toggleClass("hide-sidebar");
+        $(".sidebar-head .open-close i").toggleClass("ti-menu");
     });
 
     /* ===== Open-Close Right Sidebar ===== */
@@ -45,72 +46,44 @@ $(document).ready(function () {
         Sets the min-height of #page-wrapper to window size.
     =========================================================== */
 
-    // $(function () {
-    //     var set = function () {
-    //             var topOffset = 60,
-    //                 width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width,
-    //                 height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
-    //             if (width < 768) {
-    //                 $('div.navbar-collapse').addClass('collapse');
-    //                 topOffset = 100; /* 2-row-menu */
-    //             } else {
-    //                 $('div.navbar-collapse').removeClass('collapse');
-    //             }
-
-    //             /* ===== This is for resizing window ===== */
-
-    //             if (width < 1170) {
-    //                 body.addClass('content-wrapper');
-    //                 $(".sidebar-nav, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
-    //             } else {
-    //                 body.removeClass('content-wrapper');
-    //             }
-
-    //             height = height - topOffset;
-    //             if (height < 1) {
-    //                 height = 1;
-    //             }
-    //             if (height > topOffset) {
-    //                 $("#page-wrapper").css("min-height", (height) + "px");
-    //             }
-    //         },
-    //         url = window.location,
-    //         element = $('ul.nav a').filter(function () {
-    //             return this.href === url || url.href.indexOf(this.href) === 0;
-    //         }).addClass('active').parent().parent().addClass('in').parent();
-    //     if (element.is('li')) {
-    //         element.addClass('active');
-    //     }
-    //     $(window).ready(set);
-    //     $(window).bind("resize", set);
-    // });
-
     $(function () {
-        $(window).bind("load resize", function () {
-            var topOffset = 60,
-            width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;
-            if (width < 768) {
-                $('div.navbar-collapse').addClass('collapse');
-                topOffset = 100; // 2-row-menu
+        var set = function () {
+                var topOffset = 60,
+                    width = (window.innerWidth > 0) ? window.innerWidth : this.screen.width,
+                    height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
+                if (width < 768) {
+                    $('div.navbar-collapse').addClass('collapse');
+                    topOffset = 100; /* 2-row-menu */
+                } else {
+                    $('div.navbar-collapse').removeClass('collapse');
+                }
+
+                /* ===== This is for resizing window ===== */
+
+                if (width < 1170) {
+                    body.addClass('content-wrapper');
+                    $(".sidebar-nav, .slimScrollDiv").css("overflow-x", "visible").parent().css("overflow", "visible");
+                } else {
+                    body.removeClass('content-wrapper');
+                }
+
+                height = height - topOffset;
+                if (height < 1) {
+                    height = 1;
+                }
+                if (height > topOffset) {
+                    $("#page-wrapper").css("min-height", (height) + "px");
+                }
             }
-            else {
-                $('div.navbar-collapse').removeClass('collapse');
-            }
-            var height = ((this.window.innerHeight > 0) ? this.window.innerHeight : this.screen.height) - 1;
-            height = height - topOffset;
-            if (height < 1) height = 1;
-            if (height > topOffset) {
-                $("#page-wrapper").css("min-height", (height) + "px");
-            }
-        });
-        // var url = window.location;
-        // var element = $('ul.nav a').filter(function () {
-        //     console.log(this.href == url || url.href.indexOf(this.href) == 0);
-        //     return this.href == url || url.href.indexOf(this.href) == 0;
-        // }).addClass('active').parent().parent().addClass('in').parent();
+        //     url = window.location,
+        //     element = $('ul.nav a').filter(function () {
+        //         return this.href === url || url.href.indexOf(this.href) === 0;
+        //     }).addClass('active').parent().parent().addClass('in').parent();
         // if (element.is('li')) {
         //     element.addClass('active');
         // }
+        $(window).ready(set);
+        $(window).bind("resize", set);
 
         if(jQuery.isEmptyObject(urlParams)){
             $('.menu-beranda').addClass('active');
@@ -284,7 +257,6 @@ $(document).ready(function () {
                     break;
             }
         }
-
     });
 
     /* ===== Collapsible Panels JS ===== */
@@ -373,9 +345,9 @@ $(document).ready(function () {
     });
     $('.slimscrollsidebar').slimScroll({
         height: '100%',
-        position: 'left',
+        position: 'right',
         size: "6px",
-        color: 'rgba(0,0,0,0.5)'
+        color: 'rgba(0,0,0,0.3)'
     });
     $('.chat-list').slimScroll({
         height: '100%',

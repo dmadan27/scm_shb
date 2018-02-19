@@ -39,3 +39,14 @@
 
 		return $result;
 	}
+
+	// function delete perencanaan
+	function deletePerencanaan_bahan_baku($koneksi, $id){
+		$query = "DELETE FROM perencanaan_bahan_baku WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

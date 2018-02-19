@@ -118,3 +118,13 @@
 
 		return $result;
 	}
+
+	function deleteProduk($koneksi, $id){
+		$query = "CALL hapus_produk(:id)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

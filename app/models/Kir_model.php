@@ -130,3 +130,13 @@
 
 		return $result;
 	}
+
+	function deleteKir($koneksi, $id){
+		$query = "CALL hapus_kir(:id)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

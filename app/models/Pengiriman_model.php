@@ -22,3 +22,14 @@
 
 		return $result;
 	}
+
+	function deletePengiriman($koneksi, $id, $id_pemesanan){
+		$query = "CALL hapus_pengiriman (:id, :id_pemesanan)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$statement->bindParam(':id_pemesanan', $id_pemesanan);
+		$result = $statement->execute();
+
+		return $result;
+	}

@@ -108,7 +108,7 @@
 			$dataRow[] = cetakTgl($row['tgl'], 'full');
 			$dataRow[] = $periode;
 			$dataRow[] = $row['kd_produk']." - ".$row['nama_produk'];
-			$dataRow[] = $row['jumlah_perencanaan']." ".$row['satuan_produk'];
+			$dataRow[] = cetakAngka($row['jumlah_perencanaan'])." ".$row['satuan_produk'];
 			$dataRow[] = cetakListItem($row['komposisi']);
 			$dataRow[] = cetakListItem($jumlah_bahanBaku);
 			$dataRow[] = $aksi;
@@ -347,7 +347,12 @@
 	}
 
 	function getHapus($koneksi, $id){
-		
+		$hapus = deletePerencanaan_bahan_baku($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 	
 	function setRule_peramalan($data){

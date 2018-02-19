@@ -53,7 +53,7 @@ $(document).ready(function(){
         },
         "columnDefs": [
             {
-                "targets":[0, 4, 5], //
+                "targets":[0, 3, 4, 6, 7], //
                 "orderable":false,
             }
         ],

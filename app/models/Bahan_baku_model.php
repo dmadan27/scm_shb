@@ -65,3 +65,13 @@
 
 		return $result;
 	}
+
+	function deleteBahanBaku($koneksi, $id){
+		$query = "CALL hapus_bahan_baku(:id)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

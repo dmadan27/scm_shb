@@ -66,3 +66,13 @@
 
 		return $result;
 	}
+
+	function deletePekerjaan($koneksi, $id){
+		$query = "DELETE FROM pekerjaan WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

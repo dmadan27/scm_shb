@@ -302,19 +302,6 @@ function setSelect_jenis(){
 
 // function set select pengguna
 function setSelect_pengguna(){
-	// var url = action = "";
-
-	// if($("#jenis").val() == "K"){
-	// 	url = base_url+"app/controllers/Karyawan.php";
-	// 	action = "get_select_karyawan";
-	// }
-	// else if($("#jenis").val() == "B"){
-	// 	url = base_url+"app/controllers/Buyer.php";
-	// 	action = "get_select_buyer";
-	// }
-
-	// $("#pengguna").find('option').remove().end();
-
 	$.ajax({
 		url: base_url+"app/controllers/Karyawan.php",
 		type: "post",

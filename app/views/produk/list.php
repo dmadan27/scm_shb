@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading">List Data Produk</div>
+            <div class="panel-heading">Lihat Semua Data Produk</div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-wrapper collapse in">
                     <div class="panel-body">

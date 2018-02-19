@@ -32,6 +32,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'get_select_buyer':
 				get_select_buyer($koneksi);
 				break;
@@ -162,6 +166,15 @@
 		$data_buyer = empty(getBuyer_by_id($koneksi, $id)) ? false : getBuyer_by_id($koneksi, $id);
 
 		echo json_encode($data_buyer);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteBuyer($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// fungsi get select buyer

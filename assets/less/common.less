@@ -1,3 +1,4 @@
+
 @import "variables.less";
 // Global Styles
 * {
@@ -764,14 +765,13 @@ label {
 
 .btn {
     border-radius: @radius-alt;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
 }
 
 .form-control {
     background-color: #ffffff;
     border: 1px solid @light;
-    border-radius: 4px;
-    box-shadow: none;
+    border-radius: @radius;
+    box-shadow: 4px;
     color: #565656;
     height: 38px;
     max-width: 100%;
@@ -1028,7 +1028,7 @@ pre {
 .footer {
     bottom: 0;
     color: #58666e;
-    left: 0px;
+    left: 240px;
     padding: 20px 30px;
     position: absolute;
     right: 0;
@@ -1084,7 +1084,7 @@ pre {
 }
 
 .top-left-part {
-    width: 220px;
+    width: 240px;
     float: left;
     border-right: 1px solid rgba(0, 0, 0, 0.08);
     a {
@@ -1766,7 +1766,6 @@ table.dataTable thead .sorting:after {
     background: @white;
     padding: 25px;
     margin-bottom: 30px;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
     .box-title {
         margin: 0px 0px 12px;
         font-weight: 500;
@@ -1779,8 +1778,7 @@ table.dataTable thead .sorting:after {
     border-radius: @radius;
     margin-bottom: 30px;
     border: 0px;
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,.1);
-    
+    box-shadow: none;
     .panel-heading {
         border-radius: @radius;
         font-weight: 500;

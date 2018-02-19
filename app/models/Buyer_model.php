@@ -80,3 +80,13 @@
 
 		return $result;
 	}
+
+	function deleteBuyer($koneksi, $id){
+		$query = "DELETE FROM buyer WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

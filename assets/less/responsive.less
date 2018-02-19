@@ -41,11 +41,28 @@
 
 /*Small Desktop*/
 
-@media(min-width:1024px) {
+@media(min-width:1170px) {
     .app-search .form-control:focus {
         width: 300px;
     }
-    
+    .hide-sidebar{
+        .top-left-part{
+            width: auto;
+            .logo span{
+                display: none;
+            }
+        }
+        .sidebar{
+            left: -240px;
+            transition: 0.5s ease-out;
+        }
+        #page-wrapper{
+          margin-left: 0px;  
+        }
+        .footer{
+            left:0px;
+        }
+    }
 }
 
 
@@ -54,7 +71,7 @@
 @media(min-width:768px) {
     #page-wrapper {
         position: inherit;
-        margin: 0px 0 0px 60px;
+        margin: 0px 0 0px 240px;
     }
     .navbar-default {
         position: relative;
@@ -64,7 +81,7 @@
     .sidebar {
         z-index: 1001;
         position: fixed;
-        width: 60px;
+        width: 240px;
         padding-top: 0px;
         height: 100%;
         transition: 0.05s ease-in;
@@ -72,12 +89,10 @@
             width: 240px;
         }
     }
-    .navbar-static-top {
-        padding-left: 60px;
-    }
     .fix-header {
         .navbar-static-top {
             position: fixed;
+            z-index: 1010;
         }
         #page-wrapper {
             margin-top: 60px;
@@ -105,6 +120,35 @@
     float: right;
 }
 
+/*This is for sidemenu*/
+@media (max-width:1170px) {
+    .content-wrapper{
+        .sidebar{
+            left: -240px;
+        }
+        #page-wrapper{
+          margin-left: 0px;  
+        }
+        &.show-sidebar{
+            .sidebar{
+                left:0px;
+            }
+        }
+        .footer{
+            left:0px;
+        }
+    }
+    
+    .col-in{
+        padding: 15px 0;
+        padding: 15px 0;
+        li{
+            &.col-middle{
+                width: 100%;
+            }
+        }
+    }
+}
 
 @media (max-width:1023px) {
     .b-r-none {
@@ -128,15 +172,7 @@
             margin-top: 10%;
         }
     }
-    .col-in{
-        padding: 15px 0;
-        padding: 15px 0;
-        li{
-            &.col-middle{
-                width: 100%;
-            }
-        }
-    }
+    
 }
 
 

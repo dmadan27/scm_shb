@@ -5,7 +5,7 @@
     <div class="navbar-header">
         <div class="top-left-part">
             <!-- Logo -->
-            <a class="logo" href="index.html">
+            <a class="logo" href="<?= base_url; ?>">
                 <!-- Logo icon image, you can use font-icon also -->
                 <b>
                 	<!--This is dark logo icon-->
@@ -25,7 +25,7 @@
         <!-- /Logo -->
         <!-- Search input and Toggle icon -->
         <ul class="nav navbar-top-links navbar-left">
-            <li><a href="javascript:void(0)" class="open-close waves-effect waves-light visible-xs"><i class="ti-close ti-menu"></i></a></li>
+            <li><a href="javascript:void(0)" class="open-close waves-effect waves-light"><i class="ti-menu"></i></a></li>
         </ul>
         <ul class="nav navbar-top-links navbar-right pull-right">            
             <!-- profile -->
@@ -41,7 +41,7 @@
                             <div class="u-img"><img src="<?= base_url."assets/images/".$sess_foto; ?>" alt="user" /></div>
                             <div class="u-text">
                                 <h4><?= ucwords(strtolower($sess_nama)); ?></h4>
-                                <p class="text-muted small"><?= $sess_pengguna ?></p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">View Profile</a>
+                                <p class="text-muted small"><?= $sess_pengguna ?></p><a href="<?= base_url."index.php?m=profil&p=view"; ?>" class="btn btn-rounded btn-danger btn-sm">Lihat Profil</a>
                            	</div>
                     	</div>
                     </li>

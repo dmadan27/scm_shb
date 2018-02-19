@@ -70,3 +70,13 @@
 
 		return $result;
 	}
+
+	function deleteKendaraan($koneksi, $id){
+		$query = "DELETE FROM kendaraan WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

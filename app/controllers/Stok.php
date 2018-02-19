@@ -50,20 +50,20 @@
 				$hitung_jumlah = hitung_jumlah_safety_stok_bahanBaku(getPerencanaan_produk_by_bahanBaku($koneksi, $row['id'], '2017-01'));
 				$jumlah_perencanaan = $hitung_jumlah['jumlah_bahanBaku'];
 				$safety_stok_bahan_baku = $hitung_jumlah['safety_stok_bahan_baku'];
-				$jumlah_yang_dibutuhkan = ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku)) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku));
+				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan + $safety_stok_bahan_baku) - $row['stok_akhir']) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku));
 
-				$status = ($row['stok_akhir'] < $safety_stok_bahan_baku) ? '<span class="label label-danger label-rouded">TIDAK AMAN</span>' : '<span class="label label-success label-rouded">AMAN</span>';
+				$status = ($row['stok_akhir'] >= $jumlah_yang_dibutuhkan) ? '<span class="label label-success label-rouded">AMAN</span>' : '<span class="label label-danger label-rouded">TIDAK AMAN</span>';
 			}
 
 			$dataRow = array();
 			$dataRow[] = $no_urut;
 			$dataRow[] = $row['kd_bahan_baku'];
 			$dataRow[] = $row['nama'];
-			$dataRow[] = $jumlah_perencanaan." ".$row['satuan'];
-			$dataRow[] = $row['stok_akhir']." ".$row['satuan'];
-			$dataRow[] = $safety_stok_bahan_baku." ".$row['satuan'];
+			$dataRow[] = cetakAngka($jumlah_perencanaan)." ".$row['satuan'];
+			$dataRow[] = cetakAngka($safety_stok_bahan_baku)." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['stok_akhir'])." ".$row['satuan'];
+			$dataRow[] = cetakAngka($jumlah_yang_dibutuhkan)." ".$row['satuan'];
 			$dataRow[] = $status;
-			$dataRow[] = $jumlah_yang_dibutuhkan." ".$row['satuan'];
 			$data[] = $dataRow;
 		}
 
@@ -80,7 +80,7 @@
 	function listStok_produk($koneksi){
 		$config_db = array(
 			'tabel' => 'v_produk',
-			'kolomOrder' => array(null, 'kd_produk', 'nama', 'stok_akhir', null, null),
+			'kolomOrder' => array(null, 'kd_produk', 'nama', null, null, 'stok_akhir', null, null),
 			'kolomCari' => array('kd_produk', 'nama', 'satuan', 'ket', 'stok_akhir'),
 			'orderBy' => array('id' => 'asc'),
 			'kondisi' => false,
@@ -108,8 +108,9 @@
 			$dataRow[] = $no_urut;
 			$dataRow[] = $row['kd_produk'];
 			$dataRow[] = $row['nama'];
-			$dataRow[] = $row['stok_akhir']." ".$row['satuan'];
-			$dataRow[] = $safety_stock." ".$row['satuan']; // safety stock
+			$dataRow[] = ""; // jumlah perencanaan
+			$dataRow[] = cetakAngka($safety_stock)." ".$row['satuan']; // safety stock
+			$dataRow[] = cetakAngka($row['stok_akhir'])." ".$row['satuan'];
 			$dataRow[] = $status; // status
 			$data[] = $dataRow;
 		}

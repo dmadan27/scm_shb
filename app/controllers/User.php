@@ -17,7 +17,7 @@
 				break;
 			
 			case 'tambah':
-				actionAdd($koneksi, $action);
+				actionAdd($koneksi);
 				break;
 
 			case 'getedit':
@@ -25,15 +25,15 @@
 				break;
 
 			case 'edit':
-				action($koneksi, $action);
+				action($koneksi);
 				break;
 
 			case 'getview':
 				getView($koneksi, $id);
 				break;
 
-			case 'get_select_hak_akses':
-				get_select_hak_akses();
+			case 'gethapus':
+				getHapus($koneksi, $id);
 				break;
 
 			case 'getexcel':
@@ -150,6 +150,15 @@
 		);
 
 		echo json_encode($output);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteUser($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	function setRule_validasi($data){

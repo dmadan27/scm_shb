@@ -68,3 +68,13 @@
 
 		return $result;
 	}
+
+	function deleteHarga_basis($koneksi, $id){
+		$query = "DELETE FROM harga_basis WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

@@ -28,8 +28,8 @@
 				action($koneksi, $action);
 				break;
 
-			case 'getview':
-				getView($koneksi, $id);
+			case 'gethapus':
+				getHapus($koneksi, $id);
 				break;
 
 			default:
@@ -141,6 +141,15 @@
 	function getEdit($koneksi, $id){
 		$data_harga_basis = empty(getHargaBasis_by_id($koneksi, $id)) ? false : getHargaBasis_by_id($koneksi, $id);
 		echo json_encode($data_harga_basis);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteHarga_basis($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// set rule validasi

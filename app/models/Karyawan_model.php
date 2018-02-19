@@ -32,6 +32,17 @@
 		return $result;
 	}
 
+	function getStatus_karyawan_byId($koneksi, $id){
+		$query = "SELECT status FROM karyawan WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$statement->execute();
+		$result = $statement->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+	}
+
 	// get data karyawan untuk select
 	function get_data_select_karyawan($koneksi){
 		$status = '1';
@@ -109,6 +120,27 @@
 		$statement->bindParam(':tgl_masuk', $data['tgl_masuk']);
 		$statement->bindParam(':id_pekerjaan', $data['id_pekerjaan']);
 		$statement->bindParam(':id', $data['id_karyawan']);
+		$result = $statement->execute();
+
+		return $result;
+	}
+
+	function updateStatus_karyawan($koneksi, $status, $id){
+		$query = "UPDATE karyawan SET status = :status WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':status', $status);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;		
+	}
+
+	function deleteKaryawan($koneksi, $id){
+		$query = "DELETE FROM karyawan WHERE id = :id";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
 		$result = $statement->execute();
 
 		return $result;

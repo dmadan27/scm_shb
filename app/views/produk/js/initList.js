@@ -87,6 +87,7 @@ function getHapus(id){
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batal",
         closeOnConfirm: false,
     }, function(){
         $.ajax({
@@ -95,13 +96,13 @@ function getHapus(id){
             dataType: "json",
             data: {
                 "id": id,
-                "action": "hapus",
+                "action": "gethapus",
             },
             success: function(output){
                 console.log(output);
-                if(output.status){
+                if(output){
                     swal("Pesan Berhasil", "Data Berhasil Dihapus", "success");
-                    tabel_analisa_harga.ajax.reload();
+                    $("#tabel_produk").DataTable().ajax.reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) { // error handling

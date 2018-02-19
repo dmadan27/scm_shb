@@ -105,7 +105,7 @@
 			$dataRow[] = gantikosong($row['no_kontrak']);
 			$dataRow[] = $row['nama_buyer'];
 			$dataRow[] = $row['nama_produk'];
-			$dataRow[] = $row['jumlah']." ".$row['satuan_produk'];
+			$dataRow[] = cetakAngka($row['jumlah'])." ".$row['satuan_produk'];
 			$dataRow[] = $waktu_pengiriman;
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;

@@ -28,6 +28,10 @@
 				action($koneksi, $action);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'getpdf':
 				getpdf($koneksi);
 				break;
@@ -137,6 +141,15 @@
 	function getEdit($koneksi, $id){
 		$data_pekerjaan = empty(getPekerjaan_by_id($koneksi, $id)) ? false : getPekerjaan_by_id($koneksi, $id);
 		echo json_encode($data_pekerjaan);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deletePekerjaan($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// function get pdf

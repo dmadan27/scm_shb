@@ -23,7 +23,7 @@ $(document).ready(function(){
     };
 
 	// setting datatable
-    var tabel_pemebelian = $("#tabel_pembelian").DataTable({
+    var tabel_pembelian = $("#tabel_pembelian").DataTable({
         "language" : {
             "lengthMenu": "Tampilkan _MENU_ data/page",
             "zeroRecords": "Data Tidak Ada",
@@ -84,6 +84,7 @@ function getHapus(id){
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batal",
         closeOnConfirm: false,
     }, function(){
         $.ajax({
@@ -92,13 +93,13 @@ function getHapus(id){
             dataType: "json",
             data: {
                 "id": id,
-                "action": "hapus",
+                "action": "gethapus",
             },
             success: function(output){
                 console.log(output);
-                if(output.status){
+                if(output){
                     swal("Pesan Berhasil", "Data Berhasil Dihapus", "success");
-                    tabel_analisa_harga.ajax.reload();
+                    $("#tabel_pembelian").DataTable().ajax.reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) { // error handling

@@ -149,6 +149,9 @@
 /*Inbox Center*/
 
 .inbox-center {
+    td {
+        white-space: nowrap;
+    }
     .unread td {
         font-weight: 400;
     }
@@ -2210,7 +2213,7 @@ table.focus-on {
     right: -240px;
     width: 240px;
     display: none;
-    z-index: 1000;
+    z-index: 1200;
     background: @white;
     top: 0px;
     height: 100%;
@@ -3266,7 +3269,7 @@ ul.list-icons {
 /*USer-profile*/
 
 .user-profile {
-    padding: 15px 0;
+    padding: 70px 0 15px;
     position: relative;
     text-align: center;
     .user-pro-body {
@@ -3364,8 +3367,8 @@ ul.list-icons {
 #diagram {
     margin: 0 auto;
     width: 250px;
-    padding-top: 60px;
-    height: 341px;
+    padding-top: 30px;
+    height: 271px;
     circle {
         fill: @white;
     }
@@ -3418,7 +3421,6 @@ ul.expense-box {
 
 .manage-users {
     margin-bottom: 30px;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .1);
     .tabs-style-iconbox nav {
         background: @info;
         ul li {
@@ -3615,15 +3617,15 @@ ul.wallet-list {
 #ct-visits {
     .ct-series-a .ct-line,
     .ct-series-a .ct-point {
-        stroke: @danger;
+        stroke: @muted;
     }
     .ct-series-b .ct-line,
     .ct-series-b .ct-point {
         stroke: @info;
     }
     .ct-series-a .ct-area {
-        fill: @danger;
-        fill-opacity: 0.1;
+        fill: @muted;
+        fill-opacity: 0.05;
     }
     .ct-series-b .ct-area {
         fill: @info;
@@ -3640,7 +3642,7 @@ ul.wallet-list {
     }
     .ct-series-a .ct-line,
     .ct-series-a .ct-point {
-        stroke: rgba(255, 255, 255, 0.2);
+        stroke: @info;
     }
     .ct-series-a .ct-area {
         fill: none;
@@ -3732,17 +3734,14 @@ ul.wallet-list {
             td {
                 padding: 18px 15px;
                 text-align: center;
-                color: @white;
                 font-weight: 400;
                 h1 {
                     text-align: left;
-                    color: @white;
                     font-weight: 400;
                     padding-left: 30px;
                 }
                 .cal-add {
                     font-size: 24px;
-                    color: @white;
                 }
                 &.cal-active {
                     border-radius: 60px;
@@ -3877,12 +3876,6 @@ ul.wallet-list {
 /*City weather widget*/
 
 .city-weather-widget {
-    h1,
-    h4,
-    h5,
-    i {
-        color: @white;
-    }
     .side-icon-text {
         i {
             font-size: 50px;

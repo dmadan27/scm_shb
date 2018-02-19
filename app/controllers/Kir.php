@@ -32,6 +32,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'get_kd_kir':
 				get_kd_kir($koneksi);
 				break;
@@ -192,6 +196,15 @@
 		$kd_kir = get_inc_kd_kir($koneksi, $jenis);
 
 		echo json_encode($kd_kir);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteKir($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	function setRule_validasi($data){

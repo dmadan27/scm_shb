@@ -19,7 +19,7 @@
 <div class="row">
 	<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-        	<div class="panel-heading">List Data Supplier</div>
+        	<div class="panel-heading">Lihat Semua Data Supplier</div>
     	 	<div class="panel-wrapper collapse in">
     	 		<div class="panel-wrapper collapse in">
     	 			<div class="panel-body">
@@ -39,20 +39,22 @@
     	 						</div>
     	 					</div>
     	 				</div>
-	 					<table id="tabel_supplier" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
-    	 					<thead>
-    	 						<tr>
-    	 							<th style="width: 15px">No</th>
-    	 							<th>No. KTP</th>
-    	 							<th>NPWP</th>
-    	 							<th>Nama</th>
-                                    <th>Alamat</th>
-                                    <th>No. Telepon</th>
-    	 							<th>Status</th>
-    	 							<th>Aksi</th>
-    	 						</tr>
-    	 					</thead>
-    	 				</table>
+                        <div class="table-responsive">
+                            <table id="tabel_supplier" class="table table-hover dt-responsive nowrap" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15px">No</th>
+                                        <th>No. KTP</th>
+                                        <th>NPWP</th>
+                                        <th>Nama</th>
+                                        <th>Alamat</th>
+                                        <th>No. Telepon</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>	
     	 			</div>
     	 		</div>
     	 	</div>

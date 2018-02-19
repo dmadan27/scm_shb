@@ -35,7 +35,7 @@ $(document).ready(function () {
         backgroundColor: 'transparent',
         regionStyle: {
             initial: {
-                fill: '#2cabe3'
+                fill: '#c1ccd1'
             }
         }
     });
@@ -53,7 +53,6 @@ $(document).ready(function () {
         },
         low: 1,
         showPoint: true,
-        height: 260,
         fullWidth: true,
         plugins: [
     Chartist.plugins.tooltip()
@@ -67,5 +66,33 @@ $(document).ready(function () {
             showGrid: false
         },
         showArea: true
+    });
+
+    $("#sparkline8").sparkline([2, 4, 4, 6, 8, 5, 6, 4, 8, 6, 6, 2], {
+        type: 'line',
+        width: '100%',
+        height: '50',
+        lineColor: '#cfecfe',
+        fillColor: '#cfecfe',
+        maxSpotColor: '#cfecfe',
+        highlightLineColor: 'rgba(0, 0, 0, 0.2)',
+        highlightSpotColor: '#cfecfe'
+    });
+    $("#sparkline9").sparkline([0, 2, 8, 6, 8, 5, 6, 4, 8, 6, 6, 2], {
+        type: 'line',
+        width: '100%',
+        height: '50',
+        lineColor: '#f1effd',
+        fillColor: '#f1effd',
+        minSpotColor: '#f1effd',
+        maxSpotColor: '#f1effd',
+        highlightLineColor: 'rgba(0, 0, 0, 0.2)',
+        highlightSpotColor: '#f1effd'
+    });
+    var sparkResize;
+
+    $(window).on("resize", function (e) {
+        clearTimeout(sparkResize);
+        sparkResize = setTimeout(sparklineLogin, 500);
     });
 });

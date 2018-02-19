@@ -37,7 +37,8 @@
 				break;
 
 			case 'gethapus':
-				getHapus($koneksi, $id);
+				$id_pemesanan = isset($_POST['id_pemesanan']) ? $_POST['id_pemesanan'] : false;
+				getHapus($koneksi, $id, $id_pemesanan);
 				break;
 
 			case 'get_select_kontrak':
@@ -84,7 +85,7 @@
 			$btnAksi = array(
 				'view' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Lihat Detail Data" onclick="getView('."'".$row["id"]."'".')"><i class="ti-zoom-in"></i></button>',
 				'edit' => '<button type="button" class="btn btn-info btn-outline btn-circle m-r-5" title="Edit Data" onclick="getEdit('."'".$row["id"]."'".')"><i class="ti-pencil-alt"></i></button>',
-				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".')"><i class="ti-trash"></i></button>',
+				'hapus' => '<button type="button" class="btn btn-danger btn-outline btn-circle m-r-5" title="Hapus Data" onclick="getHapus('."'".$row["id"]."'".','."'".$row["id_pemesanan"]."'".')"><i class="ti-trash"></i></button>',
 				'status' => '<button type="button" class="btn btn-primary btn-outline btn-circle m-r-5" title="Ubah Status" onclick="getStatus('."'".$row["id"]."'".')"><i class="ti-check-box"></i></button>',
 			);
 
@@ -99,7 +100,7 @@
 			$dataRow[] = $row['nama_buyer'];
 			$dataRow[] = $row['nama_produk'];
 			$dataRow[] = $row['colly']." PCS";
-			$dataRow[] = $row['jumlah']." KG";
+			$dataRow[] = cetakAngka($row['jumlah'])." KG";
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
@@ -138,6 +139,15 @@
 		);
 
 		echo json_encode($output);
+	}
+
+	function getHapus($koneksi, $id, $id_pemesanan){
+		$hapus = deletePengiriman($koneksi, $id, $id_pemesanan);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// function get select kontrak

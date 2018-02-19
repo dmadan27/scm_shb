@@ -98,3 +98,13 @@
 
 		return $result;
 	}
+
+	function deleteSupplier($koneksi, $id){
+		$query = "CALL hapus_supplier(:id)";
+
+		$statement = $koneksi->prepare($query);
+		$statement->bindParam(':id', $id);
+		$result = $statement->execute();
+
+		return $result;
+	}

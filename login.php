@@ -22,7 +22,8 @@
     	<!-- autoload index css -->
     	<?php include_once("app/views/template/css/autoload_css.php"); ?>
     	<link href="<?= base_url."assets/css/style.css"; ?>" rel="stylesheet">
-        <link href="<?= base_url."assets/css/colors/megna-dark.css"; ?>" id="theme" rel="stylesheet">
+    	<link href="<?= base_url."assets/css/style_custom.css"; ?>" rel="stylesheet">
+        <link href="<?= base_url."assets/css/colors/default.css"; ?>" id="theme" rel="stylesheet">
     	<!-- jQuery -->
     	<script src="<?= base_url."assets/plugins/bower_components/jquery/dist/jquery.min.js"; ?>"></script>
     	<script type="text/javascript">

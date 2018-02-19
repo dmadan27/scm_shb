@@ -32,6 +32,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'get_select_produk':
 				get_select_produk($koneksi);
 				break;
@@ -85,7 +89,7 @@
 			$dataRow[] = $row['satuan'];
 			$dataRow[] = gantiKosong($row['ket']);
 			$dataRow[] = cetakListItem($row['komposisi']);
-			$dataRow[] = $row['stok_akhir']." ".$row['satuan'];
+			$dataRow[] = cetakAngka($row['stok_akhir'])." ".$row['satuan'];
 			$dataRow[] = $aksi;
 
 			$data[] = $dataRow;
@@ -295,6 +299,15 @@
 	// function get view
 	function getView($koneksi, $id){
 
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteProduk($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// function edit foto

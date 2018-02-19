@@ -21,7 +21,7 @@
 <div class="row">
     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="panel panel-default">
-            <div class="panel-heading">List Data Stok Produk</div>
+            <div class="panel-heading">Lihat Semua Data Stok Produk</div>
             <div class="panel-wrapper collapse in">
                 <div class="panel-wrapper collapse in">
                     <div class="panel-body">
@@ -46,8 +46,10 @@
                                     <th style="width: 15px">No</th>
                                     <th>Kode Produk</th>
                                     <th>Nama</th>
-                                    <th>Stok Gudang</th>
+                                    <th>Jumlah Perencanaan</th>
                                     <th>Safety Stock</th>
+                                    <th>Stok Gudang</th>
+                                    <th>Jumlah Yang Dibutuhkan</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>

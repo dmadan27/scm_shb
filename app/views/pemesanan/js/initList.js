@@ -136,7 +136,6 @@ function getStatus(id){
         },
         error: function (jqXHR, textStatus, errorThrown) { // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            $("#status").val("").trigger('change');
             $("#modal_ubah_status").modal('hide');
             console.log(jqXHR, textStatus, errorThrown);
         }
@@ -182,7 +181,6 @@ function updateStatus(){
         },
         error: function (jqXHR, textStatus, errorThrown) { // error handling
             swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
-            $("#status").val("").trigger('change');
             $("#modal_ubah_status").modal('hide');
             console.log(jqXHR, textStatus, errorThrown);
         }
@@ -191,7 +189,6 @@ function updateStatus(){
 
 function setSelect_status(){
     var arrStatus = [
-        {value: "", text: "-- Pilih Status --"},
         {value: "S", text: "SUKSES"},
         {value: "P", text: "PROSES"},
         {value: "W", text: "PENDING"},

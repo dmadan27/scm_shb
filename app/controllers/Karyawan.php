@@ -33,6 +33,19 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
+			case 'get_status':
+				getStatus($koneksi, $id);
+				break;
+
+			case 'update_status':
+				$status = isset($_POST['status']) ? $_POST['status'] : false;
+				update_status($koneksi, $status, $id);
+				break;
+
 			case 'get_select_karyawan':
 				get_select_karyawan($koneksi);
 				break;
@@ -257,6 +270,43 @@
 	// function get data view
 	function getView($koneksi, $id){
 
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteKaryawan($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
+	}
+
+	function getStatus($koneksi, $id){
+		$data_status = getStatus_karyawan_byId($koneksi, $id);
+
+		echo json_encode($data_status['status']);
+	}
+
+	function update_status($koneksi, $status, $id){
+		// validasi
+		if($status == ""){
+			$cek = false;
+			$pesan = "Status Tidak Boleh Kosong!";
+		}
+		else{
+			if(updateStatus_karyawan($koneksi, $status, $id)){
+				$cek = true;
+				$pesan = "Ubah Status Karyawan Berhasil !";
+			}
+			else $cek = false;
+		}
+
+		$output = array(
+			'status' => $cek,
+			'pesan' => $pesan,
+		);
+
+		echo json_encode($output);
 	}
 
 	// function edit foto

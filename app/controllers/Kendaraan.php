@@ -29,6 +29,10 @@
 				actionEdit($koneksi);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'getselect_supir':
 				getSelect_supir($koneksi);
 				break;
@@ -74,7 +78,7 @@
 			$dataRow[] = $row['supir'];
 			$dataRow[] = gantiKosong($row['pendamping']);
 			$dataRow[] = $row['jenis'];
-			$dataRow[] = $row['muatan'].' KG';
+			$dataRow[] = cetakAngka($row['muatan']).' KG';
 			$dataRow[] = $status;
 			$dataRow[] = $aksi;
 
@@ -220,6 +224,15 @@
 
 	}
 
+	function getHapus($koneksi, $id){
+		$hapus = deleteKendaraan($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
+	}
+	
 	function getSelect_supir($koneksi){
 		$data_supir = get_data_supir($koneksi);
 		$data = array(

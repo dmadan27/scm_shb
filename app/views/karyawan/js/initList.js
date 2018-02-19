@@ -63,6 +63,14 @@ $(document).ready(function(){
         window.location.href = base_url+"index.php?m=karyawan&p=form";
     });
 
+    $("#form_ubah_status").submit(function(e){
+        e.preventDefault();
+        updateStatus();
+        return false;
+    });    
+
+    setSelect_status();
+
     $("#exportPdf").click(function(){
         createPDF();
     });
@@ -84,6 +92,7 @@ function getHapus(id){
         showCancelButton: true,
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Ya, Hapus!",
+        cancelButtonText: "Batal",
         closeOnConfirm: false,
     }, function(){
         $.ajax({
@@ -92,13 +101,13 @@ function getHapus(id){
             dataType: "json",
             data: {
                 "id": id,
-                "action": "hapus",
+                "action": "gethapus",
             },
             success: function(output){
                 console.log(output);
-                if(output.status){
+                if(output){
                     swal("Pesan Berhasil", "Data Berhasil Dihapus", "success");
-                    tabel_analisa_harga.ajax.reload();
+                    $("#tabel_karyawan").DataTable().ajax.reload();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) { // error handling
@@ -106,6 +115,88 @@ function getHapus(id){
                 console.log(jqXHR, textStatus, errorThrown);
             }
         })   
+    });
+}
+
+function getStatus(id){
+    // tampilkan modal
+    $("#modal_ubah_status").modal();
+    $("#id_karyawan").val(id);
+    // get status
+    $.ajax({
+        url: base_url+"app/controllers/Karyawan.php",
+        type: "post",
+        dataType: "json",
+        data: {
+            "id": id,
+            "action": "get_status",
+        },
+        success: function(output){
+            console.log(output);
+            $("#status").val(output).trigger('change');
+        },
+        error: function (jqXHR, textStatus, errorThrown) { // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            $("#modal_ubah_status").modal('hide');
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    })
+}
+
+function updateStatus(){
+     $.ajax({
+        url: base_url+"app/controllers/Karyawan.php",
+        type: "post",
+        dataType: "json",
+        data: {
+            "status": $("#status").val(),
+            "id": $("#id_karyawan").val(),
+            "action": "update_status",
+        },
+        success: function(output){
+            console.log(output);
+            if(output.status){
+                $("#tabel_karyawan").DataTable().ajax.reload();
+                $("#modal_ubah_status").modal('hide');
+                $.toast({
+                    heading: 'Pesan Berhasil',
+                    text: output.pesan,
+                    position: 'top-right',
+                    loaderBg: '#ff6849',
+                    icon: 'success',
+                    hideAfter: 3000,
+                    stack: 6
+                });
+            }
+            else{
+                $.toast({
+                    heading: 'Pesan Error',
+                    text: output.pesan,
+                    position: 'top-right',
+                    loaderBg: '#ff6849',
+                    icon: 'error',
+                    hideAfter: 3000,
+                    stack: 6
+                });
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) { // error handling
+            swal("Pesan Error", "Operasi Gagal, Silahkan Coba Lagi", "error");
+            $("#modal_ubah_status").modal('hide');
+            console.log(jqXHR, textStatus, errorThrown);
+        }
+    })
+}
+
+function setSelect_status(){
+    var arrStatus = [
+        {value: "1", text: "AKTIF"},
+        {value: "0", text: "NON-AKTIF"},
+    ];
+
+    $.each(arrStatus, function(index, item){
+        var option = new Option(item.text, item.value);
+        $("#status").append(option);
     });
 }
 

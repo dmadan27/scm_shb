@@ -284,7 +284,7 @@ $(document).ready(function () {
             value: 105
         }],
         resize: true,
-        colors: ['#ff7676', '#2cabe3', '#53e69d', '#7bcef3']
+        colors: ['#f33155', '#7460ee', '#7ace4c', '#11a0f8']
     });
     Morris.Area({
         element: 'morris-area-chart2',
@@ -438,12 +438,12 @@ $(document).ready(function () {
         xaxis: {
             show: false
         },
-        colors: ["#fff"],
+        colors: ["#41b3f9"],
         grid: {
-            color: "#e45f5f",
+            color: "#fff",
             hoverable: true,
             borderWidth: 0,
-            backgroundColor: '#ff7676'
+            backgroundColor: ''
         },
         tooltip: true,
         tooltipOpts: {

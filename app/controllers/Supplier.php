@@ -36,6 +36,10 @@
 				getView($koneksi, $id);
 				break;
 
+			case 'gethapus':
+				getHapus($koneksi, $id);
+				break;
+
 			case 'getexcel':
 
 				break;
@@ -172,6 +176,15 @@
 		// $data_supplier = 
 
 		// echo json_encode($data_supplier);
+	}
+
+	function getHapus($koneksi, $id){
+		$hapus = deleteSupplier($koneksi, $id);
+
+		if($hapus) $status = true;
+		else $status = false;
+
+		echo json_encode($status);
 	}
 
 	// function get data supplier utama untuk select

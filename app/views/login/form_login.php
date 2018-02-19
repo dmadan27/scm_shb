@@ -1,6 +1,6 @@
 <!-- Form Login -->
 <form class="form-material new-lg-form" id="form_login" role="form">
-	<h3 class="box-title m-b-0">Sign In to sCM-SHB</h3>
+	<h3 class="box-title m-b-0">Masuk ke sCM-SHB</h3>
 	<small>Silahkan Masukkan Username dan Password Anda</small>    
     <div class="form-group m-t-20 field-username has-feedback">
       	<div class="col-xs-12">
@@ -23,12 +23,7 @@
     </div>
 	<div class="form-group text-center m-t-20">
       	<div class="col-xs-12">
-        	<button class="btn btn-info btn-lg btn-block btn-rounded text-uppercase waves-effect waves-light" type="submit" id="btnSubmit_login" value="login">Log In</button>
+        	<button class="btn btn-info btn-lg btn-block btn-rounded text-uppercase waves-effect waves-light" type="submit" id="btnSubmit_login" value="login">MASUK</button>
       	</div>
     </div>
-	<div class="form-group m-b-0">
-      	<div class="col-sm-12 text-center">
-        	<p>Belum Mempunyai Akun ? <a href="#" class="text-primary m-l-5"><b>Sign Up</b></a></p>
-      	</div>
-	</div>
 </form>

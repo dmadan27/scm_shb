@@ -324,10 +324,10 @@
 							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
 						),
 					),
-					'pemesanan' => array(
-							"url" => base_hak_akses['pemesanan'],
-							"aksi" => array('view',),
-						),
+					// 'pemesanan' => array(
+					// 		"url" => base_hak_akses['pemesanan'],
+					// 		"aksi" => array('view',),
+					// 	),
 					'perencanaan_bahan_baku' => array(
 							"url" => base_hak_akses['perencanaan_bahan_baku'],
 							"aksi" => array('tambah', 'view', 'edit', 'hapus'),
@@ -653,7 +653,13 @@
 
 	//fungsi format rupiah
 	function rupiah($harga){
-		$string = "Rp. ".number_format($harga,2,",",".");
+		$string = "Rp. ".number_format($harga,2, ",", ".");
+		return $string;
+	}
+
+	// function cetak angka ribuan
+	function cetakAngka($angka){
+		$string = number_format($angka, 2, ',', '.');
 		return $string;
 	}
 

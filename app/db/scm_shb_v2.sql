@@ -391,6 +391,24 @@
 		END IF;	
 	END;
 
+	-- hapus supplier
+	CREATE PROCEDURE hapus_supplier(
+		in id_param int
+	)
+	BEGIN
+		DECLARE status_param char(1);
+
+		-- get status
+		SELECT status INTO status_param FROM supplier WHERE id = id_param;
+
+		-- cek status
+		IF status_param = "1" THEN -- jika yang dihapus utama
+			DELETE FROM supplier WHERE supplier_utama = id_param;
+		END IF;
+
+		DELETE FROM supplier WHERE id = id_param;
+	END;
+
 	-- Tambah bahan baku
 	CREATE PROCEDURE tambah_bahan_baku(
 		-- in id_bahan_baku_param int,
@@ -418,7 +436,22 @@
 		-- Insert mutasi barang
 		INSERT INTO mutasi_bahan_baku(
 			tgl, id_bahan_baku, brg_masuk, brg_keluar) 
-		VALUES(tgl_param, id_param, 0, 0);
+		VALUES(tgl_param, id_param, stok_param, 0);
+	END;
+
+	-- hapus bahan baku
+	CREATE PROCEDURE hapus_bahan_baku(
+		in id_bahan_baku_param int
+	)
+	BEGIN
+		-- delete mutasi bahan baku
+		DELETE FROM mutasi_bahan_baku WHERE id_bahan_baku = id_bahan_baku_param;
+
+		-- delete komposisi
+		DELETE FROM komposisi WHERE id_bahan_baku = id_bahan_baku_param;
+
+		-- delete bahan baku
+		DELETE FROM bahan_baku WHERE id = id_bahan_baku_param;
 	END;
 
 	-- Tambah produk
@@ -448,7 +481,7 @@
 		-- Insert mutasi produk
 		INSERT INTO mutasi_produk(
 			tgl, id_produk, brg_masuk, brg_keluar) 
-		VALUES(tgl_param, id_param, 0, 0);
+		VALUES(tgl_param, id_param, stok_param, 0);
 	END;
 
 	-- Tambah komposisi
@@ -464,6 +497,21 @@
 
 		-- insert komposisi
 		INSERT INTO komposisi(id_produk, id_bahan_baku, penyusutan) VALUES(id_produk_param, id_bahan_baku_param, penyusutan_param);
+	END;
+
+	-- hapus produk
+	CREATE PROCEDURE hapus_produk(
+		in id_produk_param int
+	)
+	BEGIN
+		-- delete mutasi produk
+		DELETE FROM mutasi_produk WHERE id_produk = id_produk_param;
+
+		-- delete komposisi
+		DELETE FROM komposisi WHERE id_produk = id_produk_param;
+
+		-- delete produk
+		DELETE FROM produk WHERE id = id_produk_param;
 	END;
 
 	-- Tambah kir kopi
@@ -503,6 +551,29 @@
 		-- insert kir kopi
 		INSERT INTO kir_lada (id_kir, air, berat, abu) 
 		VALUES (id_kir_param, air_param, berat_param, abu_param);
+	END;
+
+	-- hapus kir
+	CREATE PROCEDURE hapus_kir(
+		in id_param int
+	)
+	BEGIN
+		DECLARE jenis_kir_param char(1);
+
+		-- get jenis kir
+		SELECT jenis_bahan_baku INTO jenis_kir_param FROM kir WHERE id = id_param;
+
+		-- cek jenis kir
+		IF jenis_kir_param = "K" THEN
+			-- delete kir kopi
+			DELETE FROM kir_kopi WHERE id_kir = id_param;
+		ELSE
+			-- delete kir lada
+			DELETE FROM kir_lada WHERE id_kir = id_param;
+		END IF;
+
+		-- delete kir
+		DELETE FROM kir WHERE id = id_param;
 	END;
 
 	-- Tambah Detail Pembelian
@@ -561,6 +632,36 @@
 		UPDATE analisa_harga SET status = "1" WHERE id = id_analisa_harga_param;
 	END;
 
+	-- hapus detail pembelian
+	CREATE PROCEDURE hapus_detail_pembelian(
+		in id_detail_param int,
+		in tgl_param date,
+		in id_bahan_baku_param int,
+		in id_analisa_harga_param int,
+		in jumlah_param double(12,2)
+	)
+	BEGIN
+		DECLARE get_brg_masuk double(12,2);
+		DECLARE get_stok double(12,2);
+
+		-- get brg masuk
+		SELECT brg_masuk INTO get_brg_masuk FROM mutasi_bahan_baku WHERE tgl = tgl_param AND id_bahan_baku = id_bahan_baku_param;
+		-- get stok akhir
+		SELECT stok_akhir INTO get_stok FROM bahan_baku WHERE id = id_bahan_baku_param;
+
+		-- update mutasi bahan baku
+		UPDATE mutasi_bahan_baku SET brg_masuk = (get_brg_masuk-jumlah_param) WHERE tgl = tgl_param AND id_bahan_baku = id_bahan_baku_param; 
+
+		-- update stok
+		UPDATE bahan_baku SET stok_akhir = (get_stok-jumlah_param) WHERE id = id_bahan_baku_param;
+
+		-- update analisa harga
+		UPDATE analisa_harga SET status = "0" WHERE id = id_analisa_harga_param;
+
+		-- hapus detail
+		DELETE FROM detail_pembelian WHERE id = id_detail_param;
+	END;
+
 	-- Tambah Pengiriman
 	CREATE PROCEDURE tambah_pengiriman(
 		in tgl_param date,
@@ -588,9 +689,9 @@
 		SELECT COUNT(tgl) INTO cek_tgl FROM mutasi_produk WHERE tgl=tgl_param AND id_produk = id_produk_param;
 
 		-- cek status
-		IF status_param = "O" || status_param = "T" THEN -- jika dalam perjalanan
+		IF status_param = "O" || status_param = "T" THEN -- jika dalam perjalanan / terkirim
 			IF cek_tgl > 0 THEN -- jika tgl pengiriman dan mutasi sesuai
-				-- get barang masuk
+				-- get barang keluar
 				SELECT brg_keluar INTO get_brg_keluar FROM mutasi_produk WHERE id_produk = id_produk_param AND tgl = tgl_param;
 
 				UPDATE mutasi_produk SET
@@ -611,6 +712,49 @@
 
 	END;
 
+	-- hapus pengiriman
+	CREATE PROCEDURE hapus_pengiriman(
+		in id_param int,
+		in id_pemesanan_param int
+	)
+	BEGIN
+		DECLARE tgl_param date;
+		DECLARE status_param char(1);
+		DECLARE jumlah_param double(12,2);
+		DECLARE id_produk_param int;
+		DECLARE get_stok double(12,2);
+		DECLARE get_brg_keluar double(12,2);
+
+		-- get tgl
+		SELECT tgl INTO tgl_param FROM pengiriman WHERE id = id_param;
+		-- get status
+		SELECT status INTO status_param FROM pengiriman WHERE id = id_param;
+		-- get jumlah
+		SELECT jumlah INTO jumlah_param FROM pengiriman WHERE id = id_param;
+		-- get id produk
+		SELECT id_produk INTO id_produk_param FROM pemesanan WHERE id = id_pemesanan_param;
+		-- get stok produk
+		SELECT stok_akhir INTO get_stok FROM produk WHERE id = id_produk_param;
+
+		-- cek status
+		IF status_param = "O" || status_param = "T" THEN
+			-- get barang keluar
+			SELECT brg_keluar INTO get_brg_keluar FROM mutasi_produk WHERE id_produk = id_produk_param AND tgl = tgl_param;
+
+			-- update mutasi bahan baku
+			UPDATE mutasi_produk SET 
+				brg_keluar = (get_brg_keluar-jumlah_param) 
+			WHERE 
+				id_produk = id_produk_param AND tgl = tgl_param;
+
+			-- update stok
+			UPDATE produk SET stok_akhir = (get_stok+jumlah_param) WHERE id = id_produk_param;
+		END IF;
+
+		-- hapus pengiriman
+		DELETE FROM pengiriman WHERE id = id_param;
+	END;
+
 # =========================================== #
 
 # ================== VIEW =================== #
@@ -623,7 +767,7 @@
 			(CASE WHEN (k.status = '1') THEN 'AKTIF' ELSE 'NON-AKTIF' END) status
 		FROM karyawan k
 		JOIN pekerjaan p ON p.id = k.id_pekerjaan
-		ORDER BY k.no_induk ASC, k.id_pekerjaan ASC, status ASC;
+		ORDER BY status ASC, k.no_induk ASC, k.id_pekerjaan ASC;
 
 	-- View supplier
 	CREATE OR REPLACE VIEW v_supplier AS
@@ -738,6 +882,18 @@
 		GROUP BY pbb.id
 		ORDER BY pbb.tgl DESC, status ASC;
 
+	-- view detail pembelian
+	CREATE OR REPLACE VIEW v_detail_pembelian AS
+		SELECT
+			pbb.tgl, pbb.id id_pembelian, dp.id, dp.colly, dp.jumlah, dp.harga, dp.subtotal,
+			bb.id id_bahan_baku, bb.kd_bahan_baku, bb.nama, bb.satuan,
+			ah.id id_analisa_harga
+		FROM detail_pembelian dp
+		JOIN pembelian_bahan_baku pbb ON pbb.id = dp.id_pembelian
+		JOIN bahan_baku bb ON bb.id = dp.id_bahan_baku
+		JOIN analisa_harga ah ON ah.id = dp.id_analisa_harga
+		ORDER BY dp.id;
+
 	-- View pemesanan
 	CREATE OR REPLACE VIEW v_pemesanan AS
 		SELECT
@@ -776,7 +932,7 @@
 		JOIN buyer b ON b.id = pm.id_buyer
 		JOIN kendaraan kd ON kd.id = p.id_kendaraan
 		JOIN karyawan kr ON kr.id = kd.id_supir
-		ORDER BY p.tgl DESC;
+		ORDER BY p.tgl DESC, p.id_pemesanan DESC;
 
 
 	-- View perencanaan pengadaan bahan baku
