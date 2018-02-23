@@ -50,7 +50,7 @@
 				$hitung_jumlah = hitung_jumlah_safety_stok_bahanBaku(getPerencanaan_produk_by_bahanBaku($koneksi, $row['id'], '2017-01'));
 				$jumlah_perencanaan = $hitung_jumlah['jumlah_bahanBaku'];
 				$safety_stok_bahan_baku = $hitung_jumlah['safety_stok_bahan_baku'];
-				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku))) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stok_bahan_baku));
+				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan + $safety_stok_bahan_baku) - $row['stok_akhir']) < 0 ? "0" : (($jumlah_perencanaan + $safety_stok_bahan_baku) - $row['stok_akhir']);
 
 				$status = ($row['stok_akhir'] >= $jumlah_yang_dibutuhkan) ? '<span class="label label-success label-rouded">AMAN</span>' : '<span class="label label-danger label-rouded">TIDAK AMAN</span>';
 			}
@@ -99,7 +99,7 @@
 				$data_perencanaan = get_perencanaanProduk($koneksi, $row['id'], '2017-01');
 				$jumlah_perencanaan = $data_perencanaan['jumlah_perencanaan'];
 				$safety_stock = $data_perencanaan['safety_stok_produk'];
-				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stock))) < 0 ? "0" : ($jumlah_perencanaan - ($row['stok_akhir'] + $safety_stock));
+				$jumlah_yang_dibutuhkan = (($jumlah_perencanaan + $safety_stock) - $row['stok_akhir']) < 0 ? "0" : (($jumlah_perencanaan + $safety_stock) - $row['stok_akhir']);
 				$status = ($row['stok_akhir'] < $safety_stock) ? '<span class="label label-danger label-rouded">TIDAK AMAN</span>' : '<span class="label label-success label-rouded">AMAN</span>';
 			}
 			else{
