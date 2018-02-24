@@ -90,40 +90,6 @@
 	// print_r(getKendaraan_ready($koneksi, "2018-02-11")['data_kendaraan_ready']);
 	// echo "</pre>";
 
-	// ========================================= //
-
-		// echo "Data Semua Kendaraan: <br>";
-		// foreach($data_kendaraan as $value){
-		// 	foreach($value as $key => $data){
-		// 		if($key==="id_kendaraan") echo $key.": ".$data."<br>";
-		// 	}
-		// 	echo "<br>";
-		// }
-
-		// echo "<br>";
-
-		// echo "Data Kendaraan Yang Berangkat: <br>";
-		// foreach($data_kendaraan_berangkat as $value){
-		// 	foreach($value as $key => $data){
-		// 		if($key==="id_kendaraan") echo $key.": ".$data."<br>";
-		// 	}
-		// 	echo "<br>";
-		// }
-
-		// echo "<br>";
-
-		// echo "Data Kendaraan Yang Ready: <br>";
-		// foreach($data_kendaraan_ready as $value){
-		// 	foreach($value as $key => $data){
-		// 		if($key==="id_kendaraan") echo $key.": ".$data."<br>";
-		// 	}
-		// 	echo "<br>";
-		// }
-
-		// echo "<br>";	
-
-	// ========================================= //
-
 	/*
 		1. 	Tentukan prediksi pengiriman
 			Waktu yang dibutuhkan = total pesanan / total muatan
@@ -134,7 +100,7 @@
 			
 	// keterangan info kontrak
 	$total_pesanan = 50000;
-	$awal_pengiriman = new DateTime("2018-02-15");
+	$awal_pengiriman = new DateTime("2018-02-22");
 	$batas_pengiriman = new DateTime("2018-02-25");
 	$batas_pengiriman->add(new DateInterval('P1D'));
 	$waktu_pengiriman = $awal_pengiriman->diff($batas_pengiriman)->d;
@@ -150,35 +116,43 @@
 	$interval = DateInterval::createFromDateString('1 day');
 	$periode_tgl = new DatePeriod($awal_pengiriman, $interval, $batas_pengiriman);
 
-	// var_dump($list_tgl);
-
 	$list_tgl = array();
 	foreach($periode_tgl as $tgl){
 		$list_tgl[$tgl->format("Y-m-d")] = $tgl->format("Y-m-d");
 	}
 
-	// var_dump($list_tgl);
-
 	/*
 		3.	cek tgl satu persatu
+			get tgl baru untuk insert
 	*/
-	foreach($list_tgl as $key => $value){
-		$data_kendaraan = getKendaraan_ready($koneksi, $value);
-		// cek berapa kendaraan yang ready
-		// if(empty($data_kendaraan['data_kendaraan_berangkat'])){
-		// 	echo "Tanggal '".$value."' Tidak Ada Jadwal. Sebanyak ".count($data_kendaraan['data_kendaraan'])." Kendaraan Siap Berangkat";
-		// 	echo "<br>";
-		// }
-		// else{
-		// 	echo "Tanggal '".$value."' Ada Jadwal Sebanyak ".count($data_kendaraan['data_kendaraan_berangkat'])." Kendaraan, dan ".count($data_kendaraan['data_kendaraan_ready'])." Kendaraan Siap Berangkat";
-		// 	echo "<br>";
-		// }
+	// echo "<pre>";
+	// print_r($list_tgl);
+	// echo "</pre>";
 
-		if(count($data_kendaraan['data_kendaraan_ready']) == 0){
+	// echo "<br>";
+
+	$newlist_tgl = array();
+	foreach($list_tgl as $key => $value){
+		$tgl = new DateTime($value);
+
+		// cek tgl
+		while(empty(getKendaraan_ready($koneksi, $tgl->format("Y-m-d"))['data_kendaraan_ready'])){
 			// +1 hari
-			$tgl = new DateTime($value);
 			$tgl->add(new DateInterval('P1D'));
+			if(array_key_exists($tgl->format("Y-m-d"), $newlist_tgl)){
+				// +1 hari
+				$tgl->add(new DateInterval('P1D'));	
+			}								
 		}
+
+		// insert pengiriman
+		$newlist_tgl[$tgl->format("Y-m-d")] = $tgl->format("Y-m-d");
 	}
 
-	// var_dump(getKendaraan_ready($koneksi, '2018-02-01')['data_kendaraan_berangkat']);
+	// echo "<pre>";
+	// print_r($newlist_tgl);
+	// echo "</pre>";
+	
+	/*
+		
+	*/
